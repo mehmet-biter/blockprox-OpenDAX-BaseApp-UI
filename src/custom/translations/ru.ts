@@ -15,7 +15,7 @@ export const ru: LangType = {
 	'page.homePage.download.download': 'Download',
 	'page.homePage.download.name': 'UDONEX',
 	'page.homePage.download.title': 'Trade BTC, USDT and Alt coins',
-	'page.homePage.feature.title': 'Why join UdonEX ?',
+	'page.homePage.feature.title': 'Why join BlockProEx ?',
 	'page.homePage.feature.title.1': 'User-friendly interface with conventional tools.',
 	'page.homePage.feature.title.2': 'Professional market analytics',
 	'page.homePage.feature.title.3': 'Processing speed transactions and TCP connections.',

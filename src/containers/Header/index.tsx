@@ -250,7 +250,7 @@ export const Header: React.FC = () => {
 					<div className="header__left-menu d-flex flex-row align-items-center">
 						<div className="header__left-menu__logo" onClick={() => setStateActiveNow('')}>
 							<Link to="/">
-								<img src={Logo} alt="" />
+								<img src={Logo} alt="" height="65px" />
 							</Link>
 						</div>
 
@@ -284,7 +284,7 @@ export const Header: React.FC = () => {
 								</Link>
 							</div>
 						</div>
-						{/* <div className="header__left-menu__dropdown flex-shrink-0  ">
+						<div className="header__left-menu__dropdown flex-shrink-0  ">
 							<div className={classLinkActive('vote')} onClick={() => setStateActiveNow('vote')}>
 								<Link
 									to="/vote"
@@ -293,7 +293,7 @@ export const Header: React.FC = () => {
 									Vote Listing
 								</Link>
 							</div>
-						</div> */}
+						</div>
 						<div className="header__left-menu__dropdown flex-shrink-0  ">
 							<div className={classLinkActive('EarnCoinFree')} onClick={() => setStateActiveNow('EarnCoinFree')}>
 								<span className={classLinkActiveTitleDrop('EarnCoinFree')}>
@@ -330,16 +330,6 @@ export const Header: React.FC = () => {
 								</div>
 							</div>
 						</div>
-						{/* <div className="header__left-menu__dropdown flex-shrink-0  ">
-							<div className={classLinkActive('Announcements')} onClick={() => setStateActiveNow('Announcements')}>
-								<Link
-									to="/announcements"
-									className="header__left-menu__dropdown__wrap__dropbtn d-flex flex-row align-items-center"
-								>
-									Announcements
-								</Link>
-							</div>
-						</div> */}
 					</div>
 
 					<div className="header__right-menu d-flex align-items-center flex-row">

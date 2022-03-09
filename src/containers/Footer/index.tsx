@@ -37,23 +37,30 @@ const renderFooterDesktop = (inputEmail, sendEmail, emailAddress) => {
 				<div className="footer d-flex flex-row justify-content-between ">
 					<div className="footer__logo">
 						<Link className="footer__logo__img" to="/">
-							<img src={Logo} alt="" />
+							<img
+								src={Logo}
+								alt="logo"
+								style={{
+									width: '50%',
+								}}
+							/>
 						</Link>
 						<p className="footer__info__item mt-5 mb-5">
-							Udonex is regulated and licensed by United Kingdom.
-							<br /> It aims to provide the most secure and legal-compliance
-							<br /> cryptocurrency trading and digital derivatives
-							<br /> trading services to global investors.
+							BlockProEx is regulated and licensed by both India and UAE.
+							<br /> It aims to provide the most secure adn legal
+							<br />
+							complaince cryptocurrency rading adn digral derivatives
+							<br /> trading services to global investors
 						</p>
 						<p className="footer__info__title">Follow us</p>
 						<div className="footer__news__list-icon ">
 							<div className="footer__news__list-icon__item  ">
-								<a href="https://twitter.com/Udonex2021" target="blank">
+								<a href="#" target="blank">
 									<img src={Twiter} alt="twiter" />
 								</a>
 							</div>
 							<div className="footer__news__list-icon__item  ">
-								<a href="https://t.me/udonex" target="blank">
+								<a href="#" target="blank">
 									<img src={Telegram} alt="telegram" />
 								</a>
 							</div>
@@ -63,10 +70,10 @@ const renderFooterDesktop = (inputEmail, sendEmail, emailAddress) => {
 						<p className="footer__info__title">CONTACT</p>
 						<div style={{ borderBottom: '2px solid var(--yellow)', width: 50, marginBottom: 20 }}></div>
 						<p className="footer__info__item">
-							<FaPhoneAlt className="footer__info__item__icon" /> + 44 (7) 418350672
+							<FaPhoneAlt className="footer__info__item__icon" /> 1800 266 5075
 						</p>
 						<p className="footer__info__item">
-							<FaEnvelope className="footer__info__item__icon" /> support@udonex.com
+							<FaEnvelope className="footer__info__item__icon" /> support@blockproex.in
 						</p>
 					</div>
 					<div className="footer__news">
@@ -95,11 +102,21 @@ const renderFooterDesktop = (inputEmail, sendEmail, emailAddress) => {
 							<Link to="/fee">Asset Fee </Link>
 						</p>
 						<p className="footer__info__item">
-							<Link to="/announcements">Announcements </Link>
+							<Link to="/announcement">Announcements </Link>
 						</p>
 						<p className="footer__info__item">
-							<a href="https://forms.gle/98bht3Q9JagP2JWM8" target="blank">
+							<a href="https://forms.gle/hk2PLrYjzM7YymRv9" target="blank">
 								Submit Trade Listing
+							</a>
+						</p>
+						<p className="footer__info__item">
+							<a href="https://forms.gle/whyECtGR999zdM9s5" target="blank">
+								Submit IEO Listing
+							</a>
+						</p>
+						<p className="footer__info__item">
+							<a href="https://forms.gle/XWT7mgzaXAfriA7J8" target="blank">
+								Submit Vote Listing
 							</a>
 						</p>
 						<p className="footer__info__item">
@@ -107,16 +124,14 @@ const renderFooterDesktop = (inputEmail, sendEmail, emailAddress) => {
 								API Documentation
 							</a>
 						</p>
-						<p className="footer__info__item">
-							<Link to="/Udonex2cloud">Udonex Cloud Service</Link>
-						</p>
 					</div>
 				</div>
 			</div>
 			<div>
 				<div className="white-line"></div>
 				<p className="footer__copyright">
-					UDONEX Exchange © 2021 <span className="text-primary">Udonex.com</span> All rights reserved.
+					BlockProEx Exchange © 2021 <span className="text-primary">https://www.blockproex.in</span> All rights
+					reserved.
 				</p>
 			</div>
 		</div>

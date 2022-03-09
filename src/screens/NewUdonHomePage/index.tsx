@@ -20,9 +20,9 @@ import TelegramPNG from './home/telegram.png';
 import In from './home/In.svg';
 import Mobile from './home/Mobile_BG.png';
 import DownloadAPP from './home/Screen1.png';
-import DownloadGG from './home/Screen2.png';
+// import DownloadGG from './home/Screen2.png';
 import Download2 from './home/Screen3.png';
-import Download1 from './home/Screen4.png';
+// import Download1 from './home/Screen4.png';
 import Telegram from './home/Telegram.svg';
 import Udon from './home/udon-img.svg';
 import WhatApp from './home/WhatApp.svg';
@@ -58,7 +58,6 @@ export const NewUdonHomePage = () => {
 	}, []);
 
 	const events = useSelector(selectEvents);
-	const numberOfEvents = events.payload.length;
 
 	const settingEvents = {
 		dots: false,
@@ -67,7 +66,7 @@ export const NewUdonHomePage = () => {
 		autoplay: true,
 		autoplaySpeed: 3000,
 		pauseOnHover: true,
-		slidesToShow: numberOfEvents < 3 ? numberOfEvents : 3,
+		slidesToShow: 3,
 		slidesToScroll: 1,
 	};
 
@@ -109,11 +108,11 @@ export const NewUdonHomePage = () => {
 					<Slider {...settingEvents}>
 						{[...events.payload].map(event => {
 							return (
-								<div>
+								<div style={{ width: 270, height: 150 }}>
 									<Link to={`/announcements/detail/${event.id}`} className="slide" target="_blank">
 										<img
 											src={event.photo_url}
-											style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 4 }}
+											style={{ width: 270, height: 150, objectFit: 'cover', borderRadius: 4 }}
 											alt={event.headline}
 										/>
 									</Link>
@@ -160,37 +159,61 @@ export const NewUdonHomePage = () => {
 											style={{ display: 'grid', gridTemplateColumns: 'auto auto' }}
 										>
 											<div>
-												<img
-													className="img-fluid"
-													src={DownloadAPP}
-													style={{ borderRadius: 10 }}
-													alt="google+play"
-												/>
+												<a
+													href="https://play.google.com/store/apps/details?id=com.hostingduty.blockproex"
+													className="slide"
+													target="_blank"
+												>
+													<img
+														className="img-fluid"
+														src={DownloadAPP}
+														style={{ borderRadius: 10 }}
+														alt="google+play"
+													/>
+												</a>
 											</div>
-											<div style={{ marginLeft: -100 }}>
+											<div>
+												<a
+													href="https://play.google.com/store/apps/details?id=com.hostingduty.blockproex"
+													className="slide"
+													target="_blank"
+												>
+													<img
+														className="img-fluid"
+														src={Download2}
+														style={{ borderRadius: 10 }}
+														alt="app+store"
+													/>
+												</a>
+											</div>
+											{/* <div style={{ marginLeft: -100 }}>
+											<a href="https://play.google.com/store/apps/details?id=com.hostingduty.blockproex" className="slide" target="_blank">
 												<img
 													className="img-fluid"
 													src={DownloadGG}
 													style={{ borderRadius: 10 }}
 													alt="android+store"
 												/>
-											</div>
-											<div className="mt-3">
+												</a>
+											</div> */}
+											{/* <div className="mt-3">
+											<a href="https://play.google.com/store/apps/details?id=com.hostingduty.blockproex" className="slide" target="_blank">
 												<img
 													className="img-fluid"
 													src={Download2}
 													style={{ borderRadius: 10 }}
 													alt="app+store"
 												/>
-											</div>
-											<div className="mt-3" style={{ marginLeft: -100 }}>
+												</a>
+											</div> */}
+											{/* <div className="mt-3" style={{ marginLeft: -100 }}>
 												<img
 													className="img-fluid"
 													src={Download1}
 													style={{ borderRadius: 10 }}
 													alt="scan+qrcode"
 												/>
-											</div>
+											</div> */}
 										</div>
 									</div>
 								</div>
@@ -301,7 +324,7 @@ export const NewUdonHomePage = () => {
 						<div>
 							<div className="row">
 								<div className="col-lg-2 col-md-4 text-center">
-									<a href="#">
+									<a href="https://www.facebook.com/profile.php?id=100075953885701" target="_blank">
 										<img src={FaceBook} alt="telegram" />
 									</a>
 								</div>
@@ -311,7 +334,7 @@ export const NewUdonHomePage = () => {
 									</a>
 								</div>
 								<div className="col-lg-2 col-md-4 text-center">
-									<a href="#">
+									<a href="https://www.linkedin.com/in/blockpro-exchange-799511228/">
 										<img src={In} alt="in" />
 									</a>
 								</div>
@@ -321,7 +344,7 @@ export const NewUdonHomePage = () => {
 									</a>
 								</div>
 								<div className="col-lg-2 col-md-4 text-center">
-									<a href="#">
+									<a href="https://www.youtube.com/channel/UCz8epLGnMh-Ue3SWh4Z_5Lw">
 										<img src={YouT} alt="youtube" />
 									</a>
 								</div>
