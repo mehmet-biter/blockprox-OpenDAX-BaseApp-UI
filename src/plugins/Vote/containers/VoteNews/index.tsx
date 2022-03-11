@@ -108,7 +108,7 @@ export const VoteNews: React.FC<VoteNewsProps> = ({}) => {
 					</Link>{' '}
 					{intl.formatMessage({ id: 'page.vote.body.news.or' })}{' '}
 					<a href="#" target="blank">
-						{intl.formatMessage({ id: 'page.body.vote.news.title.pancakeswap' })}
+						{intl.formatMessage({ id: 'page.body.vote.news.title.Sunswap' })}
 					</a>
 				</p>
 			</div>

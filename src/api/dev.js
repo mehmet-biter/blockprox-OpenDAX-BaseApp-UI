@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
 			referralUrl: 'https://ex.udonex.com/api/v2/referral',
 			stakeUrl: 'https://ex.udonex.com/api/v2/stake',
 			sunshineUrl: 'https://ex.udonex.com/api/v2/sunshine',
-			tradeUrl: 'https://ex.udonex.com/api/v2/udonex',
+			tradeUrl: 'http://localhost:9002/api/v2/peatio',
 			walletUrl: 'http://localhost:4000/api',
 			transactionUrl: 'http://localhost:4000/api',
 			statisticUrl: 'http://localhost:4000/api',
