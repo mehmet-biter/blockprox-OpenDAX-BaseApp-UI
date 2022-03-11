@@ -250,7 +250,8 @@ export const OrdersTabScreen = () => {
 		const emptyData = () => {
 			return listData.length === 0 ? (
 				<div className="text-center history-screen__tabs__content__table pt-5 pb-5">
-					Empty data . Please next page or prev page{' '}
+					Empty data .
+					<br /> Please next page or prev page{' '}
 				</div>
 			) : (
 				''

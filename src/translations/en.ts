@@ -26,7 +26,8 @@ export const en = {
 	'page.homePage.commuity.title2': 'Join the conversation in any of our worldwide communities.',
 	'page.homePage.trade.start': 'GET STARTED!',
 	'page.homePage.trade.title':
-		'Trade over 100 cryptocurrencies including BTC, ETH, LTC, DOGE, Altcoins, Stablecoins and Platform Tokens',
+		'We are set to reach 100+  cryptocurrencies including BTC, ETH, LTC,DOGE, Altcoins, Stablecoins and Platform Tokens within a year',
+
 	'page.homePage.trade.btn.trade': 'Trade',
 	'page.homePage.trade.btn.signup': 'Sign Up Now',
 
@@ -183,7 +184,8 @@ export const en = {
 
 	'page.ieo.detail.buyIeo.cautions.title': 'CAUTIONS',
 	'page.ieo.detail.buyIeo.cautions.notice': ' Notice For Rates',
-	'page.ieo.detail.buyIeo.cautions.describe.text1': `Sale and purchase of {name} take place between you and {name} (the “Issuer”) and ProBit is
+	'page.ieo.detail.buyIeo.cautions.describe.text1': `Sale and purchase of {name} take place between you and {name} (the “Issuer”) and BlockProEx
+ is
 							neither a seller nor a party as any capacity in the sale of {name}`,
 	'page.ieo.detail.buyIeo.cautions.describe.text2': `Purchase of {name} is final and there will be no refunds or cancellations`,
 	'page.ieo.detail.buyIeo.cautions.describe.text3': `Please contact the Issuer for any inquiries regarding {name}`,
@@ -576,7 +578,7 @@ export const en = {
 	'page.body.wallets.tabs.withdraw.content.amount': 'Withdrawal Amount',
 	'page.body.wallets.tabs.withdraw.content.code2fa': '2FA code',
 	'page.body.wallets.tabs.withdraw.content.fee': 'Withdrawal Fee',
-	'page.body.wallets.tabs.withdraw.content.total': 'You will got',
+	'page.body.wallets.tabs.withdraw.content.total': 'You will recieve',
 	'page.body.wallets.tabs.withdraw.content.button': 'WITHDRAW',
 	'page.body.wallets.tabs.withdraw.disabled.message': 'Withdraw was disabled',
 	'page.body.wallets.tabs.withdraw.ethFee.message.err.wrong': 'Something wrong with ETH fee.',
@@ -1341,9 +1343,9 @@ export const en = {
 	'page.body.plugins.wallet.withdraw.body.warning': `Don't turn off  browser when withdraw is processing!`,
 	'page.body.plugins.wallet.withdraw.info.tips': 'Tips',
 	'page.body.plugins.wallet.withdraw.info.tip1':
-		'1. Funds can only been withdrawn from your spot account. To withdraw funds in other accounts, please transfer to your spot account first.',
+		'1. Funds can only be withdrawn from your spot account. To withdraw funds in other accounts, please transfer to your spot account first.',
 	'page.body.plugins.wallet.withdraw.info.tip2':
-		"2. When withdrawing to the UDO user's address, the handling fee will be returned to the Current Account by default. Learn more",
+		"2. When withdrawing to the BlockProEx user's address, the handling fee will be returned to the Current Account by default. Learn more",
 	'page.body.plugins.wallet.withdraw.info.tip3':
 		'3. Do not withdraw directly to a crowdfund or ICO address, as your account will not be credited with tokens from such sales.',
 

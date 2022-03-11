@@ -172,7 +172,7 @@ export const WithdrawAddress: React.FC<WithdrawAddressProps> = (props: WithdrawA
 	const child_wallets = wallets.filter(wallet => childCurrenciesIds.includes(wallet.currency)) || {};
 	const childBalances = child_wallets.map(child => Number(child.balance)) || [];
 	const totalChildBalance = childBalances.reduce((x, y) => x + y, 0);
-	const totalBalances = Number(selectedWallet.balance) + Number(totalChildBalance);
+	const totalBalances = Number(wallet.balance) + Number(totalChildBalance);
 
 	const redirectToEnable2fa = () => history.push('/security/2fa', { enable2fa: true });
 

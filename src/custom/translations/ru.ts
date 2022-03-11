@@ -26,7 +26,8 @@ export const ru: LangType = {
 	'page.homePage.commuity.title2': 'Join the conversation in any of our worldwide communities.',
 	'page.homePage.trade.start': 'GET STARTED!',
 	'page.homePage.trade.title':
-		'Trade over 100 cryptocurrencies including BTC, ETH, LTC, DOGE, Altcoins, Stablecoins and Platform Tokens',
+		'We are set to reach 100+  cryptocurrencies including BTC, ETH, LTC,DOGE, Altcoins, Stablecoins and Platform Tokens within a year',
+
 	'page.homePage.trade.btn.trade': 'Trade',
 	'page.homePage.trade.btn.signup': 'Sign Up Now',
 
@@ -182,7 +183,8 @@ export const ru: LangType = {
 
 	'page.ieo.detail.buyIeo.cautions.title': 'CAUTIONS',
 	'page.ieo.detail.buyIeo.cautions.notice': ' Notice For Rates',
-	'page.ieo.detail.buyIeo.cautions.describe.text1': `Sale and purchase of {name} take place between you and {name} (the “Issuer”) and ProBit is
+	'page.ieo.detail.buyIeo.cautions.describe.text1': `Sale and purchase of {name} take place between you and {name} (the “Issuer”) and BlockProEx
+ is
 							neither a seller nor a party as any capacity in the sale of {name}`,
 	'page.ieo.detail.buyIeo.cautions.describe.text2': `Purchase of {name} is final and there will be no refunds or cancellations`,
 	'page.ieo.detail.buyIeo.cautions.describe.text3': `Please contact the Issuer for any inquiries regarding {name}`,
@@ -398,7 +400,7 @@ export const ru: LangType = {
 		'Every 10 days we pick the most voted coin. Only one coin is selected. 1 vote = {vote_rate} {vote_currencie}. Minimum 100,000 votes required to be considered.',
 	'page.body.vote.news.title.you_can_buy': 'You can buy UDON on',
 	'page.body.vote.news.title.exchange_name': 'UDONEX Exchange',
-	'page.body.vote.news.title.pancakeswap': 'Pancakeswap',
+	'page.body.vote.news.title.Sunswap': 'Sunswap',
 	'page.body.vote.news.new_coin': 'New Coins',
 	'page.body.vote.news.balance': 'Balance {vote_currencie} : {vote_value}',
 	'page.body.vote.news.available': 'Available vote : {available_vote}',
@@ -1423,7 +1425,7 @@ export const ru: LangType = {
 	'page.body.plugins.wallet.withdraw.body.warning': `Don't turn off  browser when withdraw is processing!`,
 	'page.body.plugins.wallet.withdraw.info.tips': 'Tips',
 	'page.body.plugins.wallet.withdraw.info.tip1':
-		'1. Funds can only been withdrawn from your spot account. To withdraw funds in other accounts, please transfer to your spot account first.',
+		'1. Funds can only be withdrawn from your spot account. To withdraw funds in other accounts, please transfer to your spot account first.',
 	'page.body.plugins.wallet.withdraw.info.tip2':
 		"2. When withdrawing to the Binance user's address, the handling fee will be returned to the Current Account by default. Learn more",
 	'page.body.plugins.wallet.withdraw.info.tip3':
@@ -1466,7 +1468,7 @@ export const ru: LangType = {
 	'page.body.wallet.withdraw.close': 'Close',
 	'page.body.wallets.tabs.withdraw.note.minWithdraw': 'Min Withdraw',
 	'page.body.wallets.tabs.withdraw.note.remains': 'Withdraw Remains',
-	'page.body.wallets.tabs.withdraw.note.warning': `Please withdrawal to your personal wallet address directly. Remember not to withdrawal to ICO's address, smart contract address, otherwise it may result the loss of assets.`,
+	'page.body.wallets.tabs.withdraw.note.warning': `Please withdrawal to your personal wallet address directly. Remember not to withdrawal to ICO's address, smart contract address, otherwise it may result in the loss of assets.`,
 	'page.body.wallets.tabs.withdraw.warning.remains': `You need verify KYC to up withdraw limit daily.`,
 	'page.body.wallets.tabs.withdraw.forward.kyc': 'KYC here',
 	'page.body.wallets.tabs.withdraw.warning.balance': 'Your balance is not enough.',

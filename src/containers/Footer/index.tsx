@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
 import { Link, useHistory } from 'react-router-dom';
-import Twiter from './icon/new-twiter.svg';
-import Telegram from './icon/new-telegram.svg';
-import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 const Logo = require('../../assets/images/UdonLogo.svg');
 
 export const Footer: React.FC = Props => {
@@ -46,13 +44,13 @@ const renderFooterDesktop = (inputEmail, sendEmail, emailAddress) => {
 							/>
 						</Link>
 						<p className="footer__info__item mt-5 mb-5">
-							BlockProEx is regulated and licensed by both India and UAE.
-							<br /> It aims to provide the most secure adn legal
+							BlockProEx is a group of crypto enthusiasts which aims to provide the most
+							<br /> secure and safe cryptocurrency trading application. Blockproex aims to
 							<br />
-							complaince cryptocurrency rading adn digral derivatives
-							<br /> trading services to global investors
+							eradicate all the drawbacks of peer trading platforms and give the best
+							<br /> service in the segment to its global investors
 						</p>
-						<p className="footer__info__title">Follow us</p>
+						{/* <p className="footer__info__title">Follow us</p>
 						<div className="footer__news__list-icon ">
 							<div className="footer__news__list-icon__item  ">
 								<a href="#" target="blank">
@@ -64,7 +62,7 @@ const renderFooterDesktop = (inputEmail, sendEmail, emailAddress) => {
 									<img src={Telegram} alt="telegram" />
 								</a>
 							</div>
-						</div>
+						</div> */}
 					</div>
 					<div className="footer__info">
 						<p className="footer__info__title">CONTACT</p>
