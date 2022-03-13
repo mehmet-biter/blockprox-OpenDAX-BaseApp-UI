@@ -236,6 +236,6 @@ export const ru: LangType = {
 	'page.mobile.stake.stake_is_disabled': 'Stake is disabled',
 	'page.mobile.stake.detail.logged_in_notice': 'You are not logged in, please login and share with your friends.',
 	'page.mobile.stake.dettail.login': 'Login',
-	'page.mobile.stake.detail.register_notice': 'Not on UDO yet?',
+	'page.mobile.stake.detail.register_notice': 'Not on BlockProEx yet?',
 	'page.mobile.stake.detail.register': 'Register',
 };

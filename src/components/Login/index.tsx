@@ -167,7 +167,7 @@ const Login = React.memo((props: LogInProps) => {
 							<div
 								className="cr-sign-in-form__option-inner __selected-sigin"
 								style={{
-									fontSize: '24px',
+									fontSize: '1.75rem',
 									lineHeight: '33px',
 									color: '#FFFFFF',
 									fontWeight: 'bold',
@@ -175,7 +175,7 @@ const Login = React.memo((props: LogInProps) => {
 									marginTop: '1rem',
 								}}
 							>
-								WELCOME TO UDONEX
+								WELCOME TO BlockProEx
 							</div>
 						</div>
 					</div>
@@ -215,7 +215,7 @@ const Login = React.memo((props: LogInProps) => {
 							<span data-bn-type="text" style={{ color: 'green' }}>
 								https://
 							</span>
-							<span data-bn-type="text">ex.udonex.com</span>
+							<span data-bn-type="text">www.blockproex.in</span>
 						</div>
 					</div>
 					{logo}

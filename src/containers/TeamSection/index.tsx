@@ -31,7 +31,7 @@ export const TeamSection = () => {
 			large: 'https://i.imgur.com/ibxsOOc.png',
 			medium: 'https://i.imgur.com/NKJh3rA.png',
 			name: 'Tran Van Vinh',
-			roll: 'CEO of ZoziTech and UDO Exchange',
+			roll: 'CEO of ZoziTech and BlockProEx Exchange',
 			linkedin: 'https://www.linkedin.com/in/vinh-tran-88237620a/',
 			description: '',
 		},
@@ -205,7 +205,7 @@ export const TeamSection = () => {
 					<div>
 						<h2 style={{ fontSize: '3rem' }}>Our Team</h2>
 						<p style={{ fontSize: '1.3rem' }}>
-							UDO Exchange, developed by ZoziTech, is a product of ZoziTech Software company.
+							BlockProEx Exchange, developed by ZoziTech, is a product of ZoziTech Software company.
 						</p>
 						<p style={{ fontSize: '1.3rem' }}>
 							ZoziTech is located in Vietnam. We specialize in cryptocurrency and blockchain. We currently have over

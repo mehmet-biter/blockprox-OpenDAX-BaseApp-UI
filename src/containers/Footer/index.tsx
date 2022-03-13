@@ -44,11 +44,13 @@ const renderFooterDesktop = (inputEmail, sendEmail, emailAddress) => {
 							/>
 						</Link>
 						<p className="footer__info__item mt-5 mb-5">
-							BlockProEx is a group of crypto enthusiasts which aims to provide the most
-							<br /> secure and safe cryptocurrency trading application. Blockproex aims to
+							BlockProEx is a group of crypto enthusiasts which
 							<br />
-							eradicate all the drawbacks of peer trading platforms and give the best
-							<br /> service in the segment to its global investors
+							aims to provide the most secure and safe
+							<br /> cryptocurrency trading application.
+							<br /> Blockproex aims to eradicate all the drawbacks
+							<br /> of peer trading platforms and give the best
+							<br /> service in the segment to its global investor .
 						</p>
 						{/* <p className="footer__info__title">Follow us</p>
 						<div className="footer__news__list-icon ">
