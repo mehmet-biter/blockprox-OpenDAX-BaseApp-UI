@@ -134,7 +134,7 @@ export const ReferralMobileScreen: React.FC = () => {
 									<button onClick={redirectToLogin}>Login</button>
 									<p>
 										{' '}
-										Not on UDONEX yet?<span onClick={redirectToRegister}>Register</span>
+										Not on BlockProEx yet?<span onClick={redirectToRegister}>Register</span>
 									</p>
 								</div>
 							</div>
@@ -184,7 +184,7 @@ export const ReferralMobileScreen: React.FC = () => {
 						<div className="col-md-6 d-flex justify-content-start align-items-start">
 							<img src={Stick} alt="stick" />
 							<p className="mb-0 text-white mb-3 ml-4">
-								The fee commission will be sent instantly in real-time to your UDONEX account as your referee
+								The fee commission will be sent instantly in real-time to your BlockProEx account as your referee
 								completes each trade and will be paid to you in whatever token/cryptocurrency the original fee was
 								paid in.
 							</p>
@@ -192,8 +192,8 @@ export const ReferralMobileScreen: React.FC = () => {
 						<div className="col-md-6 d-flex justify-content-start align-items-start">
 							<img src={Stick} alt="stick" />
 							<p className="mb-0 text-white mb-3 ml-4">
-								UDONEX will check for duplicate or fake accounts and will not pay out referral bonuses on these
-								accounts. Duplicate or shared finances will result in disqualification.
+								BlockProEx will check for duplicate or fake accounts and will not pay out referral bonuses on
+								these accounts. Duplicate or shared finances will result in disqualification.
 							</p>
 						</div>
 					</div>
@@ -204,8 +204,8 @@ export const ReferralMobileScreen: React.FC = () => {
 									<img src={Stick} alt="stick" /> Important Notice:
 								</p>
 								<p className="text-white">
-									UDON reserves the right to change the terms of the referral program at any time due to changing
-									market conditions, risk of fraud, or any other factors we deem relevant.
+									UDON reserves the right to change the terms of the referral program at any time due to
+									changing market conditions, risk of fraud, or any other factors we deem relevant.
 								</p>
 							</div>
 						</div>

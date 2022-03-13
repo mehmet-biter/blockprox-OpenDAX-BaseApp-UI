@@ -4,13 +4,13 @@ import { nationalitiesNames } from './nationalities';
 export const en = {
 	// new homepage
 	'page.homePage.banner.title.sale': 'SALE Round TWO START IN',
-	'page.homePage.banner.title.round': 'UDON in Sale Round TWO',
-	'page.homePage.banner.title.presale': 'UDONEX PRESALE ROUND TWO',
+	'page.homePage.banner.title.round': 'BlockProEx in Sale Round TWO',
+	'page.homePage.banner.title.presale': 'BlockProEx PRESALE ROUND TWO',
 	'page.homePage.banner.time.days': 'DAYS',
 	'page.homePage.banner.time.hours': 'HOURS',
 	'page.homePage.banner.time.minutes': 'MINUTES',
 	'page.homePage.banner.time.seconds': 'SECONDS',
-	'page.homePage.btn.buy': 'Buy UDON',
+	'page.homePage.btn.buy': 'Buy BlockProEx',
 	'page.homePage.btn.buyList': 'Buyer List',
 	'page.homePage.download.download': 'Download',
 	'page.homePage.download.name': 'BlockProEx',
@@ -50,7 +50,7 @@ export const en = {
 	'page.profile.accountActivity.tab.activity': 'Activity',
 	'page.profile.accountActivity.tab.device': 'Device',
 
-	'page.profile.activeStep.title.welcome': 'Welcome to UDONEX',
+	'page.profile.activeStep.title.welcome': 'Welcome to BlockProEx',
 	'page.profile.activeStep.desc.just': 'Just a few more steps and you’re good to go!',
 	'page.profile.activeStep.step1.tile.register': 'Register Account',
 	'page.profile.activeStep.step2.title.2fa': '2FA',
@@ -87,8 +87,8 @@ export const en = {
 	'page.transaction.table.from': 'From',
 	'page.transaction.table.currency': 'Currency',
 	'page.transaction.table.amount': 'Amount',
-	'page.transaction.table.price': 'Udon Price',
-	'page.transaction.table.total': 'Total (UDON)',
+	'page.transaction.table.price': 'BlockProEx Price',
+	'page.transaction.table.total': 'Total (BlockProEx)',
 	'page.transaction.table.status': 'Status',
 	'page.transaction.table.status.success': 'success',
 	'page.transaction.table.status.fail': 'fail',
@@ -312,7 +312,7 @@ export const en = {
 	// end vote
 
 	// new /airdrop
-	'page.airdrop.header.title': 'Udonex Airdrop Hub',
+	'page.airdrop.header.title': 'BlockProEx Airdrop Hub',
 	'page.airdrop.header.active': 'Active',
 	'page.airdrop.header.coming': 'Up coming',
 	'page.airdrop.header.wait': 'Wait for distribute',
@@ -957,7 +957,7 @@ export const en = {
 
 	'page.header.signUp': 'Sign Up',
 	'page.header.signUp.create': 'CREATE A FREE ACCOUNT',
-	'page.header.signUp.welcome': 'Welcome to Udonex',
+	'page.header.signUp.welcome': 'Welcome to BlockProEx',
 	'page.header.signUp.email': 'Email ( * Required )',
 	'page.header.signUp.email.message.error': 'Email is invalid',
 	'page.header.signUp.password': 'Password ( * Required )',
@@ -1378,11 +1378,11 @@ export const en = {
 	'landing.banner.content.header.startnow': 'Contact Us',
 	'landing.banner.content.header.viewdemo': 'View Demo',
 
-	'landing.banner.content.header.title.desc': 'UDONEX creates infrastructure and provides support',
+	'landing.banner.content.header.title.desc': 'BlockProEx creates infrastructure and provides support',
 	'landing.banner.content.header.title.text': 'HOW',
 	'landing.banner.content.header.title.sub': 'It works',
 	'landing.banner.content.header.title.qoute':
-		'Udonex offers comprehensive solutions involving services and products that allows businesses to start their very own Cryptocurrency exchange platform with minimal effors in under 1 week. No special knowledge required - we will take care of every aspect of your Crypto Exchange. We will provide a wide array of accompanying services: custom design, API, liquidity, market making, support, community management, marketing, development and much more.',
+		'BlockProEx offers comprehensive solutions involving services and products that allows businesses to start their very own Cryptocurrency exchange platform with minimal effors in under 1 week. No special knowledge required - we will take care of every aspect of your Crypto Exchange. We will provide a wide array of accompanying services: custom design, API, liquidity, market making, support, community management, marketing, development and much more.',
 
 	'landing.banner.content.header.plan.title1': 'Choose your plan',
 	'landing.banner.content.header.plan.title2': 'Make a payment',
@@ -1394,7 +1394,7 @@ export const en = {
 	'landing.banner.content.header.plan.content3':
 		'Average setup time is less than 72 hours. Get your full-featured exchange this week!',
 
-	'landing.banner.content.header.title.end.desc': 'Udonex provides many optionsto earn and monetize your platform',
+	'landing.banner.content.header.title.end.desc': 'BlockProEx provides many optionsto earn and monetize your platform',
 	'landing.banner.content.header.title.end.text': 'WAYS TO MONETIZE',
 	'landing.banner.content.header.title.end.sub': 'YOUR EXCHANGE',
 
@@ -1407,15 +1407,15 @@ export const en = {
 	'landing.banner.content.header.monetize.heading.3': 'Trading Fees',
 	'landing.banner.content.header.monetize.body3':
 		'Probably the most popular way of monetization for crypto exchanges is to charge a commission on users trades. This commission is actually a fee for the service of facilitating a trade between the seller and the buyer.',
-	'landing.banner.content.header.monetize.heading.4': 'Resell Udonex Products and Services',
+	'landing.banner.content.header.monetize.heading.4': 'Resell BlockProEx Products and Services',
 	'landing.banner.content.header.monetize.body4':
-		'You can place a link to Udonex and receive a commissions for every sale your link generates.',
+		'You can place a link to BlockProEx and receive a commissions for every sale your link generates.',
 	'landing.banner.content.header.monetize.heading.5': 'Liquidity Import Fees',
 	'landing.banner.content.header.monetize.body5':
 		'Another great revenue stream for cryptocurrency exchanges is Liquidity Import, or producing liquidity for a given financial instrument. In its simplest form, market making consists of buying and selling a digital asset on your own exchange, at slightly less desirable prices than on another exchange. Once the trade occurs on your own exchange, you place a trade on a different exchange which offsets your previous trade, and you pocket the difference.',
 	'landing.banner.content.header.monetize.heading.6': 'Market Making Services',
 	'landing.banner.content.header.monetize.body6':
-		'Udonex packages include built-in Market Making (or liquidity generation) bots. Which means you are free to provide paid market making services to token and coin projects.',
+		'BlockProEx packages include built-in Market Making (or liquidity generation) bots. Which means you are free to provide paid market making services to token and coin projects.',
 	'landing.banner.content.header.monetize.heading.7': 'Initial Exchange Offerings (IEOs)',
 	'landing.banner.content.header.monetize.body7':
 		'By organizing Initial Exchange Offerings (IEOs), Security Token Offerings (STOs), and Initial Coin Offerings (ICOs), exchange operators may collect a percentage of funds raised which in itself can be to the tune of hundreds of thousands of US dollars, depending on the project.',
@@ -1455,8 +1455,8 @@ export const en = {
 		'Do you want to purchase ready-made crypto exchange with existing domain name, custom design and layout? Get one in less than 24 hours!',
 	'landing.banner.content.domain.text': 'READY-MADE',
 	'landing.banner.content.domain.sub': 'CORE EXCHANGES',
-	'landing.banner.content.domain.udonex': 'EX.UDONEX.COM - LIVE',
-	'landing.banner.content.domain.udonswap': 'UDONDEX - SOON',
+	'landing.banner.content.domain.udonex': 'BlockProEx.in - LIVE',
+	'landing.banner.content.domain.udonswap': 'BlockProEx - SOON',
 	'landing.banner.content.domain.nft': 'NFT - SOON',
 	'landing.banner.content.domain.action.title': 'Up to',
 	'landing.banner.content.domain.action.title.br': 'request',
@@ -1519,11 +1519,11 @@ export const en = {
 	'landing.banner.content.demo.sub': 'EXCHANGES',
 
 	'landing.banner.content.demo.title.1': 'EXCHANGE',
-	'landing.banner.content.demo.option.login.right.1': 'user@udonex.com',
+	'landing.banner.content.demo.option.login.right.1': 'user@BlockProEx.com',
 	'landing.banner.content.demo.option.password.right.1': 'demopassword',
 
 	'landing.banner.content.demo.title.2': 'Admin',
-	'landing.banner.content.demo.option.login.right.2': 'admin@udonex.com',
+	'landing.banner.content.demo.option.login.right.2': 'admin@BlockProEx.com',
 	'landing.banner.content.demo.option.password.right.2': 'adminpassword',
 
 	'landing.banner.content.demo.title.3': 'Shareholder',
@@ -1542,8 +1542,8 @@ export const en = {
 	'kyc.screen.current.feature.title.unverified': 'Your account is reviewing',
 	'kyc.screen.current.feature.title.verified': 'Your account is verified',
 	'kyc.screen.current.feature.title.failed': 'Your verification is failed',
-	'kyc.screen.current.feature.title.contact': 'Please contact to Udonex Administrator.',
-	'kyc.screen.current.feature.desc': 'Complete verification to access services on Udonex',
+	'kyc.screen.current.feature.title.contact': 'Please contact to BlockProEx Administrator.',
+	'kyc.screen.current.feature.desc': 'Complete verification to access services on BlockProEx',
 
 	'kyc.screen.verify.heading': 'Verified',
 	'kyc.screen.verify.title.1': 'Personal information',

@@ -45,7 +45,7 @@ export const dataFeedObject = (tradingChart: TradingChartComponent, markets: Mar
 				symbol: m.id,
 				full_name: m.name,
 				description: m.name,
-				exchange: 'Udonex Exchange',
+				exchange: 'BlockProEx Exchange',
 				ticker: m.id,
 				type: 'bitcoin',
 				currency_code: m.quote_unit.toUpperCase(),
