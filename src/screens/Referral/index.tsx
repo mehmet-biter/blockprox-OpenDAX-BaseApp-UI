@@ -171,7 +171,7 @@ export const Referral: React.FC = () => {
 						<div className="col-md-6 d-flex justify-content-start align-items-start">
 							<img src={Stick} alt="stick" />
 							<p className="mb-0 text-white mb-5 ml-4">
-								The commission you receive from the referral program will initially be set at a rate of 90%.
+								The commission you receive from the referral program will initially be set at a rate of 50%.
 							</p>
 						</div>
 
