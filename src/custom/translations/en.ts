@@ -43,7 +43,7 @@ export const en = {
 	'page.body.vote.msg.fail': 'Vote fail',
 	'page.body.vote.news.title':
 		'Every 10 days we pick the most voted coin. Only one coin is selected. 1 vote = {vote_rate} {vote_currencie}. Minimum 100,000 votes required to be considered.',
-	'page.body.vote.news.title.you_can_buy': 'You can buy BlockProEx on ',
+	'page.body.vote.news.title.you_can_buy': 'You can buy BKC on ',
 	'page.body.vote.news.title.exchange_name': 'BlockProEx Exchange',
 	'page.body.vote.news.title.Sunswap': 'Sunswap',
 	'page.body.vote.news.new_coin': 'New Coins',

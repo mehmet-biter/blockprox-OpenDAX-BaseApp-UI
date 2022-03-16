@@ -8,7 +8,7 @@ import { referralRanksFetch, selectReferalRanksList } from 'modules/plugins/refe
 import ReactTooltip from 'react-tooltip';
 import { ReferralContent } from '../../containers';
 
-const ReferralMobileBanner = require('./Assets/referral-mobile-banner.png');
+const ReferralMobileBanner = require('./Assets/referral-mobile-banner.jpg');
 const RankNo1 = require('./Assets/top1.png');
 const RankNo2 = require('./Assets/top2.png');
 const RankNo3 = require('./Assets/top3.png');
