@@ -1,4 +1,6 @@
+import { transactionsListFetch } from 'modules/plugins/transactions';
 import * as React from 'react';
+import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Slider from 'react-slick';
@@ -16,20 +18,17 @@ import Feature3 from './home/Feature3.svg';
 import Feature4 from './home/Feature4.svg';
 import Feature5 from './home/Feature5.svg';
 import Feature6 from './home/Feature6.svg';
-import TelegramPNG from './home/telegram.png';
 import In from './home/In.svg';
 import Mobile from './home/Mobile_BG.png';
 import DownloadAPP from './home/Screen1.png';
 // import DownloadGG from './home/Screen2.png';
 import Download2 from './home/Screen3.png';
+import TelegramPNG from './home/telegram.png';
 // import Download1 from './home/Screen4.png';
 import Telegram from './home/Telegram.svg';
 import Udon from './home/udon-img.svg';
 import WhatApp from './home/WhatApp.svg';
 import YouT from './home/ytb.svg';
-import { transactionsListFetch } from 'modules/plugins/transactions';
-import { selectStatistics, statisticFetch } from 'modules/plugins/info/statistic';
-import { useIntl } from 'react-intl';
 
 export const SALE_UDON_CONFIG = {
 	udonTotalNumber: 2 * 10 ** 12,
@@ -49,12 +48,12 @@ export const NewUdonHomePage = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const isLogin = useSelector(selectUserLoggedIn);
-	const statistics = useSelector(selectStatistics);
+	// const statistics = useSelector(selectStatistics);
 
 	React.useEffect(() => {
 		dispatch(eventFetch());
 		dispatch(transactionsListFetch({ limit: 20, page: 0 }));
-		dispatch(statisticFetch());
+		// dispatch(statisticFetch());
 	}, []);
 
 	const events = useSelector(selectEvents);
@@ -108,11 +107,11 @@ export const NewUdonHomePage = () => {
 					<Slider {...settingEvents}>
 						{[...events.payload].map(event => {
 							return (
-								<div style={{ width: 270, height: 150 }}>
+								<div>
 									<Link to={`/announcements/detail/${event.id}`} className="slide" target="_blank">
 										<img
 											src={event.photo_url}
-											style={{ width: 270, height: 150, objectFit: 'cover', borderRadius: 4 }}
+											style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 4 }}
 											alt={event.headline}
 										/>
 									</Link>
@@ -390,44 +389,44 @@ export const NewUdonHomePage = () => {
 		);
 	};
 
-	const renderInfo = () => {
-		const InfoItem = ({ name, value, color = '' }) => {
-			return (
-				<div className="homepage-info">
-					<div>
-						<h2 className="homepage-info__number" style={{ border: `5px solid ${color}`, color: `${color}` }}>
-							{value}
-						</h2>
-					</div>
-					<div>
-						<h4 className="homepage-info__text">{name}</h4>
-					</div>
-				</div>
-			);
-		};
+	// const renderInfo = () => {
+	// 	const InfoItem = ({ name, value, color = '' }) => {
+	// 		return (
+	// 			<div className="homepage-info">
+	// 				<div>
+	// 					<h2 className="homepage-info__number" style={{ border: `5px solid ${color}`, color: `${color}` }}>
+	// 						{value}
+	// 					</h2>
+	// 				</div>
+	// 				<div>
+	// 					<h4 className="homepage-info__text">{name}</h4>
+	// 				</div>
+	// 			</div>
+	// 		);
+	// 	};
 
-		return (
-			<div className="container mt-3">
-				<div className="row px-3">
-					<div className="col-4">
-						<InfoItem name={'Currencies'} value={statistics.currencies} color="#99FFE7" />
-					</div>
-					<div className="col-4">
-						<InfoItem name={'Markets'} value={statistics.markets} color="#B79DFF" />
-					</div>
-					<div className="col-4">
-						<InfoItem name={'Active Users'} value={statistics.members} color="#FF89D7" />
-					</div>
-				</div>
-			</div>
-		);
-	};
+	// 	return (
+	// 		<div className="container mt-3">
+	// 			<div className="row px-3">
+	// 				<div className="col-4">
+	// 					<InfoItem name={'Currencies'} value={statistics.currencies} color="#99FFE7" />
+	// 				</div>
+	// 				<div className="col-4">
+	// 					<InfoItem name={'Markets'} value={statistics.markets} color="#B79DFF" />
+	// 				</div>
+	// 				<div className="col-4">
+	// 					<InfoItem name={'Active Users'} value={statistics.members} color="#FF89D7" />
+	// 				</div>
+	// 			</div>
+	// 		</div>
+	// 	);
+	// };
 
 	return (
 		<div id="main">
 			{renderBanner()}
 			{renderEvent()}
-			{renderInfo()}
+			{/* {renderInfo()} */}
 			{renderMarket()}
 			{renderDownload()}
 			{renderSigUp()}

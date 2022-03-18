@@ -102,7 +102,7 @@ const renderFooterDesktop = (inputEmail, sendEmail, emailAddress) => {
 							<Link to="/fee">Asset Fee </Link>
 						</p>
 						<p className="footer__info__item">
-							<Link to="/announcement">Announcements </Link>
+							<Link to="/announcements">Announcements </Link>
 						</p>
 						<p className="footer__info__item">
 							<a href="https://forms.gle/hk2PLrYjzM7YymRv9" target="blank">
