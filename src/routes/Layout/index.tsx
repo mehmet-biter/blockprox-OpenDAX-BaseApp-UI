@@ -76,6 +76,7 @@ import { IEODetailScreen } from '../../plugins/IEO/screen/IEODetailScreen';
 import { IEOListingScreen } from '../../plugins/IEO/screen/IEOListingScreen';
 import { PromotionScreen, PromotionDetailScreen } from '../../plugins/Promotion';
 import { StakingDetailScreen, StakingListScreen } from '../../plugins/Stake';
+import { BankAccountListScreen } from 'plugins/Bank';
 import { CompetitionListingScreen, CompetitionDetailScreen } from '../../plugins/Competition';
 import {
 	AssetsFeeScreen,
@@ -478,6 +479,12 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 					<PublicRoute exact path="/markets" component={MarketsList} />
 					<PublicRoute exact={false} path="/fee" component={AssetsFeeScreen} />
 					<PublicRoute path="/Udonex2cloud" exact component={UdonLanding} />
+					<PrivateRoute
+						loading={userLoading}
+						isLogged={isLoggedIn}
+						path="/profile/bank"
+						component={BankAccountListScreen}
+					/>
 					<PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/profile/kyc" component={VerifyAccount} />
 					<PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/referral" component={Referral} />
 					<PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/orders" component={OrdersTabScreen} />
