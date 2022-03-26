@@ -34,6 +34,7 @@ const NewCustomInput: React.FC<Props> = props => {
 		placeholder,
 		defaultLabel,
 		inputValue,
+		classNameInput,
 		classNameLabel,
 		type,
 		autoFocus,
@@ -52,7 +53,7 @@ const NewCustomInput: React.FC<Props> = props => {
 		<React.Fragment>
 			<div className="td-custom-input">
 				<label className={classNameLabel}>{(labelVisible || inputValue) && (label || defaultLabel)}</label>
-				<InputGroup size="lg">
+				<InputGroup className={classNameInput} size="lg">
 					<FormControl
 						size="lg"
 						type={type}

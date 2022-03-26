@@ -1,0 +1,68 @@
+.desktop-bank-account-list-screen {
+	margin: 8em 15em;
+	display: flex;
+	flex-direction: column;
+	background-color: rgba(23, 43, 76, 1);
+	border-radius: 10px;
+
+	&__header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		margin: 2em 3em;
+
+		&__title {
+			font-size: 30px;
+			font-weight: 700;
+		}
+
+		&__add-bank-btn {
+			background-color: #0c9cda;
+			border-radius: 50px;
+		}
+	}
+
+	&__bank-form {
+		&__input {
+			margin-bottom: 1.2em;
+
+			label {
+				font-size: 12px;
+				font-weight: 400;
+				line-height: 16px;
+				letter-spacing: 0em;
+				color: #fff;
+			}
+			.td-custom-input {
+				input {
+					background-color: #0f192c !important;
+				}
+			}
+
+			&__warning {
+				&__icon {
+					margin-bottom: 2px;
+					margin-right: 4px;
+				}
+
+				&__highlight {
+					color: #e9aa09;
+					text-decoration: underline;
+				}
+			}
+		}
+
+		.ant-checkbox {
+			background-color: rgba(196, 196, 196, 0.65);
+			border-radius: 3px;
+		}
+
+		&__check-box {
+			color: #878e9a;
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0em;
+		}
+	}
+}
