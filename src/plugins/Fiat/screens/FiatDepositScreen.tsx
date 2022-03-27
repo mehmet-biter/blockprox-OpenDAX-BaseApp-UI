@@ -1,7 +1,8 @@
 import React from 'react';
 import _toLower from 'lodash/toLower';
 import { useParams } from 'react-router';
-import { PaypalDepositScreen } from './Paypal/PaypalDepositScreen';
+// import { PaypalDepositScreen } from './Paypal/PaypalDepositScreen';
+import { BankDepositScreen } from './Bank/BankDepositScreen';
 import { useDispatch } from 'react-redux';
 import { currenciesFetch } from 'modules';
 import { setDocumentTitle } from 'helpers';
@@ -24,7 +25,8 @@ export const FiatDepositScreen = () => {
 
 	switch (_toLower(currency_id)) {
 		case 'paypal':
-			return <PaypalDepositScreen currency_id={_toLower(currency_id)} />;
+			return <BankDepositScreen currency_id={_toLower(currency_id)} />;
+		// return <PaypalDepositScreen currency_id={_toLower(currency_id)} />;
 
 		default:
 			return null;

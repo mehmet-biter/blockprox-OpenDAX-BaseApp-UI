@@ -1,0 +1,83 @@
+.desktop-bank-deposit {
+	padding: 3rem 5%;
+
+	&__title {
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 19px;
+		margin-bottom: 1.5em;
+	}
+
+	&__inform {
+		margin: 1em 0;
+
+		svg {
+			margin-left: 10px;
+			cursor: pointer;
+		}
+	}
+
+	&__input {
+		&__label {
+			font-size: 12px;
+			font-style: normal;
+			font-weight: 400;
+			letter-spacing: 0em;
+		}
+
+		input {
+			background-color: #0f192c;
+			border: 1px solid #fffdfd;
+			border-radius: 10px 10px;
+		}
+
+		.ant-input-group-addon {
+			background-color: #0f192c;
+			border: 1px solid #fffdfd;
+			border-radius: 0px 10px 10px 0px;
+		}
+
+		&__notice {
+			font-size: 10px;
+			font-weight: 400;
+			line-height: 14px;
+			letter-spacing: 0em;
+			color: #969090;
+		}
+	}
+
+	&__transaction-fee {
+		position: absolute;
+		bottom: 0;
+		right: -7px;
+
+		&__label {
+			font-size: 12px;
+			font-weight: 400;
+			line-height: 16px;
+			letter-spacing: 0em;
+		}
+
+		&__value {
+			font-size: 12px;
+			font-weight: 700;
+			line-height: 16px;
+			letter-spacing: 0em;
+		}
+	}
+
+	&__check-box {
+		width: 100%;
+		background-color: rgba(196, 196, 196, 0.29);
+		margin: 2em 0;
+		padding: 1em 1em 1em 1.5em;
+
+		.ant-checkbox {
+			background-color: rgba(196, 196, 196, 0.65);
+			border-radius: 3px;
+			.ant-checkbox-inner {
+			}
+		}
+	}
+}
