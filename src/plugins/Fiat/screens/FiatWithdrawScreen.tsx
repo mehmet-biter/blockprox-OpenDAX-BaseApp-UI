@@ -7,6 +7,7 @@ import _toLower from 'lodash/toLower';
 import { useDispatch } from 'react-redux';
 import { currenciesFetch } from 'modules';
 import { BankWithdrawScreen } from './Bank/BankWithdrawScreen';
+import { PaypalWithdrawScreen } from './Paypal/PaypalWithdrawScreen';
 
 export const FiatWithdrawScreen = () => {
 	const { currency_id } = useParams<{ currency_id: string }>();
@@ -25,8 +26,10 @@ export const FiatWithdrawScreen = () => {
 
 	switch (_toLower(currency_id)) {
 		case 'paypal':
+			return <PaypalWithdrawScreen currency_id={_toLower(currency_id)} />;
+		case 'ruppe':
 			return <BankWithdrawScreen currency_id={_toLower(currency_id)} />;
-		// return <PaypalWithdrawScreen currency_id={_toLower(currency_id)} />;
+
 		default:
 			return null;
 	}

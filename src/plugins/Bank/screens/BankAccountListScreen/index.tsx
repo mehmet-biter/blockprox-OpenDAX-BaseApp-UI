@@ -210,6 +210,7 @@ export const BankAccountListScreen = () => {
 			</div>
 			<BankAccountList />
 			<NewModal
+				className="desktop-bank-account-list-screen__new-modal"
 				show={showAddBankAccountForm}
 				onHide={handleCloseAddBankAccountForm}
 				titleModal="BANK INFORMATION"

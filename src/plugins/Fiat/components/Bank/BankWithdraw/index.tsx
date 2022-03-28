@@ -6,12 +6,14 @@ import _find from 'lodash/find';
 import _toString from 'lodash/toString';
 import { Button, Input, Select } from 'antd';
 import { NewModal } from 'components';
+import { useHistory } from 'react-router';
 
 interface BankWithdrawProps {
 	currency_id: string;
 }
 export const BankWithdraw = (props: BankWithdrawProps) => {
 	const { Option } = Select;
+	const history = useHistory();
 
 	const [showWithdrawConfirmationForm, setShowWithdrawConfirmationForm] = React.useState(false);
 
@@ -21,6 +23,35 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 
 	const handleShowWithdrawConfirmationForm = () => {
 		setShowWithdrawConfirmationForm(true);
+	};
+
+	const [otpInputValueState, setOtpInputValueState] = React.useState('');
+
+	const onHandleChangeNumeric = e => {
+		let value = e.target.value;
+
+		if (!Number(value) && value.length > 0) {
+			return;
+		}
+
+		setOtpInputValueState(value);
+	};
+
+	const [withdrawInputValueState, setWithdrawInputValueState] = React.useState<string>('');
+
+	const onHandleChangeWithdrawInputValueState = e => {
+		let value = e.target.value;
+
+		if (!removeCommaInNumber(value) && value.length > 0) {
+			return;
+		}
+		setWithdrawInputValueState(value);
+	};
+
+	const nfObject = new Intl.NumberFormat('en-US');
+
+	const removeCommaInNumber = (numberWithComma: string): number => {
+		return Number(numberWithComma.split(',').join(''));
 	};
 
 	const renderBodyModalWithdrawConfirmationForm = () => {
@@ -90,6 +121,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 							width: 180,
 							height: 40,
 						}}
+						onClick={handleCloseWithdrawConfirmationForm}
 					>
 						Confirmation
 					</Button>
@@ -104,7 +136,12 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 			<div className="desktop-bank-withdraw__select">
 				<div className="d-flex flex-row justify-content-between">
 					<label className="desktop-bank-withdraw__select__label">Select Bank</label>
-					<label className="desktop-bank-withdraw__select__settings-label">Bank accounts settings</label>
+					<label
+						className="desktop-bank-withdraw__select__settings-label"
+						onClick={() => history.push('/profile/bank')}
+					>
+						Bank accounts settings
+					</label>
 				</div>
 				<Select size="large" defaultValue="techCom" className="desktop-bank-withdraw__select__input">
 					<Option value="techCom">TechCom Bank</Option>
@@ -118,15 +155,28 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 			</div>
 			<div className="desktop-bank-withdraw__input">
 				<label>Amount</label>
-				<Input size="large" placeholder="Min amount: 10,000 MNT" />
+				<Input
+					size="large"
+					placeholder="Min amount: 10,000 MNT"
+					type="text"
+					value={nfObject.format(removeCommaInNumber(withdrawInputValueState!))}
+					onChange={onHandleChangeWithdrawInputValueState}
+				/>
 			</div>
 			<div className="desktop-bank-withdraw__input">
 				<label>OTP</label>
-				<Input size="large" />
+				<Input size="large" type="text" maxLength={6} onChange={onHandleChangeNumeric} value={otpInputValueState} />
 			</div>
 			<div className="desktop-bank-withdraw__input">
 				<label>You will get</label>
-				<Input size="large" />
+				<Input
+					size="large"
+					type="text"
+					disabled
+					value={nfObject.format(
+						removeCommaInNumber(withdrawInputValueState!) - removeCommaInNumber(withdrawInputValueState!) * 0.01,
+					)}
+				/>
 			</div>
 
 			<div className="d-flex flex-row justify-content-between">

@@ -7,6 +7,7 @@ export const BankAccountList = () => {
 			<table>
 				<thead>
 					<tr>
+						<th>#</th>
 						<th style={{ textAlign: 'left' }}>Name</th>
 						<th>Account Number</th>
 						<th>Bank Name</th>
@@ -18,8 +19,8 @@ export const BankAccountList = () => {
 				<tbody>
 					{Array(9)
 						.fill(null)
-						.map(bankAccount => (
-							<BankAccountItem />
+						.map((bankAccount, index) => (
+							<BankAccountItem index={index + 1} />
 						))}
 				</tbody>
 			</table>

@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { currenciesFetch } from 'modules';
 import { setDocumentTitle } from 'helpers';
 import { useIntl } from 'react-intl';
+import { PaypalDepositScreen } from './Paypal/PaypalDepositScreen';
 
 export const FiatDepositScreen = () => {
 	const { currency_id } = useParams<{ currency_id: string }>();
@@ -25,8 +26,10 @@ export const FiatDepositScreen = () => {
 
 	switch (_toLower(currency_id)) {
 		case 'paypal':
+			return <PaypalDepositScreen currency_id={_toLower(currency_id)} />;
+
+		case 'ruppe':
 			return <BankDepositScreen currency_id={_toLower(currency_id)} />;
-		// return <PaypalDepositScreen currency_id={_toLower(currency_id)} />;
 
 		default:
 			return null;
