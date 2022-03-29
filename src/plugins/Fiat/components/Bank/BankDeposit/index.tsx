@@ -57,7 +57,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 					<div className="col-6">
 						<div className="col-10 p-0 desktop-bank-deposit__input">
 							<label className="desktop-bank-deposit__input__label">Amount</label>
-							<Input addonAfter="EUR" defaultValue="" />
+							<Input addonAfter="EUR" type="number" />
 							<span className="desktop-bank-deposit__input__notice">Amount should be between 0 and 100 EUR</span>
 						</div>
 

@@ -7,6 +7,8 @@ import _toString from 'lodash/toString';
 import { Button, Input, Select } from 'antd';
 import { NewModal } from 'components';
 import { useHistory } from 'react-router';
+import { formatNumber } from 'helpers';
+import NoticeIcon from 'assets/icons/notice.svg';
 
 interface BankWithdrawProps {
 	currency_id: string;
@@ -42,16 +44,14 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 	const onHandleChangeWithdrawInputValueState = e => {
 		let value = e.target.value;
 
-		if (!removeCommaInNumber(value) && value.length > 0) {
+		if (!Number(removeCommaInNumber(value)) && value.length > 0) {
 			return;
 		}
 		setWithdrawInputValueState(value);
 	};
 
-	const nfObject = new Intl.NumberFormat('en-US');
-
-	const removeCommaInNumber = (numberWithComma: string): number => {
-		return Number(numberWithComma.split(',').join(''));
+	const removeCommaInNumber = (numberWithComma: string): string => {
+		return numberWithComma.split(',').join('');
 	};
 
 	const renderBodyModalWithdrawConfirmationForm = () => {
@@ -87,27 +87,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 					</div>
 				</div>
 				<span className="desktop-bank-withdraw__modal-form__warning">
-					<svg
-						className="desktop-bank-withdraw__modal-form__warning__icon"
-						width="10"
-						height="13"
-						viewBox="0 0 7 9"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M3.46542 2.87353C3.7502 2.87353 3.98106 3.1423 3.98106 3.47385C3.98106 3.80539 3.7502 4.07416 3.46542 4.07416C3.18064 4.07416 2.94978 3.80539 2.94978 3.47385C2.94978 3.1423 3.18064 2.87353 3.46542 2.87353Z"
-							fill="#E9AA09"
-						/>
-						<path
-							d="M3.7062 6.60602H3.24774C3.09601 6.60602 2.97287 6.46137 2.97287 6.28602V4.57976C2.97287 4.40441 3.09712 4.25976 3.24774 4.25976H3.7062C3.85682 4.25976 3.98107 4.40441 3.98107 4.57976V6.28602C3.98107 6.46137 3.85684 6.60602 3.7062 6.60602Z"
-							fill="#E9AA09"
-						/>
-						<path
-							d="M3.45332 8.73975C1.55456 8.73975 0.0175171 6.95031 0.0175171 4.73975C0.0175171 2.5292 1.55456 0.739763 3.45332 0.739763C5.35209 0.739763 6.88913 2.5292 6.88913 4.73975C6.88913 6.95031 5.3521 8.73975 3.45332 8.73975ZM3.45663 1.88407C2.1032 1.88407 1.00483 3.16152 1.00483 4.73848C1.00483 6.31544 2.10209 7.59288 3.45663 7.59288C4.81117 7.59288 5.90843 6.31544 5.90843 4.73848C5.90843 3.16151 4.81007 1.88407 3.45663 1.88407Z"
-							fill="#E9AA09"
-						/>
-					</svg>
+					<img src={NoticeIcon} className="desktop-bank-withdraw__modal-form__warning__icon" />
 					Withdrawal usually take under 24 hours. Depends on the speed of your bank. a delay may occur.
 				</span>
 				<div className="d-flex justify-content-center mt-5">
@@ -159,7 +139,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 					size="large"
 					placeholder="Min amount: 10,000 MNT"
 					type="text"
-					value={nfObject.format(removeCommaInNumber(withdrawInputValueState!))}
+					value={formatNumber(removeCommaInNumber(withdrawInputValueState!))}
 					onChange={onHandleChangeWithdrawInputValueState}
 				/>
 			</div>
@@ -173,8 +153,11 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 					size="large"
 					type="text"
 					disabled
-					value={nfObject.format(
-						removeCommaInNumber(withdrawInputValueState!) - removeCommaInNumber(withdrawInputValueState!) * 0.01,
+					value={formatNumber(
+						(
+							Number(removeCommaInNumber(withdrawInputValueState!)) -
+							Number(removeCommaInNumber(withdrawInputValueState!)) * 0.01
+						).toString(),
 					)}
 				/>
 			</div>
