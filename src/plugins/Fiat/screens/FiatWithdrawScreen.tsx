@@ -27,7 +27,7 @@ export const FiatWithdrawScreen = () => {
 	switch (_toLower(currency_id)) {
 		case 'paypal':
 			return <PaypalWithdrawScreen currency_id={_toLower(currency_id)} />;
-		case 'ruppe':
+		case 'inr':
 			return <BankWithdrawScreen currency_id={_toLower(currency_id)} />;
 
 		default:

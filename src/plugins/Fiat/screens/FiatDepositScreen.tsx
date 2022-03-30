@@ -28,7 +28,7 @@ export const FiatDepositScreen = () => {
 		case 'paypal':
 			return <PaypalDepositScreen currency_id={_toLower(currency_id)} />;
 
-		case 'ruppe':
+		case 'inr':
 			return <BankDepositScreen currency_id={_toLower(currency_id)} />;
 
 		default:
