@@ -15,6 +15,8 @@ interface BankWithdrawProps {
 }
 export const BankWithdraw = (props: BankWithdrawProps) => {
 	const { Option } = Select;
+	const { currency_id } = props;
+
 	const history = useHistory();
 
 	const [showWithdrawConfirmationForm, setShowWithdrawConfirmationForm] = React.useState(false);
@@ -62,7 +64,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 					<span className="mr-1" style={{ fontWeight: 700, fontSize: 36, color: '#fff' }}>
 						90
 					</span>
-					<span style={{ fontWeight: 400, fontSize: 16, color: '#fff' }}>INR</span>
+					<span style={{ fontWeight: 400, fontSize: 16, color: '#fff' }}>{_toUpper(currency_id)}</span>
 				</div>
 				<div className="desktop-bank-withdraw__modal-form__inform-container">
 					<div className="d-flex flex-row align-items-center justify-content-between">
@@ -75,11 +77,11 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 					</div>
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Fee</span>
-						<span>10 INR</span>
+						<span>10 {_toUpper(currency_id)}</span>
 					</div>
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Withdrawal Amount</span>
-						<span>100 INR</span>
+						<span>100 {_toUpper(currency_id)}</span>
 					</div>
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Funds will arrive</span>
@@ -130,14 +132,14 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 				</Select>
 				<div className="d-flex flex-row justify-content-end mt-3">
 					<span className="desktop-bank-withdraw__select__balance-label">Balance: </span>
-					<span className="desktop-bank-withdraw__select__balance-value">0 INR</span>
+					<span className="desktop-bank-withdraw__select__balance-value">0 {_toUpper(currency_id)}</span>
 				</div>
 			</div>
 			<div className="desktop-bank-withdraw__input">
 				<label>Amount</label>
 				<Input
 					size="large"
-					placeholder="Min amount: 10,000 INR"
+					placeholder={`Min amount: 10,000 ${_toUpper(currency_id)}`}
 					type="text"
 					value={formatNumber(removeCommaInNumber(withdrawInputValueState!))}
 					onChange={onHandleChangeWithdrawInputValueState}
@@ -157,7 +159,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 							Number(removeCommaInNumber(withdrawInputValueState!)) * 0.01
 						).toString(),
 					)}{' '}
-					INR
+					{_toUpper(currency_id)}
 				</span>
 			</div>
 
@@ -167,11 +169,11 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 			</div>
 			<div className="d-flex flex-row justify-content-between">
 				<span className="desktop-bank-withdraw__label">Max withdraw</span>
-				<span className="desktop-bank-withdraw__value">3,000,000 INR</span>
+				<span className="desktop-bank-withdraw__value">3,000,000 {_toUpper(currency_id)}</span>
 			</div>
 			<div className="d-flex flex-row justify-content-between">
 				<span className="desktop-bank-withdraw__label">Min withdraw</span>
-				<span className="desktop-bank-withdraw__value">10,000 INR</span>
+				<span className="desktop-bank-withdraw__value">10,000 {_toUpper(currency_id)}</span>
 			</div>
 
 			<div className="d-flex justify-content-center mt-5">

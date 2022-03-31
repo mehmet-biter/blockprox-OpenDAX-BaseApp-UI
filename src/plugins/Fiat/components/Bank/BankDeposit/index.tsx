@@ -13,6 +13,8 @@ interface BankDepositProps {
 }
 
 export const BankDeposit = (props: BankDepositProps) => {
+	const { currency_id } = props;
+
 	const [isContinueButtonDisabled, setIsContinueButtonDisabled] = React.useState(true);
 
 	const onClickCheckBox = e => {
@@ -58,8 +60,10 @@ export const BankDeposit = (props: BankDepositProps) => {
 					<div className="col-6">
 						<div className="col-10 p-0 desktop-bank-deposit__input">
 							<label className="desktop-bank-deposit__input__label">Amount</label>
-							<Input addonAfter="INR" type="number" />
-							<span className="desktop-bank-deposit__input__notice">Amount should be between 0 and 100 INR</span>
+							<Input addonAfter={_toUpper(currency_id)} type="number" />
+							<span className="desktop-bank-deposit__input__notice">
+								Amount should be between 0 and 100 {_toUpper(currency_id)}
+							</span>
 						</div>
 
 						<div className="col-10 p-0 desktop-bank-deposit__input mt-3">
@@ -77,11 +81,11 @@ export const BankDeposit = (props: BankDepositProps) => {
 					<div className="col-4 desktop-bank-deposit__transaction-fee">
 						<div className="d-flex flex-row justify-content-between mb-2">
 							<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
-							<div className="desktop-bank-deposit__transaction-fee__value">100 INR</div>
+							<div className="desktop-bank-deposit__transaction-fee__value">100 {_toUpper(currency_id)}</div>
 						</div>
 						<div className="d-flex flex-row justify-content-between">
 							<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
-							<span className="desktop-bank-deposit__transaction-fee__value">100 INR</span>
+							<span className="desktop-bank-deposit__transaction-fee__value">100 {_toUpper(currency_id)}</span>
 						</div>
 					</div>
 				</div>
