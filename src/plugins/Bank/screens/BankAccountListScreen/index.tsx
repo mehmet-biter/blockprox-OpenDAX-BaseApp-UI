@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { BankAccountList } from 'plugins/Bank/containers';
 import { NewCustomInput, NewModal } from 'components';
-import { Checkbox } from 'antd';
 import NoticeWhiteIcon from 'assets/icons/notice_white.svg';
 
 export const BankAccountListScreen = () => {
@@ -73,7 +72,7 @@ export const BankAccountListScreen = () => {
 						<NewCustomInput
 							type="text"
 							label="Bank Name"
-							placeholder="Enter you bank's name"
+							placeholder="Enter your bank's name"
 							defaultLabel="Bank Name"
 							handleFocusInput={() => {}}
 							handleChangeInput={value => {
@@ -121,25 +120,6 @@ export const BankAccountListScreen = () => {
 						/>
 					</div>
 				</div>
-
-				<div className="desktop-bank-account-list-screen__bank-form__input">
-					<label>IFSC Code</label>
-					<div>
-						<NewCustomInput
-							type="text"
-							label="IFSC Code"
-							placeholder="Enter IFSC code"
-							defaultLabel="IFSC Code"
-							handleFocusInput={() => {}}
-							handleChangeInput={value => {
-								handleFieldBankForm('iFSCCode', value);
-							}}
-							inputValue={bankForm.iFSCCode}
-							classNameLabel="d-none"
-							classNameInput="td-email-form__input"
-						/>
-					</div>
-				</div>
 				<div className="desktop-bank-account-list-screen__bank-form__input">
 					<label>OTP Code</label>
 					<div>
@@ -162,9 +142,6 @@ export const BankAccountListScreen = () => {
 						/>
 					</div>
 				</div>
-				<Checkbox className="desktop-bank-account-list-screen__bank-form__check-box">
-					Save for next time deposit.
-				</Checkbox>
 
 				<div className="d-flex justify-content-center mt-4">
 					<Button

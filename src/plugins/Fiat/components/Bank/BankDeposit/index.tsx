@@ -6,6 +6,7 @@ import _find from 'lodash/find';
 import { Button, Input } from 'antd';
 import QRcodeImage from './testing_QRcode.png';
 import { Checkbox } from 'antd';
+import NoticeIcon from 'assets/icons/notice.svg';
 
 interface BankDepositProps {
 	currency_id: string;
@@ -57,12 +58,18 @@ export const BankDeposit = (props: BankDepositProps) => {
 					<div className="col-6">
 						<div className="col-10 p-0 desktop-bank-deposit__input">
 							<label className="desktop-bank-deposit__input__label">Amount</label>
-							<Input addonAfter="EUR" type="number" />
-							<span className="desktop-bank-deposit__input__notice">Amount should be between 0 and 100 EUR</span>
+							<Input addonAfter="INR" type="number" />
+							<span className="desktop-bank-deposit__input__notice">Amount should be between 0 and 100 INR</span>
 						</div>
 
 						<div className="col-10 p-0 desktop-bank-deposit__input mt-3">
-							<label className="desktop-bank-deposit__input__label">Transaction ID</label>
+							<label className="desktop-bank-deposit__input__label">
+								Transaction ID{' '}
+								<img className="desktop-bank-deposit__input__label__notice-icon" src={NoticeIcon} />
+								<span className="tooltiptext">
+									Transaction ID must be accurate and exact like the ID of the exchange
+								</span>
+							</label>
 							<Input defaultValue="" />
 						</div>
 					</div>
@@ -70,11 +77,11 @@ export const BankDeposit = (props: BankDepositProps) => {
 					<div className="col-4 desktop-bank-deposit__transaction-fee">
 						<div className="d-flex flex-row justify-content-between mb-2">
 							<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
-							<div className="desktop-bank-deposit__transaction-fee__value">100 EUR</div>
+							<div className="desktop-bank-deposit__transaction-fee__value">100 INR</div>
 						</div>
 						<div className="d-flex flex-row justify-content-between">
 							<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
-							<span className="desktop-bank-deposit__transaction-fee__value">100 EUR</span>
+							<span className="desktop-bank-deposit__transaction-fee__value">100 INR</span>
 						</div>
 					</div>
 				</div>
