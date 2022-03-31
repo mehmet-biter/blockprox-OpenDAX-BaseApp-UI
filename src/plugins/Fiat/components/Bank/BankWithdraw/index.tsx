@@ -156,7 +156,8 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 							Number(removeCommaInNumber(withdrawInputValueState!)) -
 							Number(removeCommaInNumber(withdrawInputValueState!)) * 0.01
 						).toString(),
-					)}
+					)}{' '}
+					INR
 				</span>
 			</div>
 
