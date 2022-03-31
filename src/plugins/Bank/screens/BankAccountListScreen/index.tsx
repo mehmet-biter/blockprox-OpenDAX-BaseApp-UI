@@ -121,6 +121,24 @@ export const BankAccountListScreen = () => {
 					</div>
 				</div>
 				<div className="desktop-bank-account-list-screen__bank-form__input">
+					<label>IFSC Code</label>
+					<div>
+						<NewCustomInput
+							type="text"
+							label="IFSC Code"
+							placeholder="Enter IFSC code"
+							defaultLabel="IFSC Code"
+							handleFocusInput={() => {}}
+							handleChangeInput={value => {
+								handleFieldBankForm('iFSCCode', value);
+							}}
+							inputValue={bankForm.iFSCCode}
+							classNameLabel="d-none"
+							classNameInput="td-email-form__input"
+						/>
+					</div>
+				</div>
+				<div className="desktop-bank-account-list-screen__bank-form__input">
 					<label>OTP Code</label>
 					<div>
 						<NewCustomInput
