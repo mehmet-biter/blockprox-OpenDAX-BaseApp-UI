@@ -4,7 +4,7 @@ import _toLower from 'lodash/toLower';
 import _toUpper from 'lodash/toUpper';
 import _find from 'lodash/find';
 import { Button, Input } from 'antd';
-import QRcodeImage from './testing_QRcode.png';
+import QRcodeImage from './QR_code.jpg';
 import { Checkbox } from 'antd';
 import NoticeIcon from 'assets/icons/notice.svg';
 
@@ -73,7 +73,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 							<Input defaultValue="" />
 						</div>
 					</div>
-					<img src={QRcodeImage} style={{ position: 'absolute', top: 0, right: 0 }} />
+					<img src={QRcodeImage} style={{ position: 'absolute', top: 0, right: 0, width: 120, height: 120 }} />
 					<div className="col-4 desktop-bank-deposit__transaction-fee">
 						<div className="d-flex flex-row justify-content-between mb-2">
 							<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
