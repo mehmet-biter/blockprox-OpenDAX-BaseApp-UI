@@ -31,8 +31,8 @@ Access-Control-Allow-Credentials: true
       "min_confirmations":30
    },
    {
-      "id":"ruppe",
-      "name":"Ruppe",
+      "id":"inr",
+      "name":"Inr",
       "description":null,
       "homepage":null,
       "price":"0.001",

@@ -24,6 +24,29 @@
 			font-style: normal;
 			font-weight: 400;
 			letter-spacing: 0em;
+
+			&__notice-icon {
+				margin-left: 2px;
+				margin-bottom: 2px;
+				cursor: pointer;
+			}
+
+			.tooltiptext {
+				visibility: hidden;
+				width: 200px;
+				background-color: black;
+				text-align: start;
+				border-radius: 6px;
+				padding: 5px 10px;
+
+				/* Position the tooltip */
+				position: absolute;
+				z-index: 1;
+			}
+		}
+
+		&__label:hover .tooltiptext {
+			visibility: visible;
 		}
 
 		input {
