@@ -13,8 +13,8 @@
 		margin: 1em 0;
 
 		svg {
-			margin-left: 10px;
 			cursor: pointer;
+			margin-left: 10px;
 		}
 	}
 
@@ -23,7 +23,30 @@
 			font-size: 12px;
 			font-style: normal;
 			font-weight: 400;
-			letter-spacing: 0em;
+			letter-spacing: 0;
+
+			&__notice-icon {
+				cursor: pointer;
+				margin-bottom: 2px;
+				margin-left: 2px;
+			}
+
+			.tooltiptext {
+				background-color: black;
+				border-radius: 6px;
+				padding: 5px 10px;
+
+				/* Position the tooltip */
+				position: absolute;
+				text-align: start;
+				visibility: hidden;
+				width: 200px;
+				z-index: 1;
+			}
+		}
+
+		&__label:hover .tooltiptext {
+			visibility: visible;
 		}
 
 		input {
@@ -35,47 +58,48 @@
 		.ant-input-group-addon {
 			background-color: rgb(var(--rgb-big-stone));
 			border: 1px solid rgb(var(--rgb-rose-white));
-			border-radius: 0px 10px 10px 0px;
+			border-radius: 0 10px 10px 0;
 		}
 
 		&__notice {
+			color: rgb(var(--rgb-dusty-gray));
 			font-size: 10px;
 			font-weight: 400;
+			letter-spacing: 0;
 			line-height: 14px;
-			letter-spacing: 0em;
-			color: rgb(var(--rgb-dusty-gray));
 		}
 	}
 
 	&__transaction-fee {
-		position: absolute;
 		bottom: 0;
+		position: absolute;
 		right: -7px;
 
 		&__label {
 			font-size: 12px;
 			font-weight: 400;
+			letter-spacing: 0;
 			line-height: 16px;
-			letter-spacing: 0em;
 		}
 
 		&__value {
 			font-size: 12px;
 			font-weight: 700;
+			letter-spacing: 0;
 			line-height: 16px;
-			letter-spacing: 0em;
 		}
 	}
 
 	&__check-box {
-		width: 100%;
 		background-color: rgb(var(--rgb-silver-29));
 		margin: 2em 0;
 		padding: 1em 1em 1em 1.5em;
+		width: 100%;
 
 		.ant-checkbox {
 			background-color: rgb(var(--rgb-silver-65));
 			border-radius: 3px;
+
 			.ant-checkbox-inner {
 			}
 		}
