@@ -46,9 +46,12 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 	const onHandleChangeWithdrawInputValueState = e => {
 		let value = e.target.value;
 
-		if (!Number(removeCommaInNumber(value)) && value.length > 0) {
+		const indexOfDot: number = removeCommaInNumber(value).indexOf('.');
+
+		if ((isNaN(Number(removeCommaInNumber(value))) && value.length > 0) || indexOfDot === 0) {
 			return;
 		}
+
 		setWithdrawInputValueState(value);
 	};
 
