@@ -3,10 +3,12 @@ import _toNumber from 'lodash/toNumber';
 import _toLower from 'lodash/toLower';
 import _toUpper from 'lodash/toUpper';
 import _find from 'lodash/find';
+import _isEmpty from 'lodash/isEmpty';
 import { Button, Input } from 'antd';
 import QRcodeImage from './QR_code.jpg';
 import { Checkbox } from 'antd';
 import NoticeIcon from 'assets/icons/notice.svg';
+import { formatNumber } from 'helpers';
 
 interface BankDepositProps {
 	currency_id: string;
@@ -19,6 +21,26 @@ export const BankDeposit = (props: BankDepositProps) => {
 
 	const onClickCheckBox = e => {
 		setIsContinueButtonDisabled(state => !state);
+	};
+
+	const [transactionIDState, setTransactionIDState] = React.useState<string>('');
+
+	const [amountInputValueState, setAmountInputValueState] = React.useState<string>('');
+
+	const onHandleChangeAmountInputValueState = e => {
+		let value = e.target.value;
+
+		const indexOfDot: number = removeCommaInNumber(value).indexOf('.');
+
+		if ((isNaN(Number(removeCommaInNumber(value))) && value.length > 0) || indexOfDot === 0) {
+			return;
+		}
+
+		setAmountInputValueState(value);
+	};
+
+	const removeCommaInNumber = (numberWithComma: string): string => {
+		return numberWithComma.split(',').join('');
 	};
 
 	// side-effects
@@ -48,11 +70,11 @@ export const BankDeposit = (props: BankDepositProps) => {
 	return (
 		<div className="desktop-bank-deposit">
 			<div className="desktop-bank-deposit__title">Bank Details</div>
-			{renderBankAccountInform('Name', 'Alex Bulma')}
-			{renderBankAccountInform('Account Number', 'NA2HB12BBB2BBB3V')}
-			{renderBankAccountInform('Bank Name', 'Groundwork Financial Corp.')}
-			{renderBankAccountInform('Bank Address', 'Town Creek, Alabama(AL), 35672')}
-			{renderBankAccountInform('IFSC Code', 'I0i8mQwK')}
+			{renderBankAccountInform('Name', 'Blockproex Infotech Pvt Ltd')}
+			{renderBankAccountInform('Account Number', '072863400000569')}
+			{renderBankAccountInform('Bank Name', 'Yes Bank')}
+			{renderBankAccountInform('Bank Address', 'Wakad, Pune')}
+			{renderBankAccountInform('IFSC Code', 'YESB0000728')}
 			<hr className="solid" style={{ background: 'white', width: '100%', marginTop: 25, marginBottom: 25 }} />
 			<div style={{ position: 'relative' }}>
 				<div className="desktop-bank-deposit__title">Enter Deposit Amount</div>
@@ -60,7 +82,12 @@ export const BankDeposit = (props: BankDepositProps) => {
 					<div className="col-6">
 						<div className="col-10 p-0 desktop-bank-deposit__input">
 							<label className="desktop-bank-deposit__input__label">Amount</label>
-							<Input addonAfter={_toUpper(currency_id)} type="number" />
+							<Input
+								addonAfter={_toUpper(currency_id)}
+								type="text"
+								value={formatNumber(removeCommaInNumber(amountInputValueState!))}
+								onChange={onHandleChangeAmountInputValueState}
+							/>
 							<span className="desktop-bank-deposit__input__notice">
 								Amount should be between 0 and 100 {_toUpper(currency_id)}
 							</span>
@@ -74,7 +101,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 									Transaction ID must be accurate and exact like the ID of the exchange
 								</span>
 							</label>
-							<Input defaultValue="" />
+							<Input value={transactionIDState} onChange={value => setTransactionIDState(value.target.value)} />
 						</div>
 					</div>
 					<img src={QRcodeImage} style={{ position: 'absolute', top: 0, right: 0, width: 120, height: 120 }} />
@@ -92,13 +119,13 @@ export const BankDeposit = (props: BankDepositProps) => {
 			</div>
 			<div className="desktop-bank-deposit__check-box">
 				<Checkbox onChange={onClickCheckBox}>
-					By proceeding, you contest to Udonex sharing your personal information on your Udonex acccnount in accorance
-					to our Tesm of Use and Privacy Policy.
+					By proceeding, you contest to BlockProEx sharing your personal information on your BlockProEx acccnount in
+					accorance to our Tesm of Use and Privacy Policy.
 				</Checkbox>
 			</div>
 			<div className="d-flex justify-content-end mt-4">
 				<Button
-					disabled={isContinueButtonDisabled}
+					disabled={isContinueButtonDisabled && _isEmpty(transactionIDState) && _isEmpty(amountInputValueState)}
 					style={{
 						background: isContinueButtonDisabled ? 'rgba(233, 170, 9, 0.5)' : 'rgba(233, 170, 9, 1)',
 						borderRadius: '50px',
