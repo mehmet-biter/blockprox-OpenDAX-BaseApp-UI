@@ -21,6 +21,7 @@ export const defaultConfig: Config = {
 		transactionUrl: '/api/v2/transaction',
 		statisticUrl: '/api/v2/statistic',
 		paypalUrl: '/api/v2/paypal',
+		bankUrl: '/api/private/bank',
 		newKycUrl: '/api/v2/newKyc',
 		bannerUrl: '/api/v2/banner',
 		announcementUrl: '/api/v2/announcement',
@@ -99,6 +100,7 @@ Cryptobase.config.api.referralUrl = Cryptobase.config.api.referralUrl || '/api/v
 Cryptobase.config.api.transactionUrl = Cryptobase.config.api.transactionUrl || '/api/v2/transaction';
 Cryptobase.config.api.statisticUrl = Cryptobase.config.api.statisticUrl || '/api/v2/statistic';
 Cryptobase.config.api.paypalUrl = Cryptobase.config.api.paypalUrl || '/api/v2/paypal';
+Cryptobase.config.api.bankUrl = Cryptobase.config.api.bankUrl || '/api/private/bank';
 Cryptobase.config.api.newKycUrl = Cryptobase.config.api.newKycUrl || '/api/v2/newKyc';
 Cryptobase.config.api.announcementUrl = Cryptobase.config.api.announcementUrl || '/api/v2/announcement';
 
@@ -119,6 +121,7 @@ export const referralUrl = () => Cryptobase.config.api.referralUrl;
 export const transactionUrl = () => Cryptobase.config.api.transactionUrl;
 export const statisticUrl = () => Cryptobase.config.api.statisticUrl;
 export const paypalUrl = () => Cryptobase.config.api.paypalUrl;
+export const bankUrl = () => Cryptobase.config.api.bankUrl;
 export const newKycUrl = () => Cryptobase.config.api.newKycUrl;
 export const bannerUrl = () => Cryptobase.config.api.bannerUrl;
 export const announcementUrl = () => Cryptobase.config.api.announcementUrl;

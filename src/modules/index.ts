@@ -107,6 +107,8 @@ import {
 	PaypalWithdrawHistoryState,
 	rootPaypalSaga,
 } from './plugins/fiat/paypal';
+import { BankAccountListState, CreateBankAccountState, DeleteBankAccountState } from './plugins/fiat/bank/types';
+import { rootBankSaga } from './plugins/fiat/bank/sagas';
 
 export * from './plugins/ethWithdraw/fee';
 export * from './plugins/info/events';
@@ -267,6 +269,11 @@ export interface RootState {
 			depositHistory: PaypalDepositHistoryState;
 			withdrawHistory: PaypalWithdrawHistoryState;
 		};
+		bank: {
+			bankAccountList: BankAccountListState;
+			createBankAccount: CreateBankAccountState;
+			deleteBankAccount: DeleteBankAccountState;
+		};
 	};
 }
 
@@ -332,6 +339,7 @@ export function* rootSaga() {
 		call(rootKycSaga),
 		call(rootAnnouncementSaga),
 		call(rootPaypalSaga),
+		call(rootBankSaga),
 		call(rootNewWithdrawLimitSaga),
 	]);
 }

@@ -3,8 +3,32 @@ import { Button } from 'react-bootstrap';
 import { BankAccountList } from 'plugins/Bank/containers';
 import { NewCustomInput, NewModal } from 'components';
 import NoticeWhiteIcon from 'assets/icons/notice_white.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { bankAccountListFetch, createBankAccount } from 'modules/plugins/fiat/bank/actions';
+import { selectBankAccountList, selectBankAccountListLoading } from 'modules/plugins/fiat/bank/selectors';
+
+interface BankFormField {
+	accountName: string;
+	bankName: string;
+	bankAddress: string;
+	bankAccountNumber: string;
+	iFSCCode: string;
+	otpCode: string;
+}
 
 export const BankAccountListScreen = () => {
+	// state
+	const bankAccountList = useSelector(selectBankAccountList);
+	const isBankAccountListLoading = useSelector(selectBankAccountListLoading);
+
+	// dispatch
+	const dispatch = useDispatch();
+	const dispatchFetchBankAccountList = () => dispatch(bankAccountListFetch());
+
+	React.useEffect(() => {
+		dispatchFetchBankAccountList();
+	}, []);
+
 	const [showAddBankAccountForm, setShowAddBankAccountForm] = useState(false);
 
 	const handleCloseAddBankAccountForm = () => {
@@ -14,7 +38,7 @@ export const BankAccountListScreen = () => {
 		setShowAddBankAccountForm(true);
 	};
 
-	const [bankForm, setBankForm] = React.useState({
+	const [bankForm, setBankForm] = React.useState<BankFormField>({
 		accountName: '',
 		bankName: '',
 		bankAddress: '',
@@ -23,11 +47,42 @@ export const BankAccountListScreen = () => {
 		otpCode: '',
 	});
 
+	const resetForm = () => {
+		setBankForm({
+			accountName: '',
+			bankName: '',
+			bankAddress: '',
+			bankAccountNumber: '',
+			iFSCCode: '',
+			otpCode: '',
+		});
+	};
 	const handleFieldBankForm = (field: string, value: string) => {
 		setBankForm(prev => ({
 			...prev,
 			[field]: value,
 		}));
+	};
+
+	const handleCreateBankAccount = () => {
+		dispatch(
+			createBankAccount({
+				account_name: bankForm.accountName,
+				account_number: bankForm.bankAccountNumber,
+				bank_address: bankForm.bankAddress,
+				bank_name: bankForm.bankName,
+				ifsc_code: bankForm.iFSCCode,
+				otp: bankForm.otpCode,
+			}),
+		);
+		handleCloseAddBankAccountForm();
+		resetForm();
+	};
+
+	const isValidForm = () => {
+		const { accountName, bankName, iFSCCode, bankAddress, bankAccountNumber, otpCode } = bankForm;
+
+		return accountName && bankName && iFSCCode && bankAddress && bankAccountNumber && otpCode;
 	};
 
 	const renderBodyModalAddBankForm = () => {
@@ -148,7 +203,7 @@ export const BankAccountListScreen = () => {
 							defaultLabel="OTP Code"
 							handleFocusInput={() => {}}
 							handleChangeInput={value => {
-								if ((!Number(value) && value.length > 0) || value.length >= 6) {
+								if ((!Number(value) && value.length > 0) || value.length >= 7) {
 									return;
 								}
 
@@ -163,6 +218,7 @@ export const BankAccountListScreen = () => {
 
 				<div className="d-flex justify-content-center mt-4">
 					<Button
+						disabled={!isValidForm()}
 						block={true}
 						style={{
 							background: '#FFB800',
@@ -175,6 +231,7 @@ export const BankAccountListScreen = () => {
 						className="w-50"
 						size="lg"
 						variant="primary"
+						onClick={() => handleCreateBankAccount()}
 					>
 						Confirm
 					</Button>
@@ -191,7 +248,8 @@ export const BankAccountListScreen = () => {
 					Add Bank Account
 				</Button>
 			</div>
-			<BankAccountList />
+			<BankAccountList bankAccounts={bankAccountList} isLoading={isBankAccountListLoading} />
+
 			<NewModal
 				className="desktop-bank-account-list-screen__new-modal"
 				show={showAddBankAccountForm}
