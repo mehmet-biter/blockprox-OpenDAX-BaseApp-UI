@@ -29,7 +29,7 @@ class FeeTable extends React.Component<Props> {
 
 		return (
 			<div className="container">
-				<h1>Udonex Coin List</h1>
+				<h1>BlockProEx Coin List</h1>
 				<FeeList currencies={currencies} />
 			</div>
 		);

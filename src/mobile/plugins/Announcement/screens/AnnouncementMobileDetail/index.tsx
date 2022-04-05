@@ -30,7 +30,7 @@ export const AnnouncementMobileDetail: React.FC = () => {
 							__html: announcementDetail.body,
 						}}
 					/>
-					<div className="td-mobile__udonex__team">Udonex</div>
+					<div className="td-mobile__udonex__team">BLOCKPROEX</div>
 				</div>
 			</div>
 		</div>
