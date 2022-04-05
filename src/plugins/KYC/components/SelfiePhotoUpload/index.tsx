@@ -47,7 +47,7 @@ export const IdentifyGovernmentPhoto = (props: IdentifyGovernmentPhotoProps) => 
 							<img src={user} alt="user photo" style={{ width: '100%' }} />
 							<div className="show_inf_document">
 								<p className="get__date">{year + '-' + month + '-' + day}</p>
-								<p className="exchange">UDONEX</p>
+								<p className="exchange">BlockProEx</p>
 							</div>
 						</div>
 					</div>

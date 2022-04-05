@@ -64,7 +64,7 @@ export const AnnouncementDetail: React.FC = () => {
 										__html: announcementDetail.body,
 									}}
 								/>
-								<div className="udonex__team">Udonex</div>
+								<div className="udonex__team">BlockProex</div>
 							</div>
 						</div>
 						<div className="col-lg-4">
