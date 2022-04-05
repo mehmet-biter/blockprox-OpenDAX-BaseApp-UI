@@ -11,6 +11,7 @@ import {
 	StakingListMobileScreen,
 	MobileCompetitionListingScreen,
 	MobileCompetitionDetailScreen,
+	BankAccountListMobileScreen,
 } from 'mobile/plugins';
 import {
 	configsFetch,
@@ -184,7 +185,7 @@ const PublicRoute: React.FunctionComponent<any> = ({ component: CustomComponent,
 	if (isLogged) {
 		return (
 			<Route {...rest}>
-				<Redirect to={'/wallets'} />
+				<Redirect to={'/profile/bank'} />
 			</Route>
 		);
 	}
@@ -404,6 +405,12 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 							isLogged={isLoggedIn}
 							path="/profile/change-password"
 							component={ProfileChangePasswordMobileScreen}
+						/>
+						<PrivateRoute
+							loading={userLoading}
+							isLogged={isLoggedIn}
+							path="/profile/bank"
+							component={BankAccountListMobileScreen}
 						/>
 						<PrivateRoute
 							loading={userLoading}
