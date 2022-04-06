@@ -61,7 +61,6 @@ export const BankHistoryTable: React.FC<ReacTableProps> = (props: ReacTableProps
 					<tbody {...getTableBodyProps()}>
 						{page.map(row => {
 							prepareRow(row);
-
 							return (
 								<tr {...row.getRowProps()}>
 									{row.cells.map(cell => {

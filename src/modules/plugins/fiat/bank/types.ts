@@ -16,6 +16,22 @@ export interface BankAccount {
 	updated_at: Date;
 }
 
+export interface BankDeposit {
+	id: number;
+	uid: string;
+	txid: string;
+	deposit_code: string;
+	amount: string;
+	fee: string;
+	amount_received: string;
+	state: 'pending' | 'succeed' | 'rejected';
+	created_at: Date;
+	updated_at: Date;
+	type: 'fiat';
+}
+
+// Bank Interfaces
+
 export interface BankAccountListState extends CommonState {
 	payload: BankAccount[];
 	loading: boolean;
@@ -26,5 +42,16 @@ export interface CreateBankAccountState extends CommonState {
 }
 
 export interface DeleteBankAccountState extends CommonState {
+	loading: boolean;
+}
+
+// Bank Deposit Interfaces
+
+export interface BankDepositHistoryListState extends CommonState {
+	payload: BankDeposit[];
+	loading: boolean;
+}
+
+export interface CreateBankDepositState extends CommonState {
 	loading: boolean;
 }

@@ -1,12 +1,19 @@
-import { bankAccountListFetch } from 'modules/plugins/fiat/bank/actions';
-import { CreateBankAccount, createBankAccountData } from './../actions';
+import { /* bankAccountListFetch, */ updateBankAccountCreation } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
+import { CreateBankAccount, createBankAccountData } from '../actions/bankAccountActions';
 import { API, RequestOptions } from 'api';
 import { call, put } from 'redux-saga/effects';
 import { alertPush } from 'modules/public/alert';
+import { BankAccount } from '../types';
 
 const createOptions = (csrfToken?: string): RequestOptions => {
 	return { apiVersion: 'bank', headers: { 'X-CSRF-Token': csrfToken } };
 };
+
+interface CreateBankAccountResponse {
+	status: string;
+	message: string;
+	data: BankAccount;
+}
 
 export function* createBankAccountSaga(action: CreateBankAccount) {
 	try {
@@ -16,13 +23,13 @@ export function* createBankAccountSaga(action: CreateBankAccount) {
 			}),
 		);
 		const { otp } = action.payload;
-		yield call(API.post(createOptions()), `/create?otp=${otp}`, action.payload);
+		const result: CreateBankAccountResponse = yield call(API.post(createOptions()), `/create?otp=${otp}`, action.payload);
 
-		yield put(bankAccountListFetch());
+		// yield put(bankAccountListFetch());
+		yield put(updateBankAccountCreation({ ...result.data }));
+
 		yield put(alertPush({ message: ['Create Bank Account Successfully'], type: 'success' }));
 	} catch (error) {
-		console.log('ERROR', error);
-
 		yield put(alertPush({ message: [error.message], type: 'error' }));
 	}
 	yield put(

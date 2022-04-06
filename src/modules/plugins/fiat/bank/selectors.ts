@@ -6,3 +6,8 @@ export const selectBankAccountList = (state: RootState) => state.plugins.bank.ba
 export const selectBankAccountListLoading = (state: RootState) => state.plugins.bank.bankAccountList.loading;
 
 export const selectDeleteBankAccount = (state: RootState) => state.plugins.bank.deleteBankAccount.loading;
+
+export const selectBankDepositHistoryList = (state: RootState) => state.plugins.bank.bankDepositHistoryList.payload;
+export const selectBankDepositHistoryListLoading = (state: RootState) => state.plugins.bank.bankDepositHistoryList.loading;
+
+export const selectCreateBankDepositLoading = (state: RootState) => state.plugins.bank.createBankDeposit.loading;

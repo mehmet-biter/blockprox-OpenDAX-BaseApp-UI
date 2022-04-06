@@ -3,12 +3,14 @@ import _toNumber from 'lodash/toNumber';
 import _toLower from 'lodash/toLower';
 import _toUpper from 'lodash/toUpper';
 import _find from 'lodash/find';
-import _isEmpty from 'lodash/isEmpty';
 import { Button, Input } from 'antd';
 import QRcodeImage from './QR_code.jpg';
 import { Checkbox } from 'antd';
 import NoticeIcon from 'assets/icons/notice.svg';
 import { formatNumber } from 'helpers';
+import { selectCurrencies } from 'modules';
+import { useDispatch, useSelector } from 'react-redux';
+import { createBankDeposit } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
 
 interface BankDepositProps {
 	currency_id: string;
@@ -16,6 +18,24 @@ interface BankDepositProps {
 
 export const BankDeposit = (props: BankDepositProps) => {
 	const { currency_id } = props;
+
+	// selectors
+	const currencies = useSelector(selectCurrencies);
+
+	// dispatch
+	const dispatch = useDispatch();
+
+	const handleCreateBankDeposit = () => {
+		dispatch(
+			createBankDeposit({
+				currency_id,
+				amount: Number(amountInputValueState),
+				txid: transactionIDState,
+			}),
+		);
+	};
+
+	const currency = _find(currencies, { id: _toLower(currency_id) });
 
 	const [isContinueButtonDisabled, setIsContinueButtonDisabled] = React.useState(true);
 
@@ -43,6 +63,12 @@ export const BankDeposit = (props: BankDepositProps) => {
 		return numberWithComma.split(',').join('');
 	};
 
+	const isEmpty = (value: string): boolean => {
+		return value.length === 0;
+	};
+	const isFormNotValid = (): boolean => {
+		return isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState);
+	};
 	// side-effects
 	React.useEffect(() => {
 		const id = setInterval(() => {}, 5000);
@@ -67,6 +93,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 			</div>
 		);
 	};
+
 	return (
 		<div className="desktop-bank-deposit">
 			<div className="desktop-bank-deposit__title">Bank Details</div>
@@ -108,11 +135,28 @@ export const BankDeposit = (props: BankDepositProps) => {
 					<div className="col-4 desktop-bank-deposit__transaction-fee">
 						<div className="d-flex flex-row justify-content-between mb-2">
 							<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
-							<div className="desktop-bank-deposit__transaction-fee__value">100 {_toUpper(currency_id)}</div>
+							<div className="desktop-bank-deposit__transaction-fee__value">
+								{formatNumber(
+									(
+										(Number(removeCommaInNumber(amountInputValueState!)) * Number(currency?.deposit_fee)) /
+										100
+									).toString(),
+								)}{' '}
+								{_toUpper(currency_id)}
+							</div>
 						</div>
 						<div className="d-flex flex-row justify-content-between">
 							<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
-							<span className="desktop-bank-deposit__transaction-fee__value">100 {_toUpper(currency_id)}</span>
+							<span className="desktop-bank-deposit__transaction-fee__value">
+								{formatNumber(
+									(
+										Number(removeCommaInNumber(amountInputValueState!)) -
+										(Number(removeCommaInNumber(amountInputValueState!)) * Number(currency?.deposit_fee)) /
+											100
+									).toString(),
+								)}{' '}
+								{_toUpper(currency_id)}
+							</span>
 						</div>
 					</div>
 				</div>
@@ -125,9 +169,9 @@ export const BankDeposit = (props: BankDepositProps) => {
 			</div>
 			<div className="d-flex justify-content-end mt-4">
 				<Button
-					disabled={isContinueButtonDisabled && _isEmpty(transactionIDState) && _isEmpty(amountInputValueState)}
+					disabled={isFormNotValid()}
 					style={{
-						background: isContinueButtonDisabled ? 'rgba(233, 170, 9, 0.5)' : 'rgba(233, 170, 9, 1)',
+						background: isFormNotValid() ? 'rgba(233, 170, 9, 0.5)' : 'rgba(233, 170, 9, 1)',
 						borderRadius: '50px',
 						color: '#000',
 						fontWeight: 400,
@@ -135,6 +179,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 						width: 180,
 						height: 40,
 					}}
+					onClick={handleCreateBankDeposit}
 				>
 					Continue
 				</Button>

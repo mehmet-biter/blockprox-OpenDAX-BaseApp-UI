@@ -1,6 +1,6 @@
 import { API, RequestOptions } from 'api';
 import { call, put } from 'redux-saga/effects';
-import { bankAccountListData, BankAccountListFetch, bankAccountListFetchError } from '../actions';
+import { bankAccountListData, BankAccountListFetch, bankAccountListFetchError } from '../actions/bankAccountActions';
 import { BankAccount } from '../types';
 
 const createOptions = (csrfToken?: string): RequestOptions => {

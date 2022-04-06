@@ -4,7 +4,7 @@ import { BankAccountList } from 'plugins/Bank/containers';
 import { NewCustomInput, NewModal } from 'components';
 import NoticeWhiteIcon from 'assets/icons/notice_white.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { bankAccountListFetch, createBankAccount } from 'modules/plugins/fiat/bank/actions';
+import { bankAccountListFetch, createBankAccount } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
 import { selectBankAccountList, selectBankAccountListLoading } from 'modules/plugins/fiat/bank/selectors';
 
 interface BankFormField {

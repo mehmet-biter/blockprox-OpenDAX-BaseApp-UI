@@ -107,7 +107,13 @@ import {
 	PaypalWithdrawHistoryState,
 	rootPaypalSaga,
 } from './plugins/fiat/paypal';
-import { BankAccountListState, CreateBankAccountState, DeleteBankAccountState } from './plugins/fiat/bank/types';
+import {
+	BankAccountListState,
+	BankDepositHistoryListState,
+	CreateBankAccountState,
+	CreateBankDepositState,
+	DeleteBankAccountState,
+} from './plugins/fiat/bank/types';
 import { rootBankSaga } from './plugins/fiat/bank/sagas';
 
 export * from './plugins/ethWithdraw/fee';
@@ -273,6 +279,8 @@ export interface RootState {
 			bankAccountList: BankAccountListState;
 			createBankAccount: CreateBankAccountState;
 			deleteBankAccount: DeleteBankAccountState;
+			bankDepositHistoryList: BankDepositHistoryListState;
+			createBankDeposit: CreateBankDepositState;
 		};
 	};
 }

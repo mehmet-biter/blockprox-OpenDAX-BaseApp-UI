@@ -1,4 +1,4 @@
-import { BankAccountActions } from './../actions';
+import { BankAccountActions } from '../actions/bankAccountActions';
 
 import {
 	BANK_ACCOUNT_LIST_FETCH,
@@ -6,9 +6,10 @@ import {
 	BANK_ACCOUNT_LIST_ERROR,
 	CREATE_BANK_ACCOUNT_DATA,
 	DELETE_BANK_ACCOUNT_DATA,
+	UPDATE_BANK_ACCOUNT_CREATION,
 } from '../constants';
 
-import { BankAccountListState, CreateBankAccountState, DeleteBankAccountState } from '../types';
+import { BankAccount, BankAccountListState, CreateBankAccountState, DeleteBankAccountState } from '../types';
 
 export const initialBankAccountList: BankAccountListState = {
 	payload: [],
@@ -36,6 +37,15 @@ export const bankAccountListReducer = (state = initialBankAccountList, action: B
 				...state,
 				loading: false,
 				error: action.error,
+			};
+		case UPDATE_BANK_ACCOUNT_CREATION:
+			const newBankAccount: BankAccount = action.payload;
+
+			return {
+				...state,
+				payload: [...state.payload, newBankAccount],
+				loading,
+				error: undefined,
 			};
 		default:
 			return state;

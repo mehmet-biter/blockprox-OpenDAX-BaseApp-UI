@@ -1,4 +1,8 @@
-import { bankAccountListFetch, DeleteBankAccount, deleteBankAccountData } from 'modules/plugins/fiat/bank/actions';
+import {
+	bankAccountListFetch,
+	DeleteBankAccount,
+	deleteBankAccountData,
+} from 'modules/plugins/fiat/bank/actions/bankAccountActions';
 import { API, RequestOptions } from 'api';
 import { call, put } from 'redux-saga/effects';
 import { alertPush } from 'modules/public/alert';
