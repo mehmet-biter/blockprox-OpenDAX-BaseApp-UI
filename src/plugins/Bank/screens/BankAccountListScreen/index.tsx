@@ -6,6 +6,8 @@ import NoticeWhiteIcon from 'assets/icons/notice_white.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { bankAccountListFetch, createBankAccount } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
 import { selectBankAccountList, selectBankAccountListLoading } from 'modules/plugins/fiat/bank/selectors';
+import { selectUserInfo } from 'modules';
+import { useHistory } from 'react-router';
 
 interface BankFormField {
 	accountName: string;
@@ -17,13 +19,18 @@ interface BankFormField {
 }
 
 export const BankAccountListScreen = () => {
-	// state
+	const history = useHistory();
+
+	// store
 	const bankAccountList = useSelector(selectBankAccountList);
 	const isBankAccountListLoading = useSelector(selectBankAccountListLoading);
+	const user = useSelector(selectUserInfo);
 
 	// dispatch
 	const dispatch = useDispatch();
 	const dispatchFetchBankAccountList = () => dispatch(bankAccountListFetch());
+
+	const redirectToEnable2fa = () => history.push('/security/2fa', { enable2fa: true });
 
 	React.useEffect(() => {
 		dispatchFetchBankAccountList();
@@ -240,23 +247,53 @@ export const BankAccountListScreen = () => {
 		);
 	};
 
-	return (
-		<div className="desktop-bank-account-list-screen">
-			<div className="desktop-bank-account-list-screen__header">
-				<h1 className="desktop-bank-account-list-screen__header__title">Bank Account</h1>
-				<Button className="desktop-bank-account-list-screen__header__add-bank-btn" onClick={handleShowAddBankAccountForm}>
-					Add Bank Account
+	const render2FARequire = () => {
+		return (
+			<div className="d-flex flex-column justify-content-center align-items-center mt-5">
+				<h3 className="mb-3">To use bank feature, you have to enable 2FA </h3>
+				<Button
+					style={{
+						background: 'var(--system-yellow)',
+						border: '1px solid #848E9C',
+						borderRadius: '23.5px',
+					}}
+					block={true}
+					onClick={redirectToEnable2fa}
+					size="lg"
+					className="w-50"
+					variant="primary"
+				>
+					Enable 2FA
 				</Button>
 			</div>
-			<BankAccountList bankAccounts={bankAccountList} isLoading={isBankAccountListLoading} />
+		);
+	};
+	return (
+		<div className="desktop-bank-account-list-screen">
+			{!user.otp ? (
+				render2FARequire()
+			) : (
+				<React.Fragment>
+					<div className="desktop-bank-account-list-screen__header">
+						<h1 className="desktop-bank-account-list-screen__header__title">Bank Account</h1>
+						<Button
+							className="desktop-bank-account-list-screen__header__add-bank-btn"
+							onClick={handleShowAddBankAccountForm}
+						>
+							Add Bank Account
+						</Button>
+					</div>
+					<BankAccountList bankAccounts={bankAccountList} isLoading={isBankAccountListLoading} />
 
-			<NewModal
-				className="desktop-bank-account-list-screen__new-modal"
-				show={showAddBankAccountForm}
-				onHide={handleCloseAddBankAccountForm}
-				titleModal="BANK INFORMATION"
-				bodyModal={renderBodyModalAddBankForm()}
-			/>
+					<NewModal
+						className="desktop-bank-account-list-screen__new-modal"
+						show={showAddBankAccountForm}
+						onHide={handleCloseAddBankAccountForm}
+						titleModal="BANK INFORMATION"
+						bodyModal={renderBodyModalAddBankForm()}
+					/>
+				</React.Fragment>
+			)}
 		</div>
 	);
 };
