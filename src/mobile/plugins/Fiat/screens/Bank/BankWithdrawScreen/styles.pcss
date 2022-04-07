@@ -96,7 +96,7 @@
 		&__inform-container {
 			background-color: rgba(18, 31, 55, 1);
 			border-radius: 3px;
-			padding: 2em 2em 1em;
+			padding: 2em 1.2em 1em;
 			width: 100%;
 
 			span {
@@ -119,6 +119,81 @@
 			&__icon {
 				margin-bottom: 3px;
 				margin-right: 5px;
+			}
+		}
+	}
+
+	&__new-modal {
+		.modal-dialog {
+			justify-content: center;
+			margin-bottom: 2rem;
+		}
+
+		.modal-content {
+			background: rgb(var(--rgb-nile-blue));
+			border-radius: 10px;
+			box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.15);
+			max-width: 25rem;
+			overflow: hidden;
+			padding: 0 !important;
+			margin-bottom: 4rem;
+
+			.new__modal-header {
+				background: rgb(var(--rgb-bunting));
+				border-bottom: 2px solid var(--system-yellow);
+				padding-bottom: 1rem !important;
+				padding-left: 23px !important;
+				padding-right: 23px !important;
+
+				.modal-title,
+				.close {
+					align-items: center;
+					color: var(--primary-text-color);
+					display: flex;
+					justify-content: center;
+				}
+
+				.modal-title.h4 {
+					flex: 1;
+					font-size: 16px;
+					font-style: normal;
+					font-weight: 600;
+					height: 100%;
+					margin: 0;
+					text-align: center;
+					text-transform: uppercase;
+				}
+
+				.close {
+					span:first-child {
+						font-size: 25px;
+					}
+				}
+			}
+
+			.modal-body {
+				padding-bottom: 35px;
+				padding-left: 23px;
+				padding-right: 23px;
+
+				.td-email-form__group {
+					background: transparent;
+					margin-bottom: 20px;
+					position: relative;
+
+					input {
+						background-color: rgb(var(--rgb-mirage)) !important;
+						border: 1px solid rgb(var(--rgb-waikawa-gray));
+						border-radius: 50px;
+						box-sizing: border-box;
+					}
+				}
+
+				.td-email-form__group--focused {
+					.td-email-form__label {
+						color: var(--input-legend-color-active);
+					}
+				}
 			}
 		}
 	}

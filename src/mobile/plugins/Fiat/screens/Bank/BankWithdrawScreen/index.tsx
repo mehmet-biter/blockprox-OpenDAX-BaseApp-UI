@@ -99,7 +99,7 @@ export const BankWithdrawScreen = (props: BankDepositScreenProps) => {
 				<div className="d-flex justify-content-center mt-5">
 					<Button
 						style={{
-							background: 'rgba(233, 170, 9, 1)',
+							background: 'var(--yellow)',
 							borderRadius: '50px',
 							color: '#000',
 							fontWeight: 400,
@@ -196,6 +196,7 @@ export const BankWithdrawScreen = (props: BankDepositScreenProps) => {
 				</Button>
 			</div>
 			<NewModal
+				className="td-mobile-wallet-fiat-bank-withdraw__new-modal"
 				show={showWithdrawConfirmationForm}
 				onHide={handleCloseWithdrawConfirmationForm}
 				titleModal="WITHRAW CONFIRMATION"
