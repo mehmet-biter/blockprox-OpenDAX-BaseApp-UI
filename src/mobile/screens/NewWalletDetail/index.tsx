@@ -50,6 +50,11 @@ export const NewWalletDetail: FC = () => {
 		history.goBack();
 	}
 
+	const handleRoute = (value: string) => {
+		return wallet?.type === 'fiat'
+			? `/wallets/${value}/fiat/${wallet?.currency.toUpperCase()}`
+			: `/wallets/${wallet?.currency}/${value}`;
+	};
 	return (
 		<div className="td-mobile-wallet-detail">
 			<div className="td-mobile-wallet-detail__header">
@@ -105,11 +110,11 @@ export const NewWalletDetail: FC = () => {
 				</div>
 
 				<div className="td-mobile-wallet-detail__panel__buttons">
-					<Link to={`/wallets/${wallet?.currency}/withdraw`} className="td-mobile-wallet-detail__panel__buttons__btn">
+					<Link to={handleRoute('withdraw')} className="td-mobile-wallet-detail__panel__buttons__btn">
 						{intl.formatMessage({ id: 'page.body.wallets.tabs.withdraw' })}
 					</Link>
 					<Link
-						to={`/wallets/${wallet?.currency}/deposit`}
+						to={handleRoute('deposit')}
 						className="td-mobile-wallet-detail__panel__buttons__btn td-mobile-wallet-detail__panel__buttons__btn--yellow"
 					>
 						{intl.formatMessage({ id: 'page.body.wallets.tabs.deposit' })}

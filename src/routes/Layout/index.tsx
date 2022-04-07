@@ -112,6 +112,7 @@ import { FiatWithdrawScreen } from 'plugins/Fiat/screens/FiatWithdrawScreen';
 import { AnnouncementDetail, NewAnnouncement } from 'plugins/Announcement/screens';
 import { AnnouncementMobileDetail } from 'mobile/plugins/Announcement';
 import { LoadingGif } from 'components/LoadingGif';
+import { FiatDepositMobileScreen, FiatWithdrawMobileScreen } from 'mobile/plugins/Fiat';
 
 interface ReduxProps {
 	colorTheme: string;
@@ -185,7 +186,7 @@ const PublicRoute: React.FunctionComponent<any> = ({ component: CustomComponent,
 	if (isLogged) {
 		return (
 			<Route {...rest}>
-				<Redirect to={'/profile/bank'} />
+				<Redirect to={'/wallets/deposit/fiat/INR'} />
 			</Route>
 		);
 	}
@@ -367,7 +368,20 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 							path="/wallets/:currency/deposit"
 							component={DepositMobileScreen}
 						/>
-
+						<PrivateRoute
+							loading={userLoading}
+							isLogged={isLoggedIn}
+							path="/wallets/deposit/fiat/:currency_id"
+							exact
+							component={FiatDepositMobileScreen}
+						/>
+						<PrivateRoute
+							loading={userLoading}
+							isLogged={isLoggedIn}
+							path="/wallets/withdraw/fiat/:currency_id"
+							exact
+							component={FiatWithdrawMobileScreen}
+						/>
 						<PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/orders" component={OrdersMobileScreen} />
 						<PrivateRoute
 							exact

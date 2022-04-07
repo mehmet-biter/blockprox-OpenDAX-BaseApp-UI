@@ -1,0 +1,122 @@
+.td-mobile-wallet-fiat-bank-deposit {
+	margin: var(--mobile-main-margin-size);
+	background-color: rgb(var(--rgb-big-stone));
+	border-radius: 0 0 5px 5px;
+
+	&__title {
+		color: rgb(var(--rgb-primary-text-color));
+		font-size: 1rempx;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 19px;
+		margin-bottom: 1.5em;
+	}
+
+	&__inform-container {
+		background-color: rgb(var(--rgb-subheader-background-color));
+		border-radius: 5px 5px 0 0;
+		margin-bottom: 1rem;
+		padding: 0.1em 0;
+
+		&__inform {
+			border-radius: 5px 5px 0 0;
+			margin: 1em 2em 1em 0.8em;
+			font-size: 0.8rem;
+
+			color: rgb(var(--rgb-primary-text-color));
+			svg {
+				cursor: pointer;
+				margin-left: 0.6em;
+			}
+		}
+	}
+
+	&__input {
+		&__label {
+			color: rgb(var(--rgb-primary-text-color));
+			font-size: 1rem;
+			font-style: normal;
+			font-weight: 400;
+			letter-spacing: 0;
+
+			&__notice-icon {
+				cursor: pointer;
+				margin-bottom: 2px;
+				margin-left: 2px;
+			}
+
+			.tooltiptext {
+				background-color: black;
+				border-radius: 6px;
+				padding: 5px 10px;
+
+				/* Position the tooltip */
+				position: absolute;
+				text-align: start;
+				visibility: hidden;
+				width: 200px;
+				z-index: 1;
+			}
+		}
+
+		&__label:hover .tooltiptext {
+			visibility: visible;
+		}
+
+		input {
+			background-color: rgb(var(--rgb-big-stone));
+			border: 1px solid rgb(var(--rgb-rose-white));
+			border-radius: 10px 10px;
+		}
+
+		.ant-input-group-addon {
+			background-color: rgb(var(--rgb-big-stone));
+			border: 1px solid rgb(var(--rgb-rose-white));
+			border-radius: 0 10px 10px 0;
+		}
+
+		&__notice {
+			color: rgb(var(--rgb-dusty-gray));
+			font-size: 10px;
+			font-weight: 400;
+			letter-spacing: 0;
+			line-height: 14px;
+		}
+	}
+
+	&__transaction-fee {
+		margin-left: 3rem;
+		width: 100%;
+
+		&__label {
+			color: rgb(var(--rgb-primary-text-color));
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0;
+			line-height: 16px;
+		}
+
+		&__value {
+			color: rgb(var(--rgb-primary-text-color));
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: 0;
+			line-height: 16px;
+		}
+	}
+
+	&__check-box {
+		background-color: rgb(var(--rgb-silver-29));
+		margin: 2em 0;
+		padding: 1em 1em 1em 1.5em;
+		width: 100%;
+
+		.ant-checkbox {
+			background-color: rgb(var(--rgb-silver-65));
+			border-radius: 3px;
+
+			.ant-checkbox-inner {
+			}
+		}
+	}
+}
