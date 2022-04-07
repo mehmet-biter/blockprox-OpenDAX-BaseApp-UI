@@ -100,7 +100,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 							</span>
 						</div>
 
-						<div className="p-0 td-mobile-wallet-fiat-bank-deposit__input mt-2">
+						<div className="p-0 td-mobile-wallet-fiat-bank-deposit__input">
 							<label className="td-mobile-wallet-fiat-bank-deposit__input__label">
 								Transaction ID{' '}
 								<img className="td-mobile-wallet-fiat-bank-deposit__input__label__notice-icon" src={NoticeIcon} />
@@ -113,9 +113,9 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 					</div>
 					<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee">
 						<div style={{ textAlign: 'right', marginTop: '1em' }}>
-							<img src={QRcodeImage} style={{ width: 120, height: 120, marginRight: 0, marginBottom: '2em' }} />
+							<img src={QRcodeImage} style={{ width: '8em', height: '8em', marginRight: 0, marginBottom: '4em' }} />
 						</div>
-						<div className="d-flex flex-row justify-content-between mb-2">
+						<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '12em' }}>
 							<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">Transaction Fee:</div>
 							<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
 								{formatNumber(
@@ -127,7 +127,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 								{_toUpper(currency_id)}
 							</div>
 						</div>
-						<div className="d-flex flex-row justify-content-between">
+						<div className="d-flex flex-row justify-content-between" style={{ width: '12em' }}>
 							<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">You Will Get</span>
 							<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
 								{formatNumber(
@@ -157,8 +157,8 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 							color: 'rgb(var(--rgb-primary-text-color))',
 							fontWeight: 400,
 							fontSize: 12,
-							width: 180,
-							height: 40,
+							width: '12rem',
+							height: '3.1rem',
 							borderColor: 'rgb(var(--rgb-paginate-next-prev-color))',
 							marginBottom: '1em',
 						}}

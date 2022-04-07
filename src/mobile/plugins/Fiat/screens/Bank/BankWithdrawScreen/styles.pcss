@@ -1,0 +1,125 @@
+.td-mobile-wallet-fiat-bank-withdraw {
+	margin: var(--mobile-main-margin-size);
+	background-color: rgb(var(--rgb-big-stone));
+	border-radius: 0 0 5px 5px;
+
+	&__input {
+		margin-bottom: 2em;
+
+		label {
+			color: rgb(var(--rgb-primary-text-color));
+			font-size: 12px;
+			font-style: normal;
+			font-weight: 400;
+			letter-spacing: 0;
+		}
+
+		input {
+			background-color: rgb(var(--rgb-big-stone));
+			border: 1px solid rgb(var(--rgb-pickled-bluewood));
+			border-radius: 3px;
+		}
+
+		.ant-input-disabled {
+			background-color: rgb(var(--rgb-big-stone));
+			color: rgb(var(--rgb-text-white));
+		}
+	}
+
+	&__select {
+		border-radius: 3px;
+		width: 100%;
+
+		&__label {
+			color: rgb(var(--rgb-primary-text-color));
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0;
+			line-height: 16px;
+		}
+
+		&__settings-label {
+			color: rgb(var(--rgb-silver));
+			cursor: pointer;
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0;
+			line-height: 16px;
+			margin-right: 1em;
+			text-decoration: underline;
+		}
+
+		&__input {
+			background-color: rgb(var(--rgb-pickled-bluewood));
+			border-radius: 3px;
+			width: 100%;
+
+			.ant-select-arrow {
+				color: rgb(var(--rgb-text-white));
+			}
+		}
+
+		&__balance-label {
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0;
+			line-height: 16px;
+		}
+
+		&__balance-value {
+			color: rgb(var(--rgb-cerulean));
+			font-size: 14px;
+			font-weight: 600;
+			letter-spacing: 0;
+			line-height: 19px;
+			margin-left: 0.8em;
+		}
+	}
+
+	&__label {
+		color: rgb(var(--rgb-primary-text-color));
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 32px;
+	}
+
+	&__value {
+		color: rgb(var(--rgb-cerulean));
+		font-size: 16px;
+		font-weight: 600;
+		letter-spacing: 0;
+		line-height: 33px;
+	}
+
+	&__modal-form {
+		&__inform-container {
+			background-color: rgba(18, 31, 55, 1);
+			border-radius: 3px;
+			padding: 2em 2em 1em;
+			width: 100%;
+
+			span {
+				color: rgb(var(--rgb-text-white));
+				font-family: Open Sans;
+				font-size: 12px;
+				font-weight: 400;
+				letter-spacing: 0;
+				line-height: 16px;
+				margin-bottom: 1em;
+			}
+		}
+
+		&__warning {
+			color: rgb(var(--rgb-galliano));
+			margin-left: 0.5em;
+			margin-top: 1em;
+			font-size: 0.8rem;
+
+			&__icon {
+				margin-bottom: 3px;
+				margin-right: 5px;
+			}
+		}
+	}
+}

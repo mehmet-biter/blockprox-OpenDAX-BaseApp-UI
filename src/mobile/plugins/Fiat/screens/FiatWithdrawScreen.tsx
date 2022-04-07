@@ -1,9 +1,27 @@
 import { GoBackIcon } from 'mobile/assets/icons/GoBackIcon';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import _toLower from 'lodash/toLower';
+import { BankWithdrawScreen } from './Bank';
 
 export const FiatWithdrawMobileScreen = () => {
 	const history = useHistory();
+
+	const { currency_id } = useParams<{ currency_id: string }>();
+
+	const renderBody = () => {
+		switch (_toLower(currency_id)) {
+			case 'inr':
+				return <BankWithdrawScreen currency_id={_toLower(currency_id)} />;
+
+			default:
+				return (
+					<div>
+						<h1>Coming Soon</h1>
+					</div>
+				);
+		}
+	};
 
 	return (
 		<div className="td-mobile-wallet-fiat">
@@ -20,6 +38,7 @@ export const FiatWithdrawMobileScreen = () => {
 					</svg>
 				</Link>
 			</div>
+			{renderBody()}
 		</div>
 	);
 };
