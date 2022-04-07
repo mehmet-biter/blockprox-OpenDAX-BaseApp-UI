@@ -8,6 +8,7 @@ import {
 	DELETE_BANK_ACCOUNT,
 	DELETE_BANK_ACCOUNT_DATA,
 	UPDATE_BANK_ACCOUNT_CREATION,
+	UPDATE_BANK_ACCOUNT_DELETION,
 } from '../constants';
 
 import { BankAccount, BankAccountListState, CreateBankAccountState, DeleteBankAccountState } from '../types';
@@ -54,6 +55,12 @@ export interface DeleteBankAccount {
 		otp: string;
 	};
 }
+export interface UpdateBankAccountDeletion {
+	type: typeof UPDATE_BANK_ACCOUNT_DELETION;
+	payload: {
+		account_number: string;
+	};
+}
 
 export interface DeleteBankAccountData {
 	type: typeof DELETE_BANK_ACCOUNT_DATA;
@@ -68,7 +75,8 @@ export type BankAccountActions =
 	| CreateBankAccountData
 	| DeleteBankAccount
 	| DeleteBankAccountData
-	| UpdateBankAccountCreation;
+	| UpdateBankAccountCreation
+	| UpdateBankAccountDeletion;
 
 export const bankAccountListFetch = (): BankAccountListFetch => ({ type: BANK_ACCOUNT_LIST_FETCH });
 
@@ -104,5 +112,9 @@ export const deleteBankAccount = (payload: DeleteBankAccount['payload']): Delete
 
 export const deleteBankAccountData = (payload: DeleteBankAccountData['payload']): DeleteBankAccountData => ({
 	type: DELETE_BANK_ACCOUNT_DATA,
+	payload,
+});
+export const updateBankAccountDeletion = (payload: UpdateBankAccountDeletion['payload']): UpdateBankAccountDeletion => ({
+	type: UPDATE_BANK_ACCOUNT_DELETION,
 	payload,
 });

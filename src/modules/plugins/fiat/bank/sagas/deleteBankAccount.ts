@@ -1,7 +1,7 @@
 import {
-	bankAccountListFetch,
 	DeleteBankAccount,
 	deleteBankAccountData,
+	updateBankAccountDeletion,
 } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
 import { API, RequestOptions } from 'api';
 import { call, put } from 'redux-saga/effects';
@@ -22,7 +22,7 @@ export function* deleteBankAccountSaga(action: DeleteBankAccount) {
 		console.log('action.payload: ', action.payload);
 		yield call(API.delete(createOptions()), `/delete?otp=${otp}`, { account_number: action.payload.account_number });
 
-		yield put(bankAccountListFetch());
+		yield put(updateBankAccountDeletion({ account_number: action.payload.account_number }));
 		yield put(alertPush({ message: ['Delete Bank Account Successfully'], type: 'success' }));
 	} catch (error) {
 		console.log('ERROR', error);

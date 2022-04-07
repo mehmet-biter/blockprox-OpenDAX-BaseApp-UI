@@ -7,6 +7,7 @@ import {
 	CREATE_BANK_ACCOUNT_DATA,
 	DELETE_BANK_ACCOUNT_DATA,
 	UPDATE_BANK_ACCOUNT_CREATION,
+	UPDATE_BANK_ACCOUNT_DELETION,
 } from '../constants';
 
 import { BankAccount, BankAccountListState, CreateBankAccountState, DeleteBankAccountState } from '../types';
@@ -47,6 +48,13 @@ export const bankAccountListReducer = (state = initialBankAccountList, action: B
 				loading,
 				error: undefined,
 			};
+		case UPDATE_BANK_ACCOUNT_DELETION:
+			const { account_number } = action.payload;
+			const removeIndex = state.payload.map(item => item.account_number).indexOf(account_number);
+
+			removeIndex && state.payload.splice(removeIndex, 1);
+
+			return { ...state, payload: [...state.payload], loading, error: undefined };
 		default:
 			return state;
 	}
