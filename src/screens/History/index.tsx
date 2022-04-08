@@ -35,7 +35,7 @@ export const HistoryScreen = () => {
 	const marketsData = useSelector(selectMarkets);
 	const wallets = useSelector(selectWallets);
 	const list = useSelector(selectHistory);
-	const fiatDepositHistoryList = useSelector(selectBankDepositHistoryList);
+	const fiatBankDepositHistoryList = useSelector(selectBankDepositHistoryList);
 
 	const fetching = useSelector(selectHistoryLoading);
 
@@ -325,9 +325,7 @@ export const HistoryScreen = () => {
 		const indexElemStop = (pageIndex - 1) * limitElem + limitElem;
 		const bodyTable = () => {
 			if (tab === 'fiatDeposit') {
-				console.log('fiatDepositHistoryList: ', fiatDepositHistoryList);
-
-				return fiatDepositHistoryList
+				return fiatBankDepositHistoryList
 					.slice(paginationState * NUMBER_ITEM_DISPLAY, paginationState * NUMBER_ITEM_DISPLAY + NUMBER_ITEM_DISPLAY)
 					.slice(indexElemStart, indexElemStop)
 					.map((item, index) => {
@@ -345,7 +343,7 @@ export const HistoryScreen = () => {
 		const emptyData = () => {
 			if (tab === 'fiatDeposit') {
 				return (
-					fiatDepositHistoryList.length === 0 ?? (
+					fiatBankDepositHistoryList.length === 0 ?? (
 						<div className="text-center history-screen__tabs__content__table pt-5 pb-5">
 							Empty data .
 							<br /> Please try on next page or prev page{' '}
@@ -388,7 +386,7 @@ export const HistoryScreen = () => {
 	};
 
 	const renderPagination = () => {
-		const pageCount = (tab === 'fiatDeposit' ? fiatDepositHistoryList.length : list.length) / NUMBER_ITEM_DISPLAY;
+		const pageCount = (tab === 'fiatDeposit' ? fiatBankDepositHistoryList.length : list.length) / NUMBER_ITEM_DISPLAY;
 
 		return (
 			<ReactPaginate

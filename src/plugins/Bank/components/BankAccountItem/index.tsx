@@ -157,7 +157,7 @@ export const BankAccountItem = (props: BankAccountItemProps) => {
 			<td>
 				<Button
 					className="desktop-bank-account-list-screen__bank-account-list__bank-account-item__remove-btn"
-					onClick={user.otp ? handleShow2FAVerificationForm : () => null}
+					onClick={() => user.otp && handleShow2FAVerificationForm()}
 				>
 					Remove
 				</Button>

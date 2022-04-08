@@ -11,6 +11,8 @@ import { formatNumber } from 'helpers';
 import { selectCurrencies } from 'modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { createBankDeposit } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import NP from 'number-precision';
 
 interface BankDepositProps {
 	currency_id: string;
@@ -39,7 +41,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 
 	const [isContinueButtonDisabled, setIsContinueButtonDisabled] = React.useState(true);
 
-	const onClickCheckBox = e => {
+	const onClickCheckBox = (e: CheckboxChangeEvent) => {
 		setIsContinueButtonDisabled(state => !state);
 	};
 
@@ -47,7 +49,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 
 	const [amountInputValueState, setAmountInputValueState] = React.useState<string>('');
 
-	const onHandleChangeAmountInputValueState = e => {
+	const onHandleChangeAmountInputValueState: React.ChangeEventHandler<HTMLInputElement> = e => {
 		let value = e.target.value;
 
 		const indexOfDot: number = removeCommaInNumber(value).indexOf('.');
@@ -137,9 +139,12 @@ export const BankDeposit = (props: BankDepositProps) => {
 							<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
 							<div className="desktop-bank-deposit__transaction-fee__value">
 								{formatNumber(
-									(
-										(Number(removeCommaInNumber(amountInputValueState!)) * Number(currency?.deposit_fee)) /
-										100
+									NP.divide(
+										NP.times(
+											Number(removeCommaInNumber(amountInputValueState!)),
+											Number(currency?.deposit_fee),
+										),
+										100,
 									).toString(),
 								)}{' '}
 								{_toUpper(currency_id)}
@@ -149,10 +154,15 @@ export const BankDeposit = (props: BankDepositProps) => {
 							<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
 							<span className="desktop-bank-deposit__transaction-fee__value">
 								{formatNumber(
-									(
-										Number(removeCommaInNumber(amountInputValueState!)) -
-										(Number(removeCommaInNumber(amountInputValueState!)) * Number(currency?.deposit_fee)) /
-											100
+									NP.minus(
+										Number(removeCommaInNumber(amountInputValueState!)),
+										NP.divide(
+											NP.times(
+												Number(removeCommaInNumber(amountInputValueState!)),
+												Number(currency?.deposit_fee),
+											),
+											100,
+										),
 									).toString(),
 								)}{' '}
 								{_toUpper(currency_id)}

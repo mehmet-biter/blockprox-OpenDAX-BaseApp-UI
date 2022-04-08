@@ -31,7 +31,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 
 	const [otpInputValueState, setOtpInputValueState] = React.useState('');
 
-	const onHandleChangeNumeric = e => {
+	const onHandleChangeNumeric: React.ChangeEventHandler<HTMLInputElement> = e => {
 		let value = e.target.value;
 
 		if (!Number(value) && value.length > 0) {
@@ -43,7 +43,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 
 	const [withdrawInputValueState, setWithdrawInputValueState] = React.useState<string>('');
 
-	const onHandleChangeWithdrawInputValueState = e => {
+	const onHandleChangeWithdrawInputValueState: React.ChangeEventHandler<HTMLInputElement> = e => {
 		let value = e.target.value;
 
 		const indexOfDot: number = removeCommaInNumber(value).indexOf('.');

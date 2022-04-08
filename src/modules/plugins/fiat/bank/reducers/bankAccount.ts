@@ -50,11 +50,13 @@ export const bankAccountListReducer = (state = initialBankAccountList, action: B
 			};
 		case UPDATE_BANK_ACCOUNT_DELETION:
 			const { account_number } = action.payload;
-			const removeIndex = state.payload.map(item => item.account_number).indexOf(account_number);
 
-			removeIndex && state.payload.splice(removeIndex, 1);
-
-			return { ...state, payload: [...state.payload], loading, error: undefined };
+			return {
+				...state,
+				payload: [...state.payload.filter(bankAccount => bankAccount.account_number !== account_number)],
+				loading,
+				error: undefined,
+			};
 		default:
 			return state;
 	}

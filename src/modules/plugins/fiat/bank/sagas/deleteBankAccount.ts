@@ -18,15 +18,13 @@ export function* deleteBankAccountSaga(action: DeleteBankAccount) {
 				loading: true,
 			}),
 		);
-		const { otp } = action.payload;
-		console.log('action.payload: ', action.payload);
-		yield call(API.delete(createOptions()), `/delete?otp=${otp}`, { account_number: action.payload.account_number });
+		const { otp, account_number } = action.payload;
 
-		yield put(updateBankAccountDeletion({ account_number: action.payload.account_number }));
+		yield call(API.delete(createOptions()), `/delete?otp=${otp}`, { account_number });
+
+		yield put(updateBankAccountDeletion({ account_number }));
 		yield put(alertPush({ message: ['Delete Bank Account Successfully'], type: 'success' }));
 	} catch (error) {
-		console.log('ERROR', error);
-
 		yield put(alertPush({ message: [error.message], type: 'error' }));
 	}
 	yield put(
