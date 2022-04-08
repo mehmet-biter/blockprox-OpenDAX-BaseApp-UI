@@ -40,6 +40,7 @@ export const BankAccountItem = (props: BankAccountItemProps) => {
 	};
 
 	const handleDeleteBankAccount = () => {
+		handleCloseDeleteConfirmationForm();
 		dispatch(
 			deleteBankAccount({
 				account_number: bankAccountItem.account_number,

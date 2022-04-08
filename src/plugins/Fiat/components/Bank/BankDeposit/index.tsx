@@ -4,11 +4,11 @@ import _toLower from 'lodash/toLower';
 import _toUpper from 'lodash/toUpper';
 import _find from 'lodash/find';
 import { Button, Input } from 'antd';
-import QRcodeImage from './QR_code.jpg';
+import QRcodeImage from '../../../assets/images/QR_code.jpg';
 import { Checkbox } from 'antd';
 import NoticeIcon from 'assets/icons/notice.svg';
 import { formatNumber } from 'helpers';
-import { selectCurrencies } from 'modules';
+import { alertPush, selectCurrencies } from 'modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { createBankDeposit } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
@@ -31,7 +31,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 		dispatch(
 			createBankDeposit({
 				currency_id,
-				amount: Number(amountInputValueState),
+				amount: Number(removeCommaInNumber(amountInputValueState)),
 				txid: transactionIDState,
 			}),
 		);
@@ -66,11 +66,17 @@ export const BankDeposit = (props: BankDepositProps) => {
 	};
 
 	const isEmpty = (value: string): boolean => {
-		return value.length === 0;
+		return value.trim().length === 0;
 	};
 	const isFormNotValid = (): boolean => {
 		return isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState);
 	};
+
+	async function copyTextToClipboard(text: string) {
+		dispatch(alertPush({ message: ['Copied!'], type: 'success' }));
+		return await navigator.clipboard.writeText(text);
+	}
+
 	// side-effects
 	React.useEffect(() => {
 		const id = setInterval(() => {}, 5000);
@@ -83,7 +89,14 @@ export const BankDeposit = (props: BankDepositProps) => {
 				<div>{label}</div>
 				<div className="row">
 					{content}
-					<svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<svg
+						width="17"
+						height="18"
+						viewBox="0 0 17 18"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						onClick={() => copyTextToClipboard(content)}
+					>
 						<path
 							fill-rule="evenodd"
 							clip-rule="evenodd"
@@ -117,8 +130,8 @@ export const BankDeposit = (props: BankDepositProps) => {
 								value={formatNumber(removeCommaInNumber(amountInputValueState!))}
 								onChange={onHandleChangeAmountInputValueState}
 							/>
-							<span className="desktop-bank-deposit__input__notice">
-								Amount should be between 0 and 100 {_toUpper(currency_id)}
+							<span className="desktop-bank-deposit__input__notice mt-2">
+								Amount should be at least {currency?.min_deposit_amount} {_toUpper(currency_id)}
 							</span>
 						</div>
 
@@ -137,7 +150,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 						<img src={QRcodeImage} style={{ width: 120, height: 120, marginRight: 0, marginBottom: '2rem' }} />
 
 						<div className="d-flex flex-column justify-content-center align-items-end">
-							<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '16rem' }}>
+							<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '18rem' }}>
 								<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
 								<div className="desktop-bank-deposit__transaction-fee__value">
 									{formatNumber(
@@ -152,7 +165,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 									{_toUpper(currency_id)}
 								</div>
 							</div>
-							<div className="d-flex flex-row justify-content-between" style={{ width: '16rem' }}>
+							<div className="d-flex flex-row justify-content-between" style={{ width: '18rem' }}>
 								<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
 								<span className="desktop-bank-deposit__transaction-fee__value">
 									{formatNumber(

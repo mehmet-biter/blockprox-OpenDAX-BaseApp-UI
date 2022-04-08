@@ -32,7 +32,7 @@ export const BankAccountList = (props: BankAccountListProps) => {
 						))}
 				</tbody>
 			</table>
-			{bankAccounts.length === 0 && (
+			{!isLoading && bankAccounts.length === 0 && (
 				<div className="text-center empty mt-3">
 					<img
 						className="text-center"

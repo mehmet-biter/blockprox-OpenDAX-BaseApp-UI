@@ -120,9 +120,12 @@ export const BankAccountListScreen = () => {
 						/>
 						Recipient name must be the same as recorded on our platform. Please contact{' '}
 						{
-							<span className="desktop-bank-account-list-screen__bank-form__input__warning__highlight">
+							<a
+								className="desktop-bank-account-list-screen__bank-form__input__warning__highlight"
+								href="mailto:support@blockproex.in"
+							>
 								administrator support
-							</span>
+							</a>
 						}{' '}
 						for any issues.
 					</span>
