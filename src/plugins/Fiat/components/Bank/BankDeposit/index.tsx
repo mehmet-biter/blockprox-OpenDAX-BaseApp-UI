@@ -105,11 +105,11 @@ export const BankDeposit = (props: BankDepositProps) => {
 			{renderBankAccountInform('Bank Address', 'Wakad, Pune')}
 			{renderBankAccountInform('IFSC Code', 'YESB0000728')}
 			<hr className="solid" style={{ background: 'white', width: '100%', marginTop: 25, marginBottom: 25 }} />
-			<div style={{ position: 'relative' }}>
-				<div className="desktop-bank-deposit__title">Enter Deposit Amount</div>
-				<div className="row">
-					<div className="col-6">
-						<div className="col-10 p-0 desktop-bank-deposit__input">
+			<div>
+				<div className="d-flex flex-row justify-content-between">
+					<div>
+						<div className="desktop-bank-deposit__title">Enter Deposit Amount</div>
+						<div className="p-0 desktop-bank-deposit__input">
 							<label className="desktop-bank-deposit__input__label">Amount</label>
 							<Input
 								addonAfter={_toUpper(currency_id)}
@@ -122,7 +122,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 							</span>
 						</div>
 
-						<div className="col-10 p-0 desktop-bank-deposit__input mt-3">
+						<div className="p-0 desktop-bank-deposit__input mt-3">
 							<label className="desktop-bank-deposit__input__label">
 								Transaction ID{' '}
 								<img className="desktop-bank-deposit__input__label__notice-icon" src={NoticeIcon} />
@@ -133,40 +133,43 @@ export const BankDeposit = (props: BankDepositProps) => {
 							<Input value={transactionIDState} onChange={value => setTransactionIDState(value.target.value)} />
 						</div>
 					</div>
-					<img src={QRcodeImage} style={{ position: 'absolute', top: 0, right: 0, width: 120, height: 120 }} />
-					<div className="col-4 desktop-bank-deposit__transaction-fee">
-						<div className="d-flex flex-row justify-content-between mb-2">
-							<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
-							<div className="desktop-bank-deposit__transaction-fee__value">
-								{formatNumber(
-									NP.divide(
-										NP.times(
-											Number(removeCommaInNumber(amountInputValueState!)),
-											Number(currency?.deposit_fee),
-										),
-										100,
-									).toString(),
-								)}{' '}
-								{_toUpper(currency_id)}
-							</div>
-						</div>
-						<div className="d-flex flex-row justify-content-between">
-							<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
-							<span className="desktop-bank-deposit__transaction-fee__value">
-								{formatNumber(
-									NP.minus(
-										Number(removeCommaInNumber(amountInputValueState!)),
+					<div className="desktop-bank-deposit__transaction-fee">
+						<img src={QRcodeImage} style={{ width: 120, height: 120, marginRight: 0, marginBottom: '2rem' }} />
+
+						<div className="d-flex flex-column justify-content-center align-items-end">
+							<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '16rem' }}>
+								<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
+								<div className="desktop-bank-deposit__transaction-fee__value">
+									{formatNumber(
 										NP.divide(
 											NP.times(
 												Number(removeCommaInNumber(amountInputValueState!)),
 												Number(currency?.deposit_fee),
 											),
 											100,
-										),
-									).toString(),
-								)}{' '}
-								{_toUpper(currency_id)}
-							</span>
+										).toString(),
+									)}{' '}
+									{_toUpper(currency_id)}
+								</div>
+							</div>
+							<div className="d-flex flex-row justify-content-between" style={{ width: '16rem' }}>
+								<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
+								<span className="desktop-bank-deposit__transaction-fee__value">
+									{formatNumber(
+										NP.minus(
+											Number(removeCommaInNumber(amountInputValueState!)),
+											NP.divide(
+												NP.times(
+													Number(removeCommaInNumber(amountInputValueState!)),
+													Number(currency?.deposit_fee),
+												),
+												100,
+											),
+										).toString(),
+									)}{' '}
+									{_toUpper(currency_id)}
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
