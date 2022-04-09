@@ -6,18 +6,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { localeDate } from '../../../../../helpers';
 import { reduce } from 'lodash';
 import { BankHistoryTable } from '../HistoryTable';
+import { selectCurrencies } from 'modules';
+import _toLower from 'lodash/toLower';
+import _find from 'lodash/find';
 
 interface BankDepositHistoryProps {
 	currency_id: string;
 }
 export const BankDepositHistory: React.FC<BankDepositHistoryProps> = (props: BankDepositHistoryProps) => {
 	const intl = useIntl();
+	const { currency_id } = props;
 
 	// store
 	const bankDepositHistoryList = useSelector(selectBankDepositHistoryList);
+	const currencies = useSelector(selectCurrencies);
 
 	// dispatch
 	const dispatch = useDispatch();
+	const currency = _find(currencies, { id: _toLower(currency_id) });
 
 	React.useEffect(() => {
 		dispatch(bankDepositHistoryListFetch());
@@ -77,7 +83,7 @@ export const BankDepositHistory: React.FC<BankDepositHistoryProps> = (props: Ban
 			result.push({
 				date: localeDate(value.created_at, 'fullDate'),
 				status: 'success',
-				amount: value.amount,
+				amount: Number(value.amount).toFixed(Number(currency?.precision)),
 				txid: <span className="text-primary">{value.txid}</span>,
 				type: 'FIAT',
 				state: formatTxState(value.state),

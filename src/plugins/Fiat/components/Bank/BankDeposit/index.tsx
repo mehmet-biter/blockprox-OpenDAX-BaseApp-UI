@@ -11,7 +11,6 @@ import { formatNumber } from 'helpers';
 import { alertPush, selectCurrencies } from 'modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { createBankDeposit } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import NP from 'number-precision';
 
 interface BankDepositProps {
@@ -41,7 +40,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 
 	const [isContinueButtonDisabled, setIsContinueButtonDisabled] = React.useState(true);
 
-	const onClickCheckBox = (e: CheckboxChangeEvent) => {
+	const onClickCheckBox = () => {
 		setIsContinueButtonDisabled(state => !state);
 	};
 
@@ -76,12 +75,6 @@ export const BankDeposit = (props: BankDepositProps) => {
 		dispatch(alertPush({ message: ['Copied!'], type: 'success' }));
 		return await navigator.clipboard.writeText(text);
 	}
-
-	// side-effects
-	React.useEffect(() => {
-		const id = setInterval(() => {}, 5000);
-		return () => clearInterval(id);
-	}, []);
 
 	const renderBankAccountInform = (label: string, content: string) => {
 		return (
@@ -197,7 +190,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 				<Button
 					disabled={isFormNotValid()}
 					style={{
-						background: isFormNotValid() ? 'rgba(233, 170, 9, 0.5)' : 'rgba(233, 170, 9, 1)',
+						background: isFormNotValid() ? 'rgba(233, 170, 9, 0.5)' : 'var(--yellow)',
 						borderRadius: '50px',
 						color: '#000',
 						fontWeight: 400,
