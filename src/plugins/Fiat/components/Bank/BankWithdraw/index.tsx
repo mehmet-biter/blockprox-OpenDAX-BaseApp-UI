@@ -133,13 +133,15 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 					<Option value="vietCom">VietCom Bank - Account: 876-8-325-6513-3-3</Option>
 					<Option value="aareal">Aareal Bank - Account: 993-2-389-7125-2-6</Option>
 				</Select>
-				<div className="d-flex flex-row justify-content-end mt-3">
-					<span className="desktop-bank-withdraw__select__balance-label">Balance: </span>
-					<span className="desktop-bank-withdraw__select__balance-value">0 {_toUpper(currency_id)}</span>
-				</div>
 			</div>
-			<div className="desktop-bank-withdraw__input">
-				<label>Amount</label>
+			<div className="desktop-bank-withdraw__input mt-4">
+				<div className="d-flex flex-row justify-content-between">
+					<label className="desktop-bank-withdraw__select__label">Amount</label>
+					<div>
+						<span className="desktop-bank-withdraw__select__balance-label">Balance: </span>
+						<span className="desktop-bank-withdraw__select__balance-value">0 {_toUpper(currency_id)}</span>
+					</div>
+				</div>
 				<Input
 					size="large"
 					placeholder={`Min amount: 10,000 ${_toUpper(currency_id)}`}
