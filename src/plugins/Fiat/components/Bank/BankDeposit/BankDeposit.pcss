@@ -19,6 +19,9 @@
 	}
 
 	&__input {
+		display: flex;
+		flex-direction: column;
+
 		&__label {
 			font-size: 12px;
 			font-style: normal;
@@ -71,15 +74,15 @@
 	}
 
 	&__transaction-fee {
-		bottom: 0;
-		position: absolute;
-		right: -7px;
+		margin-left: 2em;
+		text-align: right;
 
 		&__label {
 			font-size: 12px;
 			font-weight: 400;
 			letter-spacing: 0;
 			line-height: 16px;
+			margin-right: 1em;
 		}
 
 		&__value {

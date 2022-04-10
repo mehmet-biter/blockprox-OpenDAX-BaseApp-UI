@@ -17,6 +17,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { localeDate, preciseData, setDocumentTitle } from '../../helpers';
 // import { Pagination } from './../../components/PaginationOrdersHistory/index';
 import ReactPaginate from 'react-paginate';
+import { selectBankDepositHistoryList } from 'modules/plugins/fiat/bank/selectors';
+import { bankDepositHistoryListFetch } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
+import { BankDeposit } from 'modules/plugins/fiat/bank/types';
 
 const NUMBER_ITEM_DISPLAY = 15;
 
@@ -32,16 +35,21 @@ export const HistoryScreen = () => {
 	const marketsData = useSelector(selectMarkets);
 	const wallets = useSelector(selectWallets);
 	const list = useSelector(selectHistory);
+	const fiatBankDepositHistoryList = useSelector(selectBankDepositHistoryList);
+
 	const fetching = useSelector(selectHistoryLoading);
 
 	const [listData, setListData] = useState(list);
 
 	useEffect(() => {
 		setDocumentTitle('History');
-		dispatch(historyAllFetch({ page: 1, type: tab, limit: 25 }));
+		if (tab != 'fiatDeposit') {
+			dispatch(historyAllFetch({ page: 1, type: tab, limit: 25 }));
+		}
 		if (currencies.length === 0) {
 			dispatch(currenciesFetch());
 		}
+		dispatch(bankDepositHistoryListFetch());
 	}, [dispatch, currencies.length, tab]);
 
 	useEffect(() => {
@@ -56,12 +64,14 @@ export const HistoryScreen = () => {
 		setListData(list);
 	}, [list]);
 
-	const tabMapping = ['deposits', 'withdraws', 'trades'];
+	const tabMapping = ['deposits', 'withdraws', 'trades', 'fiatDeposit'];
 	const limitElem = 20;
 	const onCurrentTabChange = (index: number) => {
 		if (tabMapping[index] !== tab) {
 			dispatch(resetHistory());
-			dispatch(historyAllFetch({ page: 1, type: tabMapping[index], limit: 25 }));
+			if (tab != 'fiatDeposit') {
+				dispatch(historyAllFetch({ page: 1, type: tabMapping[index], limit: 25 }));
+			}
 			setPageIndex(1);
 			setTab(tabMapping[index]);
 		}
@@ -89,6 +99,13 @@ export const HistoryScreen = () => {
 						? 'history-screen__tabs__label__item history-screen__tabs__label__item--active'
 						: 'history-screen__tabs__label__item',
 				label: intl.formatMessage({ id: 'page.body.history.trade' }),
+			},
+			{
+				className:
+					tab === 'fiatDeposit'
+						? 'history-screen__tabs__label__item history-screen__tabs__label__item--active'
+						: 'history-screen__tabs__label__item',
+				label: 'Fiat Deposit',
 			},
 		];
 
@@ -134,6 +151,8 @@ export const HistoryScreen = () => {
 						intl.formatMessage({ id: 'page.body.history.trade.header.amount' }),
 						intl.formatMessage({ id: 'page.body.history.trade.header.total' }),
 					];
+				case 'fiatDeposit':
+					return ['Date', 'Txid Address', 'Status', 'Amount'];
 				default:
 					return [];
 			}
@@ -258,6 +277,43 @@ export const HistoryScreen = () => {
 					</tr>
 				);
 			}
+			case 'fiatDeposit': {
+				const fiatDepositItem: BankDeposit = item;
+				const formatTxState = (tx: string, confirmations?: number, minConfirmations?: number) => {
+					const process = require('../../assets/status/wait.svg');
+					const fail = require('../../assets/status/fail.svg');
+					const success = require('../../assets/status/success.svg');
+					const statusMapping = {
+						succeed: <img src={success} alt="" />,
+						failed: <img src={fail} alt="" />,
+						accepted: <img src={process} alt="" />,
+						collected: <img src={success} alt="" />,
+						canceled: <img src={fail} alt="" />,
+						rejected: <img src={fail} alt="" />,
+						pending: <img src={process} alt="" />,
+						prepared: <img src={process} alt="" />,
+						fee_processing: <img src={process} alt="" />,
+						skipped: <img src={success} alt="" />,
+						submitted:
+							confirmations !== undefined && minConfirmations !== undefined ? (
+								`${confirmations}/${minConfirmations}`
+							) : (
+								<img src={process} alt="" />
+							),
+					};
+
+					return statusMapping[tx];
+				};
+
+				return (
+					<tr key={index}>
+						<td>{localeDate(fiatDepositItem.created_at, 'fullDate')}</td>
+						<td>{fiatDepositItem.txid}</td>
+						<td>{formatTxState(fiatDepositItem.state)}</td>
+						<td>{fiatDepositItem.amount}</td>
+					</tr>
+				);
+			}
 			default: {
 				return [];
 			}
@@ -267,14 +323,34 @@ export const HistoryScreen = () => {
 	const renderTable = () => {
 		const indexElemStart = (pageIndex - 1) * limitElem;
 		const indexElemStop = (pageIndex - 1) * limitElem + limitElem;
-		const bodyTable = () =>
-			listData
+		const bodyTable = () => {
+			if (tab === 'fiatDeposit') {
+				return fiatBankDepositHistoryList
+					.slice(paginationState * NUMBER_ITEM_DISPLAY, paginationState * NUMBER_ITEM_DISPLAY + NUMBER_ITEM_DISPLAY)
+					.slice(indexElemStart, indexElemStop)
+					.map((item, index) => {
+						return renderTableRow(tab, item, index);
+					});
+			}
+			return listData
 				.slice(paginationState * NUMBER_ITEM_DISPLAY, paginationState * NUMBER_ITEM_DISPLAY + NUMBER_ITEM_DISPLAY)
 				.slice(indexElemStart, indexElemStop)
 				.map((item, index) => {
 					return renderTableRow(tab, item, index);
 				});
+		};
+
 		const emptyData = () => {
+			if (tab === 'fiatDeposit') {
+				return (
+					fiatBankDepositHistoryList.length === 0 ?? (
+						<div className="text-center history-screen__tabs__content__table pt-5 pb-5">
+							Empty data .
+							<br /> Please try on next page or prev page{' '}
+						</div>
+					)
+				);
+			}
 			return listData.length === 0 ? (
 				<div className="text-center history-screen__tabs__content__table pt-5 pb-5">
 					Empty data .
@@ -310,13 +386,15 @@ export const HistoryScreen = () => {
 	};
 
 	const renderPagination = () => {
+		const pageCount = (tab === 'fiatDeposit' ? fiatBankDepositHistoryList.length : list.length) / NUMBER_ITEM_DISPLAY;
+
 		return (
 			<ReactPaginate
 				previousLabel={'<'}
 				nextLabel={'>'}
 				breakLabel={'...'}
 				breakClassName={'break-me'}
-				pageCount={list.length / NUMBER_ITEM_DISPLAY}
+				pageCount={pageCount}
 				marginPagesDisplayed={2}
 				pageRangeDisplayed={5}
 				onPageChange={handlePageClick}

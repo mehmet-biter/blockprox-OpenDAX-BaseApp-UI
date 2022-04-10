@@ -3,12 +3,15 @@ import _toNumber from 'lodash/toNumber';
 import _toLower from 'lodash/toLower';
 import _toUpper from 'lodash/toUpper';
 import _find from 'lodash/find';
-import _isEmpty from 'lodash/isEmpty';
 import { Button, Input } from 'antd';
-import QRcodeImage from './QR_code.jpg';
+import QRcodeImage from '../../../assets/images/QR_code.jpg';
 import { Checkbox } from 'antd';
 import NoticeIcon from 'assets/icons/notice.svg';
 import { formatNumber } from 'helpers';
+import { alertPush, selectCurrencies } from 'modules';
+import { useDispatch, useSelector } from 'react-redux';
+import { createBankDeposit } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
+import NP from 'number-precision';
 
 interface BankDepositProps {
 	currency_id: string;
@@ -17,9 +20,27 @@ interface BankDepositProps {
 export const BankDeposit = (props: BankDepositProps) => {
 	const { currency_id } = props;
 
+	// selectors
+	const currencies = useSelector(selectCurrencies);
+
+	// dispatch
+	const dispatch = useDispatch();
+
+	const handleCreateBankDeposit = () => {
+		dispatch(
+			createBankDeposit({
+				currency_id,
+				amount: Number(removeCommaInNumber(amountInputValueState)),
+				txid: transactionIDState,
+			}),
+		);
+	};
+
+	const currency = _find(currencies, { id: _toLower(currency_id) });
+
 	const [isContinueButtonDisabled, setIsContinueButtonDisabled] = React.useState(true);
 
-	const onClickCheckBox = e => {
+	const onClickCheckBox = () => {
 		setIsContinueButtonDisabled(state => !state);
 	};
 
@@ -27,7 +48,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 
 	const [amountInputValueState, setAmountInputValueState] = React.useState<string>('');
 
-	const onHandleChangeAmountInputValueState = e => {
+	const onHandleChangeAmountInputValueState: React.ChangeEventHandler<HTMLInputElement> = e => {
 		let value = e.target.value;
 
 		const indexOfDot: number = removeCommaInNumber(value).indexOf('.');
@@ -43,11 +64,17 @@ export const BankDeposit = (props: BankDepositProps) => {
 		return numberWithComma.split(',').join('');
 	};
 
-	// side-effects
-	React.useEffect(() => {
-		const id = setInterval(() => {}, 5000);
-		return () => clearInterval(id);
-	}, []);
+	const isEmpty = (value: string): boolean => {
+		return value.trim().length === 0;
+	};
+	const isFormNotValid = (): boolean => {
+		return isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState);
+	};
+
+	async function copyTextToClipboard(text: string) {
+		dispatch(alertPush({ message: ['Copied!'], type: 'success' }));
+		return await navigator.clipboard.writeText(text);
+	}
 
 	const renderBankAccountInform = (label: string, content: string) => {
 		return (
@@ -55,7 +82,14 @@ export const BankDeposit = (props: BankDepositProps) => {
 				<div>{label}</div>
 				<div className="row">
 					{content}
-					<svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<svg
+						width="17"
+						height="18"
+						viewBox="0 0 17 18"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						onClick={() => copyTextToClipboard(content)}
+					>
 						<path
 							fill-rule="evenodd"
 							clip-rule="evenodd"
@@ -67,6 +101,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 			</div>
 		);
 	};
+
 	return (
 		<div className="desktop-bank-deposit">
 			<div className="desktop-bank-deposit__title">Bank Details</div>
@@ -76,11 +111,11 @@ export const BankDeposit = (props: BankDepositProps) => {
 			{renderBankAccountInform('Bank Address', 'Wakad, Pune')}
 			{renderBankAccountInform('IFSC Code', 'YESB0000728')}
 			<hr className="solid" style={{ background: 'white', width: '100%', marginTop: 25, marginBottom: 25 }} />
-			<div style={{ position: 'relative' }}>
-				<div className="desktop-bank-deposit__title">Enter Deposit Amount</div>
-				<div className="row">
-					<div className="col-6">
-						<div className="col-10 p-0 desktop-bank-deposit__input">
+			<div>
+				<div className="d-flex flex-row justify-content-between">
+					<div>
+						<div className="desktop-bank-deposit__title">Enter Deposit Amount</div>
+						<div className="p-0 desktop-bank-deposit__input">
 							<label className="desktop-bank-deposit__input__label">Amount</label>
 							<Input
 								addonAfter={_toUpper(currency_id)}
@@ -88,12 +123,12 @@ export const BankDeposit = (props: BankDepositProps) => {
 								value={formatNumber(removeCommaInNumber(amountInputValueState!))}
 								onChange={onHandleChangeAmountInputValueState}
 							/>
-							<span className="desktop-bank-deposit__input__notice">
-								Amount should be between 0 and 100 {_toUpper(currency_id)}
+							<span className="desktop-bank-deposit__input__notice mt-2">
+								Amount should be at least {currency?.min_deposit_amount} {_toUpper(currency_id)}
 							</span>
 						</div>
 
-						<div className="col-10 p-0 desktop-bank-deposit__input mt-3">
+						<div className="p-0 desktop-bank-deposit__input mt-3">
 							<label className="desktop-bank-deposit__input__label">
 								Transaction ID{' '}
 								<img className="desktop-bank-deposit__input__label__notice-icon" src={NoticeIcon} />
@@ -104,15 +139,43 @@ export const BankDeposit = (props: BankDepositProps) => {
 							<Input value={transactionIDState} onChange={value => setTransactionIDState(value.target.value)} />
 						</div>
 					</div>
-					<img src={QRcodeImage} style={{ position: 'absolute', top: 0, right: 0, width: 120, height: 120 }} />
-					<div className="col-4 desktop-bank-deposit__transaction-fee">
-						<div className="d-flex flex-row justify-content-between mb-2">
-							<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
-							<div className="desktop-bank-deposit__transaction-fee__value">100 {_toUpper(currency_id)}</div>
-						</div>
-						<div className="d-flex flex-row justify-content-between">
-							<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
-							<span className="desktop-bank-deposit__transaction-fee__value">100 {_toUpper(currency_id)}</span>
+					<div className="desktop-bank-deposit__transaction-fee">
+						<img src={QRcodeImage} style={{ width: 120, height: 120, marginRight: 0, marginBottom: '2rem' }} />
+
+						<div className="d-flex flex-column justify-content-center align-items-end">
+							<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '18rem' }}>
+								<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
+								<div className="desktop-bank-deposit__transaction-fee__value">
+									{formatNumber(
+										NP.divide(
+											NP.times(
+												Number(removeCommaInNumber(amountInputValueState!)),
+												Number(currency?.deposit_fee),
+											),
+											100,
+										).toString(),
+									)}{' '}
+									{_toUpper(currency_id)}
+								</div>
+							</div>
+							<div className="d-flex flex-row justify-content-between" style={{ width: '18rem' }}>
+								<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
+								<span className="desktop-bank-deposit__transaction-fee__value">
+									{formatNumber(
+										NP.minus(
+											Number(removeCommaInNumber(amountInputValueState!)),
+											NP.divide(
+												NP.times(
+													Number(removeCommaInNumber(amountInputValueState!)),
+													Number(currency?.deposit_fee),
+												),
+												100,
+											),
+										).toString(),
+									)}{' '}
+									{_toUpper(currency_id)}
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -125,9 +188,9 @@ export const BankDeposit = (props: BankDepositProps) => {
 			</div>
 			<div className="d-flex justify-content-end mt-4">
 				<Button
-					disabled={isContinueButtonDisabled && _isEmpty(transactionIDState) && _isEmpty(amountInputValueState)}
+					disabled={isFormNotValid()}
 					style={{
-						background: isContinueButtonDisabled ? 'rgba(233, 170, 9, 0.5)' : 'rgba(233, 170, 9, 1)',
+						background: isFormNotValid() ? 'rgba(233, 170, 9, 0.5)' : 'var(--yellow)',
 						borderRadius: '50px',
 						color: '#000',
 						fontWeight: 400,
@@ -135,6 +198,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 						width: 180,
 						height: 40,
 					}}
+					onClick={handleCreateBankDeposit}
 				>
 					Continue
 				</Button>
