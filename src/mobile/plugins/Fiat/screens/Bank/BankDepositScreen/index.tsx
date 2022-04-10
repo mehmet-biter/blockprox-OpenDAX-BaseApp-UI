@@ -3,12 +3,12 @@ import _toUpper from 'lodash/toUpper';
 import _toLower from 'lodash/toLower';
 import _find from 'lodash/find';
 import { formatNumber } from 'helpers';
-import QRcodeImage from './QR_code.jpg';
+import QRcodeImage from '../../../assets/images/QR_code.jpg';
 import { Button, Checkbox, Input } from 'antd';
-import { useSelector } from 'react-redux';
-import { selectCurrencies } from 'modules';
+import { useDispatch, useSelector } from 'react-redux';
+import { alertPush, selectCurrencies } from 'modules';
 import NoticeIcon from 'assets/icons/notice.svg';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { createBankDeposit } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
 
 interface BankDepositScreenProps {
 	currency_id: string;
@@ -25,13 +25,26 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 	// selectors
 	const currencies = useSelector(selectCurrencies);
 
+	// dispatch
+	const dispatch = useDispatch();
+
+	const handleCreateBankDeposit = () => {
+		dispatch(
+			createBankDeposit({
+				currency_id,
+				amount: Number(removeCommaInNumber(amountInputValueState)),
+				txid: transactionIDState,
+			}),
+		);
+	};
+
 	const currency = _find(currencies, { id: _toLower(currency_id) });
 
-	const onClickCheckBox = (e: CheckboxChangeEvent) => {
+	const onClickCheckBox = () => {
 		setIsContinueButtonDisabled(state => !state);
 	};
 
-	const onHandleChangeAmountInputValueState = e => {
+	const onHandleChangeAmountInputValueState: React.ChangeEventHandler<HTMLInputElement> = e => {
 		let value = e.target.value;
 
 		const indexOfDot: number = removeCommaInNumber(value).indexOf('.');
@@ -53,7 +66,14 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 				<div>{label}</div>
 				<div className="row">
 					{content}
-					<svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<svg
+						width="17"
+						height="18"
+						viewBox="0 0 17 18"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						onClick={() => copyTextToClipboard(content)}
+					>
 						<path
 							fill-rule="evenodd"
 							clip-rule="evenodd"
@@ -66,12 +86,17 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 		);
 	};
 	const isEmpty = (value: string): boolean => {
-		return value.length === 0;
+		return value.trim().length === 0;
 	};
 
 	const isFormNotValid = (): boolean => {
 		return isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState);
 	};
+
+	async function copyTextToClipboard(text: string) {
+		dispatch(alertPush({ message: ['Copied!'], type: 'success' }));
+		return await navigator.clipboard.writeText(text);
+	}
 
 	return (
 		<div className="td-mobile-wallet-fiat-bank-deposit">
@@ -162,6 +187,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 							borderColor: 'rgb(var(--rgb-paginate-next-prev-color))',
 							marginBottom: '1em',
 						}}
+						onClick={handleCreateBankDeposit}
 					>
 						Continue
 					</Button>

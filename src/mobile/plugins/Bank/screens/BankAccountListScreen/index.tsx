@@ -4,15 +4,37 @@ import { Subheader } from 'mobile/components/Subheader';
 import { selectUserInfo } from 'modules/user/profile/selectors';
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { BankAccountItem } from '../../components';
 import NoticeWhiteIcon from 'assets/icons/notice_white.svg';
 import { NewModal } from 'components/NewModal';
+import { selectBankAccountList, selectBankAccountListLoading } from 'modules/plugins/fiat/bank/selectors';
+import { bankAccountListFetch, createBankAccount } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
+import { LoadingGif } from 'components/LoadingGif';
+import { useIntl } from 'react-intl';
+
+interface BankFormField {
+	accountName: string;
+	bankName: string;
+	bankAddress: string;
+	bankAccountNumber: string;
+	iFSCCode: string;
+	otpCode: string;
+}
 
 export const BankAccountListMobileScreen = () => {
 	const history = useHistory();
+	const intl = useIntl();
+
+	// store
+	const bankAccountList = useSelector(selectBankAccountList);
+	const isBankAccountListLoading = useSelector(selectBankAccountListLoading);
 	const user = useSelector(selectUserInfo);
+
+	// dispatch
+	const dispatch = useDispatch();
+	const dispatchFetchBankAccountList = () => dispatch(bankAccountListFetch());
 
 	const [showAddBankAccountForm, setShowAddBankAccountForm] = React.useState(false);
 
@@ -23,7 +45,7 @@ export const BankAccountListMobileScreen = () => {
 		setShowAddBankAccountForm(true);
 	};
 
-	const [bankForm, setBankForm] = React.useState({
+	const [bankForm, setBankForm] = React.useState<BankFormField>({
 		accountName: '',
 		bankName: '',
 		bankAddress: '',
@@ -32,11 +54,46 @@ export const BankAccountListMobileScreen = () => {
 		otpCode: '',
 	});
 
+	const resetForm = () => {
+		setBankForm({
+			accountName: '',
+			bankName: '',
+			bankAddress: '',
+			bankAccountNumber: '',
+			iFSCCode: '',
+			otpCode: '',
+		});
+	};
 	const handleFieldBankForm = (field: string, value: string) => {
 		setBankForm(prev => ({
 			...prev,
 			[field]: value,
 		}));
+	};
+	React.useEffect(() => {
+		dispatchFetchBankAccountList();
+	}, []);
+
+	const handleCreateBankAccount = () => {
+		dispatch(
+			createBankAccount({
+				account_name: bankForm.accountName,
+				account_number: bankForm.bankAccountNumber,
+				bank_address: bankForm.bankAddress,
+				bank_name: bankForm.bankName,
+				ifsc_code: bankForm.iFSCCode,
+				otp: bankForm.otpCode,
+			}),
+		);
+		handleCloseAddBankAccountForm();
+		resetForm();
+	};
+
+	const isValidForm = () => {
+		const { accountName, bankName, iFSCCode, bankAddress, bankAccountNumber, otpCode } = bankForm;
+		const isValid2FA = otpCode.match('^[0-9]{6}$');
+
+		return accountName && bankName && iFSCCode && bankAddress && bankAccountNumber && isValid2FA;
 	};
 
 	const renderBodyModalAddBankForm = () => {
@@ -153,7 +210,7 @@ export const BankAccountListMobileScreen = () => {
 							defaultLabel="OTP Code"
 							handleFocusInput={() => {}}
 							handleChangeInput={value => {
-								if ((!Number(value) && value.length > 0) || value.length >= 6) {
+								if ((!Number(value) && value.length > 0) || value.length >= 7) {
 									return;
 								}
 
@@ -167,6 +224,7 @@ export const BankAccountListMobileScreen = () => {
 
 				<div className="d-flex justify-content-center mt-4">
 					<Button
+						disabled={!isValidForm()}
 						block={true}
 						style={{
 							background: '#FFB800',
@@ -179,6 +237,7 @@ export const BankAccountListMobileScreen = () => {
 						className="w-50"
 						size="lg"
 						variant="primary"
+						onClick={() => handleCreateBankAccount()}
 					>
 						Confirm
 					</Button>
@@ -203,11 +262,18 @@ export const BankAccountListMobileScreen = () => {
 					</div>
 				) : null}
 				<div className="pg-mobile-profile-bank-accounts-screen__list">
-					{Array(9)
-						.fill(null)
-						.map(bankAccount => (
-							<BankAccountItem />
-						))}
+					{!user.otp ? (
+						<span className="no-data">{intl.formatMessage({ id: 'page.noDataToShow' })}</span>
+					) : isBankAccountListLoading ? (
+						<div className="mt-3">
+							<LoadingGif alt="loading" />
+							<h3 className="mr-4">Loading</h3>
+						</div>
+					) : bankAccountList.length !== 0 ? (
+						bankAccountList.map(bankAccount => <BankAccountItem bankAccountItem={bankAccount} key={bankAccount.id} />)
+					) : (
+						<span className="no-data">{intl.formatMessage({ id: 'page.noDataToShow' })}</span>
+					)}
 				</div>
 				<NewModal
 					className="pg-mobile-profile-bank-accounts-screen__new-modal"
