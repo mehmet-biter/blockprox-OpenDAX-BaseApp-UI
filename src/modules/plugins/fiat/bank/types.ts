@@ -28,6 +28,7 @@ export interface BankDeposit {
 	created_at: Date;
 	updated_at: Date;
 	type: 'fiat';
+	currency_id: string;
 }
 
 // Bank Interfaces

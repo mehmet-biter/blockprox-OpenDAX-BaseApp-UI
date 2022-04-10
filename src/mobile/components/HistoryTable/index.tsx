@@ -78,7 +78,7 @@ const HistoryTable = (props: any) => {
 					<RowItem
 						amount={bankAccount.amount}
 						fixed={DEFAULT_CCY_PRECISION}
-						currency={'INR'}
+						currency={bankAccount.currency_id.toUpperCase()}
 						createdAt={bankAccount.created_at}
 					/>,
 					state,
