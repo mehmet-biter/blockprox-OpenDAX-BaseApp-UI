@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_CCY_PRECISION } from '../../../constants';
 import { PaginationMobile } from '../Pagination';
 import { RowItem } from './Rowitem';
+import _toLower from 'lodash/toLower';
+import _toUpper from 'lodash/toUpper';
+import _find from 'lodash/find';
 
 type CellData = string | number | React.ReactNode | undefined;
 
@@ -73,12 +76,13 @@ const HistoryTable = (props: any) => {
 
 			const histories = fiatBankDepositHistoryList.map(bankAccount => {
 				const state = 'state' in bankAccount ? formatTxState(bankAccount.state) : '';
+				const currency = _find(currencies, { id: _toLower(bankAccount.currency_id) });
 
 				return [
 					<RowItem
 						amount={bankAccount.amount}
-						fixed={DEFAULT_CCY_PRECISION}
-						currency={bankAccount.currency_id.toUpperCase()}
+						fixed={Number(currency?.precision)}
+						currency={_toUpper(bankAccount.currency_id)}
 						createdAt={bankAccount.created_at}
 					/>,
 					state,
