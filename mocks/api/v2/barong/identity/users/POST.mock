@@ -13,7 +13,7 @@ Access-Control-Allow-Headers: *
 	email: "hoctapdtu5443zz@gmail.com"
 	labels: []
 	level: 0
-	otp: false
+	otp: true
 	phones: []
 	profiles: []
 	referral_uid: null

@@ -17,6 +17,7 @@ export interface Config {
 		holderUrl: string;
 		statisticUrl: string;
 		paypalUrl: string;
+		bankUrl: string;
 		newKycUrl: string;
 		bannerUrl: string;
 		announcementUrl: string;

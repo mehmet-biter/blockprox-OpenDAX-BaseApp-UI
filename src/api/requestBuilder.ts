@@ -19,6 +19,7 @@ import {
 	bannerUrl,
 	announcementUrl,
 	withdrawLimitUrl,
+	bankUrl,
 } from './config';
 
 export type HTTPMethod = 'get' | 'post' | 'delete' | 'put' | 'patch';
@@ -44,6 +45,7 @@ export interface RequestOptions {
 		| 'statistic'
 		| 'competition'
 		| 'paypal'
+		| 'bank'
 		| 'newKyc'
 		| 'banner'
 		| 'announcement'
@@ -81,6 +83,7 @@ const getAPI = () => ({
 	transaction: transactionUrl(),
 	statistic: statisticUrl(),
 	paypal: paypalUrl(),
+	bank: bankUrl(),
 	newKyc: newKycUrl(),
 	banner: bannerUrl(),
 	announcement: announcementUrl(),

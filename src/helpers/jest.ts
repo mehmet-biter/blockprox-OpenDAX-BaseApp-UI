@@ -26,6 +26,7 @@ const mockConfig: Config = {
 		transactionUrl: '/api/v2/transaction',
 		statisticUrl: '/api/v2/statistic',
 		paypalUrl: '/api/v2/paypal',
+		bankUrl: '/api/private/bank',
 		newKycUrl: '/api/v2/newKyc',
 		bannerUrl: '/api/v2/banner',
 		announcementUrl: '/api/v2/announcement',

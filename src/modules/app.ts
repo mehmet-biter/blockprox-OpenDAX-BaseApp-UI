@@ -80,6 +80,12 @@ import {
 import { withdrawLimitCheckingReducer, withdrawLimitRemainReducer, withdrawLimitFeeReducer } from './user/newWithdrawLimit';
 import { paypalDepositReducer, paypalRecentDepositReducer, paypalDepositHistoryReducer } from './plugins/fiat/paypal';
 import { paypalWithdrawHistoryReducer } from './plugins/fiat/paypal/reducers/withdraw';
+import {
+	bankAccountListReducer,
+	createBankAccountReducer,
+	deleteBankAccountReducer,
+} from './plugins/fiat/bank/reducers/bankAccount';
+import { bankDepositHistoryListReducer, createBankDepositReducer } from './plugins/fiat/bank/reducers/bankDeposit';
 
 const ethFeesReducer = combineReducers({
 	ethFee: ethFeeReducer,
@@ -208,6 +214,14 @@ const paypalReducer = combineReducers({
 	withdrawHistory: paypalWithdrawHistoryReducer,
 });
 
+const bankReducer = combineReducers({
+	createBankAccount: createBankAccountReducer,
+	bankAccountList: bankAccountListReducer,
+	deleteBankAccount: deleteBankAccountReducer,
+	bankDepositHistoryList: bankDepositHistoryListReducer,
+	createBankDeposit: createBankDepositReducer,
+});
+
 const announcementReducer = combineReducers({
 	announcements: AnnouncementsReducer,
 	announcementItem: AnnouncementDetailReducer,
@@ -228,4 +242,5 @@ export const pluginsReducer = combineReducers({
 	kyc: kycReducer,
 	announcements: announcementReducer,
 	paypal: paypalReducer,
+	bank: bankReducer,
 });

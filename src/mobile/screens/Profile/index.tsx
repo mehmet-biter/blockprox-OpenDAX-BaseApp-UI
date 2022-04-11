@@ -59,6 +59,7 @@ const ProfileMobileScreenComponent: React.FC = () => {
 		{ titleKey: 'page.mobile.profileLinks.main.changePassword', route: '/profile/change-password' },
 		{ titleKey: 'page.mobile.profileLinks.main.activity', route: '/profile/account-activity' },
 		{ titleKey: 'page.mobile.profileLinks.main.apiKeys', route: '/profile/api-keys' },
+		{ titleKey: 'Bank Accounts', route: '/profile/bank' },
 	];
 
 	/* const settingsLinks = [
