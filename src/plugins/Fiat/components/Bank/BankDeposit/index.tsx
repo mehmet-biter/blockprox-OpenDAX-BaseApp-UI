@@ -12,6 +12,7 @@ import { alertPush, selectCurrencies } from 'modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { createBankDeposit } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
 import NP from 'number-precision';
+import { NewModal } from 'components';
 
 interface BankDepositProps {
 	currency_id: string;
@@ -34,6 +35,17 @@ export const BankDeposit = (props: BankDepositProps) => {
 				txid: transactionIDState,
 			}),
 		);
+		handleCloseDepositConfirmationForm();
+	};
+
+	const [showDepositConfirmationForm, setShowDepositConfirmationForm] = React.useState(false);
+
+	const handleCloseDepositConfirmationForm = () => {
+		setShowDepositConfirmationForm(false);
+	};
+
+	const handleShowDepositConfirmationForm = () => {
+		setShowDepositConfirmationForm(true);
 	};
 
 	const currency = _find(currencies, { id: _toLower(currency_id) });
@@ -102,6 +114,69 @@ export const BankDeposit = (props: BankDepositProps) => {
 		);
 	};
 
+	const fee: string = formatNumber(
+		NP.divide(NP.times(Number(removeCommaInNumber(amountInputValueState!)), Number(currency?.deposit_fee)), 100).toString(),
+	);
+
+	const youWillGet: string = formatNumber(
+		NP.minus(
+			Number(removeCommaInNumber(amountInputValueState!)),
+			NP.divide(NP.times(Number(removeCommaInNumber(amountInputValueState!)), Number(currency?.deposit_fee)), 100),
+		).toString(),
+	);
+
+	const renderBodyModalDepositConfirmationForm = () => {
+		return (
+			<div className="desktop-bank-deposit__modal-form d-flex flex-column align-items-center">
+				<span style={{ fontWeight: 600, fontSize: 14, color: '#fff' }}>You will get</span>
+				<div className="row align-items-center">
+					<span className="mr-1" style={{ fontWeight: 700, fontSize: 36, color: '#fff' }}>
+						{youWillGet}
+					</span>
+					<span style={{ fontWeight: 400, fontSize: 16, color: '#fff' }}>{_toUpper(currency_id)}</span>
+				</div>
+				<div className="desktop-bank-deposit__modal-form__inform-container">
+					<div className="d-flex flex-row align-items-center justify-content-between">
+						<span>Fee</span>
+						<span>
+							{fee} {_toUpper(currency_id)}
+						</span>
+					</div>
+					<div className="d-flex flex-row align-items-center justify-content-between">
+						<span>Deposit Amount</span>
+						<span>
+							{youWillGet} {_toUpper(currency_id)}
+						</span>
+					</div>
+					<div className="d-flex flex-row align-items-center justify-content-between">
+						<span>Funds will arrive</span>
+						<span>Within 48 hours</span>
+					</div>
+				</div>
+				<span className="desktop-bank-deposit__modal-form__warning">
+					<img src={NoticeIcon} className="desktop-bank-deposit__modal-form__warning__icon" />
+					Deposit usually take under 24 hours. Depends on the speed of your bank. a delay may occur.
+				</span>
+				<div className="d-flex justify-content-center mt-5">
+					<Button
+						style={{
+							background: 'var(--yellow)',
+							borderRadius: '50px',
+							color: '#000',
+							fontWeight: 400,
+							fontSize: 12,
+							width: 180,
+							height: 40,
+						}}
+						onClick={handleCreateBankDeposit}
+					>
+						Confirmation
+					</Button>
+				</div>
+			</div>
+		);
+	};
+
 	return (
 		<div className="desktop-bank-deposit">
 			<div className="desktop-bank-deposit__title">Bank Details</div>
@@ -146,34 +221,13 @@ export const BankDeposit = (props: BankDepositProps) => {
 							<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '18rem' }}>
 								<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
 								<div className="desktop-bank-deposit__transaction-fee__value">
-									{formatNumber(
-										NP.divide(
-											NP.times(
-												Number(removeCommaInNumber(amountInputValueState!)),
-												Number(currency?.deposit_fee),
-											),
-											100,
-										).toString(),
-									)}{' '}
-									{_toUpper(currency_id)}
+									{fee} {_toUpper(currency_id)}
 								</div>
 							</div>
 							<div className="d-flex flex-row justify-content-between" style={{ width: '18rem' }}>
 								<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
 								<span className="desktop-bank-deposit__transaction-fee__value">
-									{formatNumber(
-										NP.minus(
-											Number(removeCommaInNumber(amountInputValueState!)),
-											NP.divide(
-												NP.times(
-													Number(removeCommaInNumber(amountInputValueState!)),
-													Number(currency?.deposit_fee),
-												),
-												100,
-											),
-										).toString(),
-									)}{' '}
-									{_toUpper(currency_id)}
+									{youWillGet} {_toUpper(currency_id)}
 								</span>
 							</div>
 						</div>
@@ -198,11 +252,17 @@ export const BankDeposit = (props: BankDepositProps) => {
 						width: 180,
 						height: 40,
 					}}
-					onClick={handleCreateBankDeposit}
+					onClick={handleShowDepositConfirmationForm}
 				>
 					Continue
 				</Button>
 			</div>
+			<NewModal
+				show={showDepositConfirmationForm}
+				onHide={handleCloseDepositConfirmationForm}
+				titleModal="DEPOSIT CONFIRMATION"
+				bodyModal={renderBodyModalDepositConfirmationForm()}
+			/>
 		</div>
 	);
 };
