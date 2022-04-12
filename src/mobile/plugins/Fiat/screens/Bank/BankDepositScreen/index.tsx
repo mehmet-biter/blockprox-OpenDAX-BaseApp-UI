@@ -112,7 +112,9 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 	};
 
 	const isFormNotValid = (): boolean => {
-		return isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState);
+		return (
+			isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState) || isSmallerThanMinDeposit
+		);
 	};
 
 	async function copyTextToClipboard(text: string) {
