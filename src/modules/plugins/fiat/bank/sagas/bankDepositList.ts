@@ -1,4 +1,5 @@
 import { API, RequestOptions } from 'api';
+import { getCsrfToken } from 'helpers';
 import { call, put } from 'redux-saga/effects';
 import {
 	bankDepositHistoryListData,
@@ -21,7 +22,10 @@ interface BankDepositHistoryListResponse {
 
 export function* fetchBankDepositHistoryListSaga(action: BankDepositHistoryListFetch) {
 	try {
-		const list: BankDepositHistoryListResponse = yield call(API.get(createOptions()), '/private/bank/deposit/history');
+		const list: BankDepositHistoryListResponse = yield call(
+			API.get(createOptions(getCsrfToken())),
+			'/private/bank/deposit/history',
+		);
 
 		yield put(bankDepositHistoryListData({ payload: list.data.list, loading: false }));
 	} catch (error) {

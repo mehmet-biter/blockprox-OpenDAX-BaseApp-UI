@@ -1,4 +1,5 @@
 import { API, RequestOptions } from 'api';
+import { getCsrfToken } from 'helpers';
 import { alertPush } from 'modules/public/alert';
 import { call, put } from 'redux-saga/effects';
 import { CreateBankDeposit, createBankDepositData, updateBankDepositCreation } from '../actions/bankDepositActions';
@@ -21,7 +22,11 @@ export function* createBankDepositSaga(action: CreateBankDeposit) {
 				loading: true,
 			}),
 		);
-		const result: CreateBankDepositResponse = yield call(API.post(createOptions()), `/private/bank/deposit`, action.payload);
+		const result: CreateBankDepositResponse = yield call(
+			API.post(createOptions(getCsrfToken())),
+			`/private/bank/deposit`,
+			action.payload,
+		);
 
 		yield put(updateBankDepositCreation({ ...result.data }));
 
