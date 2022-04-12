@@ -21,7 +21,7 @@ interface BankWithdrawHistoryListResponse {
 
 export function* fetchBankWithdrawHistoryListSaga(action: BankWithdrawHistoryListFetch) {
 	try {
-		const list: BankWithdrawHistoryListResponse = yield call(API.get(createOptions()), '/withdraw/history');
+		const list: BankWithdrawHistoryListResponse = yield call(API.get(createOptions()), '/private/bank/withdraw/history');
 
 		yield put(bankWithdrawHistoryListData({ payload: list.data.list, loading: false }));
 	} catch (error) {

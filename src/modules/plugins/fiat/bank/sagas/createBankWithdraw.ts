@@ -23,7 +23,11 @@ export function* createBankWithdrawSaga(action: CreateBankWithdraw) {
 		);
 		const { otp } = action.payload;
 
-		const result: CreateBankWithdrawResponse = yield call(API.post(createOptions()), `/withdraw?otp=${otp}`, action.payload);
+		const result: CreateBankWithdrawResponse = yield call(
+			API.post(createOptions()),
+			`/private/bank/withdraw?otp=${otp}`,
+			action.payload,
+		);
 
 		yield put(updateBankWithdrawCreation({ ...result.data }));
 
