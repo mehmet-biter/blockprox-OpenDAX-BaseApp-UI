@@ -9,6 +9,13 @@ import { NewModal } from 'components';
 import { useHistory } from 'react-router';
 import { formatNumber } from 'helpers';
 import NoticeIcon from 'assets/icons/notice.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { alertPush, selectCurrencies, selectUserInfo, selectWallets } from 'modules';
+import { selectBankAccountList } from 'modules/plugins/fiat/bank/selectors';
+import { bankAccountListFetch } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
+import { createBankWithdraw } from 'modules/plugins/fiat/bank/actions/bankWithdrawActions';
+import NP from 'number-precision';
+import { useIntl } from 'react-intl';
 
 interface BankWithdrawProps {
 	currency_id: string;
@@ -16,10 +23,30 @@ interface BankWithdrawProps {
 export const BankWithdraw = (props: BankWithdrawProps) => {
 	const { Option } = Select;
 	const { currency_id } = props;
+	const intl = useIntl();
 
 	const history = useHistory();
 
+	// selectors
+	const currencies = useSelector(selectCurrencies);
+	const wallets = useSelector(selectWallets);
+	const bankAccountList = useSelector(selectBankAccountList);
+	const user = useSelector(selectUserInfo);
+
+	// dispatch
+	const dispatch = useDispatch();
+
+	const currency = _find(currencies, { id: _toLower(currency_id) });
+	const wallet = _find(wallets, { currency: _toLower(currency_id) });
+
 	const [showWithdrawConfirmationForm, setShowWithdrawConfirmationForm] = React.useState(false);
+	const [bankAccountSelectionValue, setBankAccountSelectionValue] = React.useState('');
+	const [withdrawInputValueState, setWithdrawInputValueState] = React.useState<string>('');
+	const [otpInputValueState, setOtpInputValueState] = React.useState('');
+
+	const redirectToEnable2fa = () => history.push('/security/2fa', { enable2fa: true });
+
+	const bankAccount = _find(bankAccountList, { id: Number(bankAccountSelectionValue) });
 
 	const handleCloseWithdrawConfirmationForm = () => {
 		setShowWithdrawConfirmationForm(false);
@@ -29,7 +56,9 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 		setShowWithdrawConfirmationForm(true);
 	};
 
-	const [otpInputValueState, setOtpInputValueState] = React.useState('');
+	const onHandleSelectBankAccount = (value: string) => {
+		setBankAccountSelectionValue(value);
+	};
 
 	const onHandleChangeNumeric: React.ChangeEventHandler<HTMLInputElement> = e => {
 		let value = e.target.value;
@@ -41,7 +70,9 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 		setOtpInputValueState(value);
 	};
 
-	const [withdrawInputValueState, setWithdrawInputValueState] = React.useState<string>('');
+	async function notifyAmountLargerBalance() {
+		dispatch(alertPush({ message: ['You are typing withdraw amount larger than your balance!'], type: 'error' }));
+	}
 
 	const onHandleChangeWithdrawInputValueState: React.ChangeEventHandler<HTMLInputElement> = e => {
 		let value = e.target.value;
@@ -52,12 +83,63 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 			return;
 		}
 
-		setWithdrawInputValueState(value);
+		const amount: number = Number(removeCommaInNumber(value));
+		if (amount >= 0 && amount <= Number(wallet?.balance)) {
+			setWithdrawInputValueState(value);
+			return;
+		}
+
+		notifyAmountLargerBalance();
 	};
 
 	const removeCommaInNumber = (numberWithComma: string): string => {
 		return numberWithComma.split(',').join('');
 	};
+
+	const handleCreateBankWithdraw = () => {
+		dispatch(
+			createBankWithdraw({
+				amount: Number(removeCommaInNumber(withdrawInputValueState)),
+				currency_id,
+				bank_id: Number(bankAccountSelectionValue),
+				otp: otpInputValueState,
+			}),
+		);
+		handleCloseWithdrawConfirmationForm();
+	};
+	React.useEffect(() => {
+		dispatch(bankAccountListFetch());
+	}, []);
+
+	const isEmpty = (value: string): boolean => {
+		return value.trim().length === 0;
+	};
+	const isFormValid = () => {
+		const isValid2FA = otpInputValueState.match('^[0-9]{6}$');
+
+		return (
+			bankAccountSelectionValue !== '-1' &&
+			isValid2FA &&
+			!isEmpty(withdrawInputValueState) &&
+			!isEmpty(bankAccountSelectionValue)
+		);
+	};
+
+	console.log('isFormValid: ', isFormValid());
+
+	const fee: string = formatNumber(
+		NP.divide(
+			NP.times(Number(removeCommaInNumber(withdrawInputValueState!)), Number(currency?.withdraw_fee)),
+			100,
+		).toString(),
+	);
+
+	const youWillGet: string = formatNumber(
+		NP.minus(
+			Number(removeCommaInNumber(withdrawInputValueState!)),
+			NP.divide(NP.times(Number(removeCommaInNumber(withdrawInputValueState!)), Number(currency?.withdraw_fee)), 100),
+		).toString(),
+	);
 
 	const renderBodyModalWithdrawConfirmationForm = () => {
 		return (
@@ -65,26 +147,30 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 				<span style={{ fontWeight: 600, fontSize: 14, color: '#fff' }}>You will get</span>
 				<div className="row align-items-center">
 					<span className="mr-1" style={{ fontWeight: 700, fontSize: 36, color: '#fff' }}>
-						90
+						{youWillGet}
 					</span>
 					<span style={{ fontWeight: 400, fontSize: 16, color: '#fff' }}>{_toUpper(currency_id)}</span>
 				</div>
 				<div className="desktop-bank-withdraw__modal-form__inform-container">
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Account Number</span>
-						<span>NA2HB12BBB2BBB3V</span>
+						<span>{bankAccount?.account_number}</span>
 					</div>
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Bank Name</span>
-						<span>Groundwork Financial Corp.</span>
+						<span>{bankAccount?.bank_name}.</span>
 					</div>
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Fee</span>
-						<span>10 {_toUpper(currency_id)}</span>
+						<span>
+							{fee} {_toUpper(currency_id)}
+						</span>
 					</div>
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Withdrawal Amount</span>
-						<span>100 {_toUpper(currency_id)}</span>
+						<span>
+							{youWillGet} {_toUpper(currency_id)}
+						</span>
 					</div>
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Funds will arrive</span>
@@ -98,7 +184,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 				<div className="d-flex justify-content-center mt-5">
 					<Button
 						style={{
-							background: 'rgba(233, 170, 9, 1)',
+							background: 'var(--yellow)',
 							borderRadius: '50px',
 							color: '#000',
 							fontWeight: 400,
@@ -106,7 +192,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 							width: 180,
 							height: 40,
 						}}
-						onClick={handleCloseWithdrawConfirmationForm}
+						onClick={handleCreateBankWithdraw}
 					>
 						Confirmation
 					</Button>
@@ -115,94 +201,141 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 		);
 	};
 
+	const render2FARequire = () => {
+		return (
+			<React.Fragment>
+				<p className="desktop-bank-withdraw__enable-2fa-message">
+					{intl.formatMessage({ id: 'page.body.wallets.tabs.withdraw.content.enable2fa' })}
+				</p>
+				<Button
+					style={{
+						background: 'var(--system-yellow)',
+						border: '1px solid #848E9C',
+						borderRadius: '23.5px',
+					}}
+					block={true}
+					onClick={redirectToEnable2fa}
+				>
+					{intl.formatMessage({ id: 'page.body.wallets.tabs.withdraw.content.enable2faButton' })}
+				</Button>
+			</React.Fragment>
+		);
+	};
 	return (
 		<div className="desktop-bank-withdraw">
 			<div className="desktop-bank-withdraw__title">{_toUpper('Withdraw')}</div>
-			<div className="desktop-bank-withdraw__select">
-				<div className="d-flex flex-row justify-content-between">
-					<label className="desktop-bank-withdraw__select__label">Select Bank</label>
-					<label
-						className="desktop-bank-withdraw__select__settings-label"
-						onClick={() => history.push('/profile/bank')}
-					>
-						Bank accounts settings
-					</label>
-				</div>
-				<Select size="large" defaultValue="techCom" className="desktop-bank-withdraw__select__input">
-					<Option value="techCom">TechCom Bank - Account: 123-4-567-8910-1-1</Option>
-					<Option value="vietCom">VietCom Bank - Account: 876-8-325-6513-3-3</Option>
-					<Option value="aareal">Aareal Bank - Account: 993-2-389-7125-2-6</Option>
-				</Select>
-			</div>
-			<div className="desktop-bank-withdraw__input mt-4">
-				<div className="d-flex flex-row justify-content-between">
-					<label className="desktop-bank-withdraw__select__label">Amount</label>
-					<div>
-						<span className="desktop-bank-withdraw__select__balance-label">Balance: </span>
-						<span className="desktop-bank-withdraw__select__balance-value">0 {_toUpper(currency_id)}</span>
+			{!user.otp ? (
+				render2FARequire()
+			) : (
+				<>
+					<div className="desktop-bank-withdraw__select">
+						<div className="d-flex flex-row justify-content-between">
+							<label className="desktop-bank-withdraw__select__label">Select Bank</label>
+							<label
+								className="desktop-bank-withdraw__select__settings-label"
+								onClick={() => history.push('/profile/bank')}
+							>
+								Bank accounts settings
+							</label>
+						</div>
+						<Select
+							size="large"
+							defaultValue="-1"
+							className="desktop-bank-withdraw__select__input"
+							onChange={onHandleSelectBankAccount}
+						>
+							<Option value="-1">Select your Bank</Option>
+							{bankAccountList.map(bankAccount => (
+								<Option
+									value={`${bankAccount.id}`}
+									key={bankAccount.id}
+								>{`${bankAccount.bank_name} - Account: ${bankAccount.account_number}`}</Option>
+							))}
+						</Select>
 					</div>
-				</div>
-				<Input
-					size="large"
-					placeholder={`Min amount: 10,000 ${_toUpper(currency_id)}`}
-					type="text"
-					value={formatNumber(removeCommaInNumber(withdrawInputValueState!))}
-					onChange={onHandleChangeWithdrawInputValueState}
-				/>
-			</div>
-			<div className="desktop-bank-withdraw__input">
-				<label>OTP</label>
-				<Input size="large" type="text" maxLength={6} onChange={onHandleChangeNumeric} value={otpInputValueState} />
-			</div>
+					<div className="desktop-bank-withdraw__input mt-4">
+						<div className="d-flex flex-row justify-content-between">
+							<label className="desktop-bank-withdraw__select__label">Amount</label>
+							<div>
+								<span className="desktop-bank-withdraw__select__balance-label">Balance: </span>
+								<span className="desktop-bank-withdraw__select__balance-value">
+									{wallet?.balance ? wallet?.balance : 0} {_toUpper(currency_id)}
+								</span>
+							</div>
+						</div>
+						<Input
+							size="large"
+							placeholder={`Min amount: ${formatNumber(currency?.min_withdraw_amount!)} ${_toUpper(currency_id)}`}
+							type="text"
+							value={formatNumber(removeCommaInNumber(withdrawInputValueState!))}
+							onChange={onHandleChangeWithdrawInputValueState}
+							disabled={!(currency && currency.withdrawal_enabled)}
+						/>
+					</div>
+					<div className="desktop-bank-withdraw__input">
+						<label>OTP</label>
+						<Input
+							size="large"
+							type="text"
+							maxLength={6}
+							onChange={onHandleChangeNumeric}
+							value={otpInputValueState}
+						/>
+					</div>
 
-			<div className="d-flex flex-row justify-content-between">
-				<span className="desktop-bank-withdraw__label">You will get: </span>
-				<span className="desktop-bank-withdraw__value">
-					{formatNumber(
-						(
-							Number(removeCommaInNumber(withdrawInputValueState!)) -
-							Number(removeCommaInNumber(withdrawInputValueState!)) * 0.01
-						).toString(),
-					)}{' '}
-					{_toUpper(currency_id)}
-				</span>
-			</div>
+					<div className="d-flex flex-row justify-content-between">
+						<span className="desktop-bank-withdraw__label">You will get: </span>
+						<span className="desktop-bank-withdraw__value">
+							{formatNumber(
+								(
+									Number(removeCommaInNumber(withdrawInputValueState!)) -
+									Number(removeCommaInNumber(withdrawInputValueState!)) * 0.01
+								).toString(),
+							)}{' '}
+							{_toUpper(currency_id)}
+						</span>
+					</div>
 
-			<div className="d-flex flex-row justify-content-between">
-				<span className="desktop-bank-withdraw__label">Fee: </span>
-				<span className="desktop-bank-withdraw__value">1 %</span>
-			</div>
-			<div className="d-flex flex-row justify-content-between">
+					<div className="d-flex flex-row justify-content-between">
+						<span className="desktop-bank-withdraw__label">Fee: </span>
+						<span className="desktop-bank-withdraw__value">{formatNumber(currency?.withdraw_fee!)} %</span>
+					</div>
+					{/* <div className="d-flex flex-row justify-content-between">
 				<span className="desktop-bank-withdraw__label">Max withdraw</span>
 				<span className="desktop-bank-withdraw__value">3,000,000 {_toUpper(currency_id)}</span>
-			</div>
-			<div className="d-flex flex-row justify-content-between">
-				<span className="desktop-bank-withdraw__label">Min withdraw</span>
-				<span className="desktop-bank-withdraw__value">10,000 {_toUpper(currency_id)}</span>
-			</div>
+			</div> */}
+					<div className="d-flex flex-row justify-content-between">
+						<span className="desktop-bank-withdraw__label">Min withdraw</span>
+						<span className="desktop-bank-withdraw__value">
+							{formatNumber(currency?.min_withdraw_amount!)} {_toUpper(currency_id)}
+						</span>
+					</div>
 
-			<div className="d-flex justify-content-center mt-5">
-				<Button
-					style={{
-						background: 'rgba(233, 170, 9, 1)',
-						borderRadius: '50px',
-						color: '#000',
-						fontWeight: 400,
-						fontSize: 12,
-						width: 180,
-						height: 40,
-					}}
-					onClick={handleShowWithdrawConfirmationForm}
-				>
-					Withdraw
-				</Button>
-			</div>
-			<NewModal
-				show={showWithdrawConfirmationForm}
-				onHide={handleCloseWithdrawConfirmationForm}
-				titleModal="WITHDRAW CONFIRMATION"
-				bodyModal={renderBodyModalWithdrawConfirmationForm()}
-			/>
+					<div className="d-flex justify-content-center mt-5">
+						<Button
+							disabled={!isFormValid()!}
+							style={{
+								background: isFormValid()! ? 'var(--yellow)' : 'rgba(233, 170, 9, 0.5)',
+								borderRadius: '50px',
+								color: '#000',
+								fontWeight: 400,
+								fontSize: 12,
+								width: 180,
+								height: 40,
+							}}
+							onClick={handleShowWithdrawConfirmationForm}
+						>
+							Withdraw
+						</Button>
+					</div>
+					<NewModal
+						show={showWithdrawConfirmationForm}
+						onHide={handleCloseWithdrawConfirmationForm}
+						titleModal="WITHDRAW CONFIRMATION"
+						bodyModal={renderBodyModalWithdrawConfirmationForm()}
+					/>
+				</>
+			)}
 		</div>
 	);
 };

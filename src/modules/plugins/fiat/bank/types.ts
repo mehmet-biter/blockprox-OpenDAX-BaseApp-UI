@@ -30,6 +30,20 @@ export interface BankDeposit {
 	type: 'fiat';
 }
 
+export interface BankWithdraw {
+	id: number;
+	txid: string;
+	bank_id: number;
+	deposit_code: string;
+	amount: string;
+	fee: string;
+	amount_received: string;
+	state: 'pending' | 'succeed' | 'rejected';
+	created_at: Date;
+	updated_at: Date;
+	type: 'fiat';
+}
+
 // Bank Interfaces
 
 export interface BankAccountListState extends CommonState {
@@ -53,5 +67,16 @@ export interface BankDepositHistoryListState extends CommonState {
 }
 
 export interface CreateBankDepositState extends CommonState {
+	loading: boolean;
+}
+
+// Bank Withdraw Interfaces
+
+export interface BankWithdrawHistoryListState extends CommonState {
+	payload: BankWithdraw[];
+	loading: boolean;
+}
+
+export interface CreateBankWithdrawState extends CommonState {
 	loading: boolean;
 }

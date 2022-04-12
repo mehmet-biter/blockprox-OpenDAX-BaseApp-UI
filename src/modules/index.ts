@@ -110,8 +110,10 @@ import {
 import {
 	BankAccountListState,
 	BankDepositHistoryListState,
+	BankWithdrawHistoryListState,
 	CreateBankAccountState,
 	CreateBankDepositState,
+	CreateBankWithdrawState,
 	DeleteBankAccountState,
 } from './plugins/fiat/bank/types';
 import { rootBankSaga } from './plugins/fiat/bank/sagas';
@@ -281,6 +283,8 @@ export interface RootState {
 			deleteBankAccount: DeleteBankAccountState;
 			bankDepositHistoryList: BankDepositHistoryListState;
 			createBankDeposit: CreateBankDepositState;
+			bankWithdrawHistoryList: BankWithdrawHistoryListState;
+			createBankWithdraw: CreateBankWithdrawState;
 		};
 	};
 }

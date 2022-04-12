@@ -86,6 +86,7 @@ import {
 	deleteBankAccountReducer,
 } from './plugins/fiat/bank/reducers/bankAccount';
 import { bankDepositHistoryListReducer, createBankDepositReducer } from './plugins/fiat/bank/reducers/bankDeposit';
+import { bankWithdrawHistoryListReducer, createBankWithdrawReducer } from './plugins/fiat/bank/reducers/bankWithdraw';
 
 const ethFeesReducer = combineReducers({
 	ethFee: ethFeeReducer,
@@ -220,6 +221,8 @@ const bankReducer = combineReducers({
 	deleteBankAccount: deleteBankAccountReducer,
 	bankDepositHistoryList: bankDepositHistoryListReducer,
 	createBankDeposit: createBankDepositReducer,
+	bankWithdrawHistoryList: bankWithdrawHistoryListReducer,
+	createBankWithdraw: createBankWithdrawReducer,
 });
 
 const announcementReducer = combineReducers({
