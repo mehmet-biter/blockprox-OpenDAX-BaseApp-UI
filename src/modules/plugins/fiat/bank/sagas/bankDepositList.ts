@@ -21,7 +21,7 @@ interface BankDepositHistoryListResponse {
 
 export function* fetchBankDepositHistoryListSaga(action: BankDepositHistoryListFetch) {
 	try {
-		const list: BankDepositHistoryListResponse = yield call(API.get(createOptions()), '/deposit/history');
+		const list: BankDepositHistoryListResponse = yield call(API.get(createOptions()), '/private/bank/deposit/history');
 
 		yield put(bankDepositHistoryListData({ payload: list.data.list, loading: false }));
 	} catch (error) {

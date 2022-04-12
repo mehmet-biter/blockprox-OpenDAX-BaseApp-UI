@@ -110,9 +110,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 		return await navigator.clipboard.writeText(text);
 	}
 
-	const fee: string = formatNumber(
-		NP.divide(NP.times(Number(removeCommaInNumber(amountInputValueState!)), Number(currency?.deposit_fee)), 100).toString(),
-	);
+	const fee: string = `${Number(currency?.deposit_fee)} %`;
 
 	const youWillGet: string = formatNumber(
 		NP.minus(
@@ -231,8 +229,8 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 				</div>
 				<div className="td-mobile-wallet-fiat-bank-deposit__check-box">
 					<Checkbox onChange={onClickCheckBox}>
-						By proceeding, you contest to BlockProEx sharing your personal information on your BlockProEx acccnount in
-						accorance to our Tesm of Use and Privacy Policy.
+						By proceeding, you consent to BlockProEx sharing your personal information on your BlockProEx account in
+						accordance to our Terms of Use and Privacy Policy
 					</Checkbox>
 				</div>
 				<div className="d-flex justify-content-center mt-4">

@@ -117,91 +117,116 @@ export const BankWithdrawScreen = (props: BankDepositScreenProps) => {
 	};
 
 	return (
-		<div className="td-mobile-wallet-fiat-bank-withdraw">
-			<div className="td-mobile-wallet-fiat-bank-withdraw__select">
-				<div className="d-flex flex-row justify-content-between">
-					<label className="td-mobile-wallet-fiat-bank-withdraw__select__label">Select Bank</label>
-					<label
-						className="td-mobile-wallet-fiat-bank-withdraw__select__settings-label"
-						onClick={() => history.push('/profile/bank')}
-					>
-						Bank accounts settings
-					</label>
-				</div>
-				<Select size="large" defaultValue="techCom" className="td-mobile-wallet-fiat-bank-withdraw__select__input">
-					<Option value="techCom">TechCom Bank - Account: 123-4-567-8910-1-1</Option>
-					<Option value="vietCom">VietCom Bank - Account: 876-8-325-6513-3-3</Option>
-					<Option value="aareal">Aareal Bank - Account: 993-2-389-7125-2-6</Option>
-				</Select>
-				<div className="d-flex flex-row justify-content-end mt-3">
-					<span className="td-mobile-wallet-fiat-bank-withdraw__select__balance-label">Balance: </span>
-					<span className="td-mobile-wallet-fiat-bank-withdraw__select__balance-value">0 {_toUpper(currency_id)}</span>
-				</div>
+		<div className="td-mobile-wallet-fiat-bank-withdraw h-100">
+			<div
+				className="d-flex justify-content-center align-items-center h-100"
+				style={{
+					fontSize: '2rem',
+					minHeight: '20rem',
+				}}
+			>
+				Withdraw coming soon
 			</div>
-			<div className="td-mobile-wallet-fiat-bank-withdraw__input">
-				<label>Amount</label>
-				<Input
-					size="large"
-					placeholder={`Min amount: 10,000 ${_toUpper(currency_id)}`}
-					type="text"
-					value={formatNumber(removeCommaInNumber(withdrawInputValueState!))}
-					onChange={onHandleChangeWithdrawInputValueState}
-				/>
-			</div>
-			<div className="td-mobile-wallet-fiat-bank-withdraw__input">
-				<label>OTP</label>
-				<Input size="large" type="text" maxLength={6} onChange={onHandleChangeNumeric} value={otpInputValueState} />
-			</div>
+			{false && (
+				<React.Fragment>
+					<div className="td-mobile-wallet-fiat-bank-withdraw__select">
+						<div className="d-flex flex-row justify-content-between">
+							<label className="td-mobile-wallet-fiat-bank-withdraw__select__label">Select Bank</label>
+							<label
+								className="td-mobile-wallet-fiat-bank-withdraw__select__settings-label"
+								onClick={() => history.push('/profile/bank')}
+							>
+								Bank accounts settings
+							</label>
+						</div>
+						<Select
+							size="large"
+							defaultValue="techCom"
+							className="td-mobile-wallet-fiat-bank-withdraw__select__input"
+						>
+							<Option value="techCom">TechCom Bank - Account: 123-4-567-8910-1-1</Option>
+							<Option value="vietCom">VietCom Bank - Account: 876-8-325-6513-3-3</Option>
+							<Option value="aareal">Aareal Bank - Account: 993-2-389-7125-2-6</Option>
+						</Select>
+						<div className="d-flex flex-row justify-content-end mt-3">
+							<span className="td-mobile-wallet-fiat-bank-withdraw__select__balance-label">Balance: </span>
+							<span className="td-mobile-wallet-fiat-bank-withdraw__select__balance-value">
+								0 {_toUpper(currency_id)}
+							</span>
+						</div>
+					</div>
+					<div className="td-mobile-wallet-fiat-bank-withdraw__input">
+						<label>Amount</label>
+						<Input
+							size="large"
+							placeholder={`Min amount: 10,000 ${_toUpper(currency_id)}`}
+							type="text"
+							value={formatNumber(removeCommaInNumber(withdrawInputValueState!))}
+							onChange={onHandleChangeWithdrawInputValueState}
+						/>
+					</div>
+					<div className="td-mobile-wallet-fiat-bank-withdraw__input">
+						<label>OTP</label>
+						<Input
+							size="large"
+							type="text"
+							maxLength={6}
+							onChange={onHandleChangeNumeric}
+							value={otpInputValueState}
+						/>
+					</div>
 
-			<div className="d-flex flex-row justify-content-between">
-				<span className="td-mobile-wallet-fiat-bank-withdraw__label">You will get: </span>
-				<span className="td-mobile-wallet-fiat-bank-withdraw__value">
-					{formatNumber(
-						(
-							Number(removeCommaInNumber(withdrawInputValueState!)) -
-							Number(removeCommaInNumber(withdrawInputValueState!)) * 0.01
-						).toString(),
-					)}{' '}
-					{_toUpper(currency_id)}
-				</span>
-			</div>
+					<div className="d-flex flex-row justify-content-between">
+						<span className="td-mobile-wallet-fiat-bank-withdraw__label">You will get: </span>
+						<span className="td-mobile-wallet-fiat-bank-withdraw__value">
+							{formatNumber(
+								(
+									Number(removeCommaInNumber(withdrawInputValueState!)) -
+									Number(removeCommaInNumber(withdrawInputValueState!)) * 0.01
+								).toString(),
+							)}{' '}
+							{_toUpper(currency_id)}
+						</span>
+					</div>
 
-			<div className="d-flex flex-row justify-content-between">
-				<span className="td-mobile-wallet-fiat-bank-withdraw__label">Fee: </span>
-				<span className="td-mobile-wallet-fiat-bank-withdraw__value">1 %</span>
-			</div>
-			<div className="d-flex flex-row justify-content-between">
-				<span className="td-mobile-wallet-fiat-bank-withdraw__label">Max withdraw</span>
-				<span className="td-mobile-wallet-fiat-bank-withdraw__value">3,000,000 {_toUpper(currency_id)}</span>
-			</div>
-			<div className="d-flex flex-row justify-content-between">
-				<span className="td-mobile-wallet-fiat-bank-withdraw__label">Min withdraw</span>
-				<span className="td-mobile-wallet-fiat-bank-withdraw__value">10,000 {_toUpper(currency_id)}</span>
-			</div>
+					<div className="d-flex flex-row justify-content-between">
+						<span className="td-mobile-wallet-fiat-bank-withdraw__label">Fee: </span>
+						<span className="td-mobile-wallet-fiat-bank-withdraw__value">1 %</span>
+					</div>
+					<div className="d-flex flex-row justify-content-between">
+						<span className="td-mobile-wallet-fiat-bank-withdraw__label">Max withdraw</span>
+						<span className="td-mobile-wallet-fiat-bank-withdraw__value">3,000,000 {_toUpper(currency_id)}</span>
+					</div>
+					<div className="d-flex flex-row justify-content-between">
+						<span className="td-mobile-wallet-fiat-bank-withdraw__label">Min withdraw</span>
+						<span className="td-mobile-wallet-fiat-bank-withdraw__value">10,000 {_toUpper(currency_id)}</span>
+					</div>
 
-			<div className="d-flex justify-content-center mt-5">
-				<Button
-					style={{
-						background: 'var(--yellow)',
-						borderRadius: '50px',
-						color: '#000',
-						fontWeight: 400,
-						fontSize: 12,
-						width: '12rem',
-						height: '3.1rem',
-					}}
-					onClick={handleShowWithdrawConfirmationForm}
-				>
-					Withdraw
-				</Button>
-			</div>
-			<NewModal
-				className="td-mobile-wallet-fiat-bank-withdraw__new-modal"
-				show={showWithdrawConfirmationForm}
-				onHide={handleCloseWithdrawConfirmationForm}
-				titleModal="WITHRAW CONFIRMATION"
-				bodyModal={renderBodyModalWithdrawConfirmationForm()}
-			/>
+					<div className="d-flex justify-content-center mt-5">
+						<Button
+							style={{
+								background: 'var(--yellow)',
+								borderRadius: '50px',
+								color: '#000',
+								fontWeight: 400,
+								fontSize: 12,
+								width: '12rem',
+								height: '3.1rem',
+							}}
+							onClick={handleShowWithdrawConfirmationForm}
+						>
+							Withdraw
+						</Button>
+					</div>
+					<NewModal
+						className="td-mobile-wallet-fiat-bank-withdraw__new-modal"
+						show={showWithdrawConfirmationForm}
+						onHide={handleCloseWithdrawConfirmationForm}
+						titleModal="WITHRAW CONFIRMATION"
+						bodyModal={renderBodyModalWithdrawConfirmationForm()}
+					/>
+				</React.Fragment>
+			)}
 		</div>
 	);
 };

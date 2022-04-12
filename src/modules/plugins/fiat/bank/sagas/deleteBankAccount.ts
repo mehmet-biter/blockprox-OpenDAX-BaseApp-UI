@@ -20,7 +20,7 @@ export function* deleteBankAccountSaga(action: DeleteBankAccount) {
 		);
 		const { otp, account_number } = action.payload;
 
-		yield call(API.delete(createOptions()), `/delete?otp=${otp}`, { account_number });
+		yield call(API.delete(createOptions()), `/private/bank/delete?otp=${otp}`, { account_number });
 
 		yield put(updateBankAccountDeletion({ account_number }));
 		yield put(alertPush({ message: ['Delete Bank Account Successfully'], type: 'success' }));

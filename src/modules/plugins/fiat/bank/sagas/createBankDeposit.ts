@@ -21,7 +21,7 @@ export function* createBankDepositSaga(action: CreateBankDeposit) {
 				loading: true,
 			}),
 		);
-		const result: CreateBankDepositResponse = yield call(API.post(createOptions()), `/deposit`, action.payload);
+		const result: CreateBankDepositResponse = yield call(API.post(createOptions()), `/private/bank/deposit`, action.payload);
 
 		yield put(updateBankDepositCreation({ ...result.data }));
 
