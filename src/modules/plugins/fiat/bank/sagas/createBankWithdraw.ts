@@ -1,4 +1,5 @@
 import { API, RequestOptions } from 'api';
+import { getCsrfToken } from 'helpers/getCsrfToken';
 import { alertPush } from 'modules/public/alert';
 import { call, put } from 'redux-saga/effects';
 import { CreateBankWithdraw, createBankWithdrawData, updateBankWithdrawCreation } from '../actions/bankWithdrawActions';
@@ -24,7 +25,7 @@ export function* createBankWithdrawSaga(action: CreateBankWithdraw) {
 		const { otp } = action.payload;
 
 		const result: CreateBankWithdrawResponse = yield call(
-			API.post(createOptions()),
+			API.post(createOptions(getCsrfToken())),
 			`/private/bank/withdraw?otp=${otp}`,
 			action.payload,
 		);
