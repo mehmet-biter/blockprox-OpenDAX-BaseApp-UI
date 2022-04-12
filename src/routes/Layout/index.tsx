@@ -11,6 +11,7 @@ import {
 	StakingListMobileScreen,
 	MobileCompetitionListingScreen,
 	MobileCompetitionDetailScreen,
+	BankAccountListMobileScreen,
 } from 'mobile/plugins';
 import {
 	configsFetch,
@@ -111,6 +112,7 @@ import { FiatWithdrawScreen } from 'plugins/Fiat/screens/FiatWithdrawScreen';
 import { AnnouncementDetail, NewAnnouncement } from 'plugins/Announcement/screens';
 import { AnnouncementMobileDetail } from 'mobile/plugins/Announcement';
 import { LoadingGif } from 'components/LoadingGif';
+import { FiatDepositMobileScreen, FiatWithdrawMobileScreen } from 'mobile/plugins/Fiat';
 
 interface ReduxProps {
 	colorTheme: string;
@@ -366,7 +368,20 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 							path="/wallets/:currency/deposit"
 							component={DepositMobileScreen}
 						/>
-
+						<PrivateRoute
+							loading={userLoading}
+							isLogged={isLoggedIn}
+							path="/wallets/deposit/fiat/:currency_id"
+							exact
+							component={FiatDepositMobileScreen}
+						/>
+						<PrivateRoute
+							loading={userLoading}
+							isLogged={isLoggedIn}
+							path="/wallets/withdraw/fiat/:currency_id"
+							exact
+							component={FiatWithdrawMobileScreen}
+						/>
 						<PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/orders" component={OrdersMobileScreen} />
 						<PrivateRoute
 							exact
@@ -404,6 +419,12 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 							isLogged={isLoggedIn}
 							path="/profile/change-password"
 							component={ProfileChangePasswordMobileScreen}
+						/>
+						<PrivateRoute
+							loading={userLoading}
+							isLogged={isLoggedIn}
+							path="/profile/bank"
+							component={BankAccountListMobileScreen}
 						/>
 						<PrivateRoute
 							loading={userLoading}

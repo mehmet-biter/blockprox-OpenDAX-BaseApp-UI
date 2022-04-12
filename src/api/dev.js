@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'development') {
 			statisticUrl: 'http://localhost:4000/api',
 			competitionUrl: 'https://ex.udonex.com/api/v2/competition',
 			paypalUrl: 'http://localhost:4000/api',
-			bankUrl: 'http://localhost:3333/api/private/bank',
+			bankUrl: 'http://localhost:3333/api',
 			newKycUrl: 'http://localhost:9002/api/v2/newKyc',
 			bannerUrl: 'http://localhost:4000/api',
 			announcementUrl: 'https://ex.udonex.com/api/v2/announcement',
