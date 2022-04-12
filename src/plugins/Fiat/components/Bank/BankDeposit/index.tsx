@@ -39,6 +39,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 	};
 
 	const [showDepositConfirmationForm, setShowDepositConfirmationForm] = React.useState(false);
+	const [isSmallerThanMinDeposit, setIsSmallerThanMinDeposit] = React.useState(false);
 
 	const handleCloseDepositConfirmationForm = () => {
 		setShowDepositConfirmationForm(false);
@@ -69,6 +70,15 @@ export const BankDeposit = (props: BankDepositProps) => {
 			return;
 		}
 
+		const depositAmount = Number(removeCommaInNumber(value));
+		console.log(depositAmount, Number(currency?.min_deposit_amount), isSmallerThanMinDeposit);
+
+		if (depositAmount < Number(currency?.min_deposit_amount)) {
+			setIsSmallerThanMinDeposit(true);
+		} else {
+			setIsSmallerThanMinDeposit(false);
+		}
+
 		setAmountInputValueState(value);
 	};
 
@@ -80,7 +90,9 @@ export const BankDeposit = (props: BankDepositProps) => {
 		return value.trim().length === 0;
 	};
 	const isFormNotValid = (): boolean => {
-		return isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState);
+		return (
+			isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState) || isSmallerThanMinDeposit
+		);
 	};
 
 	async function copyTextToClipboard(text: string) {
@@ -197,8 +209,14 @@ export const BankDeposit = (props: BankDepositProps) => {
 							type="text"
 							value={formatNumber(removeCommaInNumber(amountInputValueState!))}
 							onChange={onHandleChangeAmountInputValueState}
-							style={{ width: '26rem' }}
+							style={{ width: '100%' }}
 						/>
+						{isSmallerThanMinDeposit ? (
+							<span className="desktop-bank-deposit__input__error">
+								Deposit amount must be at least {formatNumber(currency?.min_deposit_amount!)}{' '}
+								{_toUpper(currency_id)}
+							</span>
+						) : null}
 					</div>
 
 					<div className="p-0 desktop-bank-deposit__input mt-3">
@@ -211,7 +229,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 						<Input value={transactionIDState} onChange={value => setTransactionIDState(value.target.value)} />
 					</div>
 				</div>
-				<img src={QRcodeImage} style={{ width: '12rem', height: '12rem', marginRight: 0 }} />
+				<img src={QRcodeImage} style={{ width: '12rem', height: '12rem', marginRight: 0, marginLeft: '3em' }} />
 			</div>
 			<div className="desktop-bank-deposit__transaction-fee">
 				<div className="d-flex flex-column justify-content-center">
