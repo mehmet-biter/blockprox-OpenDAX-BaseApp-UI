@@ -24,6 +24,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 
 	const [amountInputValueState, setAmountInputValueState] = React.useState<string>('');
 	const [showDepositConfirmationForm, setShowDepositConfirmationForm] = React.useState(false);
+	const [isSmallerThanMinDeposit, setIsSmallerThanMinDeposit] = React.useState(false);
 
 	const handleCloseDepositConfirmationForm = () => {
 		setShowDepositConfirmationForm(false);
@@ -63,6 +64,15 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 
 		if ((isNaN(Number(removeCommaInNumber(value))) && value.length > 0) || indexOfDot === 0) {
 			return;
+		}
+
+		const depositAmount = Number(removeCommaInNumber(value));
+		console.log(depositAmount, Number(currency?.min_deposit_amount), isSmallerThanMinDeposit);
+
+		if (depositAmount < Number(currency?.min_deposit_amount)) {
+			setIsSmallerThanMinDeposit(true);
+		} else {
+			setIsSmallerThanMinDeposit(false);
 		}
 
 		setAmountInputValueState(value);
@@ -181,11 +191,11 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 				{renderBankAccountInform('IFSC Code', 'YESB0000728')}
 			</div>
 			<div style={{ padding: '0.6em' }}>
-				<div className="d-flex flex-row justify-content-between">
-					<div>
-						<div className="td-mobile-wallet-fiat-bank-deposit__title">Enter Deposit Amount</div>
+				<div className="td-mobile-wallet-fiat-bank-deposit__title">Enter Deposit Amount</div>
 
-						<div className="p-0 td-mobile-wallet-fiat-bank-deposit__input">
+				<div className="d-flex flex-row justify-content-between align-items-end">
+					<div>
+						<div className="p-0 td-mobile-wallet-fiat-bank-deposit__input mb-3">
 							<label className="td-mobile-wallet-fiat-bank-deposit__input__label">Amount</label>
 							<Input
 								addonAfter={_toUpper(currency_id)}
@@ -193,9 +203,12 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 								value={formatNumber(removeCommaInNumber(amountInputValueState!))}
 								onChange={onHandleChangeAmountInputValueState}
 							/>
-							<span className="td-mobile-wallet-fiat-bank-deposit__input__notice">
-								Amount should be between 0 and 100 {_toUpper(currency_id)}
-							</span>
+							{isSmallerThanMinDeposit ? (
+								<span className="td-mobile-wallet-fiat-bank-deposit__input__error">
+									Deposit amount must be at least {formatNumber(currency?.min_deposit_amount!)}{' '}
+									{_toUpper(currency_id)}
+								</span>
+							) : null}
 						</div>
 
 						<div className="p-0 td-mobile-wallet-fiat-bank-deposit__input">
@@ -209,21 +222,26 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 							<Input value={transactionIDState} onChange={value => setTransactionIDState(value.target.value)} />
 						</div>
 					</div>
-					<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee">
-						<div style={{ textAlign: 'right', marginTop: '1em' }}>
-							<img src={QRcodeImage} style={{ width: '8em', height: '8em', marginRight: 0, marginBottom: '4em' }} />
-						</div>
-						<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '12em' }}>
-							<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">Transaction Fee:</div>
-							<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
-								{fee} {_toUpper(currency_id)}
-							</div>
-						</div>
-						<div className="d-flex flex-row justify-content-between" style={{ width: '12em' }}>
-							<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">You Will Get</span>
-							<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
-								{youWillGet} {_toUpper(currency_id)}
-							</span>
+					<div style={{ textAlign: 'right' }}>
+						<img src={QRcodeImage} style={{ width: '8em', height: '8em', marginRight: 0, marginLeft: '3em' }} />
+					</div>
+				</div>
+				<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee">
+					<div className="d-flex flex-row justify-content-between">
+						<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">You Will Get</span>
+						<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
+							{youWillGet} {_toUpper(currency_id)}
+						</span>
+					</div>
+
+					<div className="d-flex flex-row justify-content-between mb-2 mt-2">
+						<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">Transaction Fee:</div>
+						<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">{fee}</div>
+					</div>
+					<div className="d-flex flex-row justify-content-between">
+						<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">Min Deposit:</div>
+						<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
+							{formatNumber(currency?.min_deposit_amount!)} {_toUpper(currency_id)}
 						</div>
 					</div>
 				</div>
