@@ -146,16 +146,8 @@ export const BankDeposit = (props: BankDepositProps) => {
 							<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '18rem' }}>
 								<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
 								<div className="desktop-bank-deposit__transaction-fee__value">
-									{formatNumber(
-										NP.divide(
-											NP.times(
-												Number(removeCommaInNumber(amountInputValueState!)),
-												Number(currency?.deposit_fee),
-											),
-											100,
-										).toString(),
-									)}{' '}
-									{_toUpper(currency_id)}
+									{Number(currency?.deposit_fee)}
+									{'%'}
 								</div>
 							</div>
 							<div className="d-flex flex-row justify-content-between" style={{ width: '18rem' }}>
@@ -182,8 +174,8 @@ export const BankDeposit = (props: BankDepositProps) => {
 			</div>
 			<div className="desktop-bank-deposit__check-box">
 				<Checkbox onChange={onClickCheckBox}>
-					By proceeding, you contest to BlockProEx sharing your personal information on your BlockProEx acccnount in
-					accorance to our Tesm of Use and Privacy Policy.
+					By proceeding, you consent to BlockProEx sharing your personal information on your BlockProEx account in
+					accordance to our Terms of Use and Privacy Policy
 				</Checkbox>
 			</div>
 			<div className="d-flex justify-content-end mt-4">

@@ -17,7 +17,7 @@ interface BankAccountListResponse {
 
 export function* fetchBankAccountListSaga(action: BankAccountListFetch) {
 	try {
-		const list: BankAccountListResponse = yield call(API.get(createOptions()), '/list');
+		const list: BankAccountListResponse = yield call(API.get(createOptions()), '/private/bank/list');
 
 		yield put(bankAccountListData({ payload: list.data.list, loading: false }));
 	} catch (error) {

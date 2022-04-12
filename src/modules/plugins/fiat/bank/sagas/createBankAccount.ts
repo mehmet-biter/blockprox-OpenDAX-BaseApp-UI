@@ -23,7 +23,11 @@ export function* createBankAccountSaga(action: CreateBankAccount) {
 			}),
 		);
 		const { otp } = action.payload;
-		const result: CreateBankAccountResponse = yield call(API.post(createOptions()), `/create?otp=${otp}`, action.payload);
+		const result: CreateBankAccountResponse = yield call(
+			API.post(createOptions()),
+			`/private/bank/create?otp=${otp}`,
+			action.payload,
+		);
 
 		// yield put(bankAccountListFetch());
 		yield put(updateBankAccountCreation({ ...result.data }));
