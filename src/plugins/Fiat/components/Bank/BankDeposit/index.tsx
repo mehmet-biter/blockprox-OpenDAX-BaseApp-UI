@@ -186,52 +186,55 @@ export const BankDeposit = (props: BankDepositProps) => {
 			{renderBankAccountInform('Bank Address', 'Wakad, Pune')}
 			{renderBankAccountInform('IFSC Code', 'YESB0000728')}
 			<hr className="solid" style={{ background: 'white', width: '100%', marginTop: 25, marginBottom: 25 }} />
-			<div>
-				<div className="d-flex flex-row justify-content-between">
-					<div>
-						<div className="desktop-bank-deposit__title">Enter Deposit Amount</div>
-						<div className="p-0 desktop-bank-deposit__input">
-							<label className="desktop-bank-deposit__input__label">Amount</label>
-							<Input
-								addonAfter={_toUpper(currency_id)}
-								type="text"
-								value={formatNumber(removeCommaInNumber(amountInputValueState!))}
-								onChange={onHandleChangeAmountInputValueState}
-							/>
-							<span className="desktop-bank-deposit__input__notice mt-2">
-								Amount should be at least {currency?.min_deposit_amount} {_toUpper(currency_id)}
-							</span>
-						</div>
+			<div className="desktop-bank-deposit__title">Enter Deposit Amount</div>
 
-						<div className="p-0 desktop-bank-deposit__input mt-3">
-							<label className="desktop-bank-deposit__input__label">
-								Transaction ID{' '}
-								<img className="desktop-bank-deposit__input__label__notice-icon" src={NoticeIcon} />
-								<span className="tooltiptext">
-									Transaction ID must be accurate and exact like the ID of the exchange
-								</span>
-							</label>
-							<Input value={transactionIDState} onChange={value => setTransactionIDState(value.target.value)} />
+			<div className="d-flex flex-row justify-content-between">
+				<div>
+					<div className="p-0 desktop-bank-deposit__input">
+						<label className="desktop-bank-deposit__input__label">Amount</label>
+						<Input
+							addonAfter={_toUpper(currency_id)}
+							type="text"
+							value={formatNumber(removeCommaInNumber(amountInputValueState!))}
+							onChange={onHandleChangeAmountInputValueState}
+							style={{ width: '26rem' }}
+						/>
+					</div>
+
+					<div className="p-0 desktop-bank-deposit__input mt-3">
+						<label className="desktop-bank-deposit__input__label">
+							Transaction ID <img className="desktop-bank-deposit__input__label__notice-icon" src={NoticeIcon} />
+							<span className="tooltiptext">
+								Transaction ID must be accurate and exact like the ID of the exchange
+							</span>
+						</label>
+						<Input value={transactionIDState} onChange={value => setTransactionIDState(value.target.value)} />
+					</div>
+				</div>
+				<img src={QRcodeImage} style={{ width: '12rem', height: '12rem', marginRight: 0 }} />
+			</div>
+			<div className="desktop-bank-deposit__transaction-fee">
+				<div className="d-flex flex-column justify-content-center">
+					<div className="d-flex flex-row justify-content-between">
+						<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
+						<span className="desktop-bank-deposit__transaction-fee__value">
+							{youWillGet} {_toUpper(currency_id)}
+						</span>
+					</div>
+
+					<div className="d-flex flex-row justify-content-between mb-4 mt-4">
+						<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
+						<div className="desktop-bank-deposit__transaction-fee__value">
+							{Number(currency?.deposit_fee)}
+							{' %'}
 						</div>
 					</div>
-					<div className="desktop-bank-deposit__transaction-fee">
-						<img src={QRcodeImage} style={{ width: 120, height: 120, marginRight: 0, marginBottom: '2rem' }} />
 
-						<div className="d-flex flex-column justify-content-center align-items-end">
-							<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '18rem' }}>
-								<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
-								<div className="desktop-bank-deposit__transaction-fee__value">
-									{Number(currency?.deposit_fee)}
-									{'%'}
-								</div>
-							</div>
-							<div className="d-flex flex-row justify-content-between" style={{ width: '18rem' }}>
-								<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
-								<span className="desktop-bank-deposit__transaction-fee__value">
-									{youWillGet} {_toUpper(currency_id)}
-								</span>
-							</div>
-						</div>
+					<div className="d-flex flex-row justify-content-between">
+						<div className="desktop-bank-deposit__transaction-fee__label">Min Deposit:</div>
+						<span className="desktop-bank-deposit__transaction-fee__value">
+							{currency?.min_deposit_amount} {_toUpper(currency_id)}
+						</span>
 					</div>
 				</div>
 			</div>
