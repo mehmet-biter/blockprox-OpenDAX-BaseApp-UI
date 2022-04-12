@@ -10,7 +10,7 @@ import { useHistory } from 'react-router';
 import { formatNumber } from 'helpers';
 import NoticeIcon from 'assets/icons/notice.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { alertPush, selectCurrencies, selectUserInfo, selectWallets } from 'modules';
+import { selectCurrencies, selectUserInfo, selectWallets } from 'modules';
 import { selectBankAccountList } from 'modules/plugins/fiat/bank/selectors';
 import { bankAccountListFetch } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
 import { createBankWithdraw } from 'modules/plugins/fiat/bank/actions/bankWithdrawActions';
@@ -43,6 +43,8 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 	const [bankAccountSelectionValue, setBankAccountSelectionValue] = React.useState('');
 	const [withdrawInputValueState, setWithdrawInputValueState] = React.useState<string>('');
 	const [otpInputValueState, setOtpInputValueState] = React.useState('');
+	const [isSmallerThanMinWithdraw, setIsSmallerThanMinWithdraw] = React.useState(false);
+	const [isAmountLargerThanBalance, setIsAmountLargerThanBalance] = React.useState(false);
 
 	const redirectToEnable2fa = () => history.push('/security/2fa', { enable2fa: true });
 
@@ -70,10 +72,6 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 		setOtpInputValueState(value);
 	};
 
-	async function notifyAmountLargerBalance() {
-		dispatch(alertPush({ message: ['You are typing withdraw amount larger than your balance!'], type: 'error' }));
-	}
-
 	const onHandleChangeWithdrawInputValueState: React.ChangeEventHandler<HTMLInputElement> = e => {
 		let value = e.target.value;
 
@@ -84,12 +82,19 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 		}
 
 		const amount: number = Number(removeCommaInNumber(value));
+
 		if (amount >= 0 && amount <= Number(wallet?.balance)) {
-			setWithdrawInputValueState(value);
-			return;
+			setIsAmountLargerThanBalance(false);
+		} else {
+			setIsAmountLargerThanBalance(true);
 		}
 
-		notifyAmountLargerBalance();
+		if (amount < Number(currency?.min_withdraw_amount)) {
+			setIsSmallerThanMinWithdraw(true);
+		} else {
+			setIsSmallerThanMinWithdraw(false);
+		}
+		setWithdrawInputValueState(value);
 	};
 
 	const removeCommaInNumber = (numberWithComma: string): string => {
@@ -121,7 +126,9 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 			bankAccountSelectionValue !== '-1' &&
 			isValid2FA &&
 			!isEmpty(withdrawInputValueState) &&
-			!isEmpty(bankAccountSelectionValue)
+			!isEmpty(bankAccountSelectionValue) &&
+			!isSmallerThanMinWithdraw &&
+			!isAmountLargerThanBalance
 		);
 	};
 
@@ -270,7 +277,17 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 							value={formatNumber(removeCommaInNumber(withdrawInputValueState!))}
 							onChange={onHandleChangeWithdrawInputValueState}
 							disabled={!(currency && currency.withdrawal_enabled)}
+							style={{ marginBottom: '0.5em' }}
 						/>
+						{isSmallerThanMinWithdraw ? (
+							<div className="desktop-bank-withdraw__input__error">
+								Withdraw amount must be at least {formatNumber(currency?.min_withdraw_amount!)}{' '}
+								{_toUpper(currency_id)}
+							</div>
+						) : null}
+						{isAmountLargerThanBalance ? (
+							<span className="desktop-bank-withdraw__input__error">Your balance is not enough to withdraw</span>
+						) : null}
 					</div>
 					<div className="desktop-bank-withdraw__input">
 						<label>OTP</label>
