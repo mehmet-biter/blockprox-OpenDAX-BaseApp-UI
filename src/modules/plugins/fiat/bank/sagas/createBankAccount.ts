@@ -4,6 +4,7 @@ import { API, RequestOptions } from 'api';
 import { call, put } from 'redux-saga/effects';
 import { alertPush } from 'modules/public/alert';
 import { BankAccount } from '../types';
+import { getCsrfToken } from 'helpers';
 
 const createOptions = (csrfToken?: string): RequestOptions => {
 	return { apiVersion: 'bank', headers: { 'X-CSRF-Token': csrfToken } };
@@ -24,7 +25,7 @@ export function* createBankAccountSaga(action: CreateBankAccount) {
 		);
 		const { otp } = action.payload;
 		const result: CreateBankAccountResponse = yield call(
-			API.post(createOptions()),
+			API.post(createOptions(getCsrfToken())),
 			`/private/bank/create?otp=${otp}`,
 			action.payload,
 		);
