@@ -84,8 +84,8 @@ export const BankDeposit = (props: BankDepositProps) => {
 		);
 	};
 
-	async function copyTextToClipboard(text: string) {
-		dispatch(alertPush({ message: ['Copied!'], type: 'success' }));
+	async function copyTextToClipboard(label: string, text: string) {
+		dispatch(alertPush({ message: [`${label} Copied!`], type: 'success' }));
 		return await navigator.clipboard.writeText(text);
 	}
 
@@ -101,7 +101,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 						viewBox="0 0 17 18"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
-						onClick={() => copyTextToClipboard(content)}
+						onClick={() => copyTextToClipboard(label, content)}
 					>
 						<path
 							fill-rule="evenodd"

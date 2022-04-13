@@ -86,7 +86,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 		if (amount >= 0 && amount <= Number(wallet?.balance)) {
 			setIsAmountLargerThanBalance(false);
 		} else {
-			setIsAmountLargerThanBalance(false);
+			setIsAmountLargerThanBalance(true);
 		}
 
 		if (amount < Number(currency?.min_withdraw_amount)) {
