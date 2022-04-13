@@ -1,18 +1,18 @@
-import React from 'react';
-import _toNumber from 'lodash/toNumber';
+import { Button, Checkbox, Input } from 'antd';
+import NoticeIcon from 'assets/icons/notice.svg';
+import { NewModal } from 'components';
+import { LoadingGif } from 'components/LoadingGif';
+import { formatNumber } from 'helpers';
+import _find from 'lodash/find';
 import _toLower from 'lodash/toLower';
 import _toUpper from 'lodash/toUpper';
-import _find from 'lodash/find';
-import { Button, Input } from 'antd';
-import QRcodeImage from '../../../assets/images/QR_code.jpg';
-import { Checkbox } from 'antd';
-import NoticeIcon from 'assets/icons/notice.svg';
-import { formatNumber } from 'helpers';
 import { alertPush, selectCurrencies } from 'modules';
-import { useDispatch, useSelector } from 'react-redux';
 import { createBankDeposit } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
+import { selectCreateBankDepositLoading } from 'modules/plugins/fiat/bank/selectors';
 import NP from 'number-precision';
-import { NewModal } from 'components';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import QRcodeImage from '../../../assets/images/QR_code.jpg';
 
 interface BankDepositProps {
 	currency_id: string;
@@ -26,17 +26,6 @@ export const BankDeposit = (props: BankDepositProps) => {
 
 	// dispatch
 	const dispatch = useDispatch();
-
-	const handleCreateBankDeposit = () => {
-		dispatch(
-			createBankDeposit({
-				currency_id,
-				amount: Number(removeCommaInNumber(amountInputValueState)),
-				txid: transactionIDState,
-			}),
-		);
-		handleCloseDepositConfirmationForm();
-	};
 
 	const [showDepositConfirmationForm, setShowDepositConfirmationForm] = React.useState(false);
 	const [isSmallerThanMinDeposit, setIsSmallerThanMinDeposit] = React.useState(false);
@@ -71,7 +60,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 		}
 
 		const depositAmount = Number(removeCommaInNumber(value));
-		console.log(depositAmount, Number(currency?.min_deposit_amount), isSmallerThanMinDeposit);
+		// console.log(depositAmount, Number(currency?.min_deposit_amount), isSmallerThanMinDeposit);
 
 		if (depositAmount < Number(currency?.min_deposit_amount)) {
 			setIsSmallerThanMinDeposit(true);
@@ -136,8 +125,19 @@ export const BankDeposit = (props: BankDepositProps) => {
 			NP.divide(NP.times(Number(removeCommaInNumber(amountInputValueState!)), Number(currency?.deposit_fee)), 100),
 		).toString(),
 	);
+	const isDepositing = useSelector(selectCreateBankDepositLoading);
 
-	const renderBodyModalDepositConfirmationForm = () => {
+	const BodyModalDepositConfirmationForm = () => {
+		const handleCreateBankDeposit = () => {
+			dispatch(
+				createBankDeposit({
+					currency_id,
+					amount: Number(removeCommaInNumber(amountInputValueState)),
+					txid: transactionIDState,
+				}),
+			);
+			handleCloseDepositConfirmationForm();
+		};
 		return (
 			<div className="desktop-bank-deposit__modal-form d-flex flex-column align-items-center">
 				<span style={{ fontWeight: 600, fontSize: 14, color: '#fff' }}>You will get</span>
@@ -166,7 +166,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 					</div>
 				</div>
 				<span className="desktop-bank-deposit__modal-form__warning">
-					<img src={NoticeIcon} className="desktop-bank-deposit__modal-form__warning__icon" />
+					<img src={NoticeIcon} alt="notice-icon" className="desktop-bank-deposit__modal-form__warning__icon" />
 					Deposit usually take under 24 hours. Depends on the speed of your bank. a delay may occur.
 				</span>
 				<div className="d-flex justify-content-center mt-5">
@@ -188,102 +188,135 @@ export const BankDeposit = (props: BankDepositProps) => {
 			</div>
 		);
 	};
-
 	return (
-		<div className="desktop-bank-deposit">
-			<div className="desktop-bank-deposit__title">Bank Details</div>
-			{renderBankAccountInform('Name', 'Blockproex Infotech Pvt Ltd')}
-			{renderBankAccountInform('Account Number', '072863400000569')}
-			{renderBankAccountInform('Bank Name', 'Yes Bank')}
-			{renderBankAccountInform('Bank Address', 'Wakad, Pune')}
-			{renderBankAccountInform('IFSC Code', 'YESB0000728')}
-			<hr className="solid" style={{ background: 'white', width: '100%', marginTop: 25, marginBottom: 25 }} />
-			<div className="desktop-bank-deposit__title">Enter Deposit Amount</div>
-
-			<div className="d-flex flex-row justify-content-between">
-				<div>
-					<div className="p-0 desktop-bank-deposit__input">
-						<label className="desktop-bank-deposit__input__label">Amount</label>
-						<Input
-							addonAfter={_toUpper(currency_id)}
-							type="text"
-							value={formatNumber(removeCommaInNumber(amountInputValueState!))}
-							onChange={onHandleChangeAmountInputValueState}
-							style={{ width: '100%' }}
-						/>
-						{isSmallerThanMinDeposit ? (
-							<span className="desktop-bank-deposit__input__error">
-								Deposit amount must be at least {formatNumber(currency?.min_deposit_amount!)}{' '}
-								{_toUpper(currency_id)}
-							</span>
-						) : null}
-					</div>
-
-					<div className="p-0 desktop-bank-deposit__input mt-3">
-						<label className="desktop-bank-deposit__input__label">
-							Transaction ID <img className="desktop-bank-deposit__input__label__notice-icon" src={NoticeIcon} />
-							<span className="tooltiptext">
-								Transaction ID must be accurate and exact like the ID of the exchange
-							</span>
-						</label>
-						<Input value={transactionIDState} onChange={value => setTransactionIDState(value.target.value)} />
-					</div>
+		<div className="desktop-bank-deposit h-100">
+			{isDepositing && (
+				<div
+					className="d-flex justify-content-center align-items-center"
+					style={{
+						minHeight: '58rem',
+					}}
+				>
+					{' '}
+					<LoadingGif />
 				</div>
-				<img src={QRcodeImage} style={{ width: '12rem', height: '12rem', marginRight: 0, marginLeft: '3em' }} />
-			</div>
-			<div className="desktop-bank-deposit__transaction-fee">
-				<div className="d-flex flex-column justify-content-center">
-					<div className="d-flex flex-row justify-content-between">
-						<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
-						<span className="desktop-bank-deposit__transaction-fee__value">
-							{youWillGet} {_toUpper(currency_id)}
-						</span>
-					</div>
+			)}
 
-					<div className="d-flex flex-row justify-content-between mb-4 mt-4">
-						<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
-						<div className="desktop-bank-deposit__transaction-fee__value">
-							{Number(currency?.deposit_fee)}
-							{' %'}
+			{!isDepositing && (
+				<React.Fragment>
+					{' '}
+					<div className="desktop-bank-deposit__title">Bank Details</div>
+					{renderBankAccountInform('Name', 'Blockproex Infotech Pvt Ltd')}
+					{renderBankAccountInform('Account Number', '072863400000569')}
+					{renderBankAccountInform('Bank Name', 'Yes Bank')}
+					{renderBankAccountInform('Bank Address', 'Wakad, Pune')}
+					{renderBankAccountInform('IFSC Code', 'YESB0000728')}
+					<hr className="solid" style={{ background: 'white', width: '100%', marginTop: 25, marginBottom: 25 }} />
+					<div className="desktop-bank-deposit__title">Enter Deposit Amount</div>
+					<div className="d-flex flex-row justify-content-between">
+						<div className="col-7 pl-0">
+							<div className="p-0 desktop-bank-deposit__input">
+								<label className="desktop-bank-deposit__input__label">Amount</label>
+								<Input
+									addonAfter={_toUpper(currency_id)}
+									type="text"
+									placeholder={`Min amount: ${Number(currency?.min_deposit_amount)}`}
+									value={formatNumber(removeCommaInNumber(amountInputValueState!))}
+									onChange={onHandleChangeAmountInputValueState}
+									style={{ width: '100%' }}
+								/>
+								{isSmallerThanMinDeposit && (
+									<span className="desktop-bank-deposit__input__error">
+										Deposit amount must be at least {formatNumber(Number(currency?.min_deposit_amount!))}{' '}
+										{_toUpper(currency_id)}
+									</span>
+								)}
+							</div>
+
+							<div className="p-0 desktop-bank-deposit__input mt-3">
+								<label className="desktop-bank-deposit__input__label">
+									Transaction ID{' '}
+									<img className="desktop-bank-deposit__input__label__notice-icon" src={NoticeIcon} />
+									<span className="tooltiptext">
+										Transaction ID must be accurate and exact like the ID of the exchange
+									</span>
+								</label>
+								<Input
+									value={transactionIDState}
+									maxLength={40}
+									placeholder="Example: Wxsdsdk231315"
+									onChange={value => setTransactionIDState(value.target.value)}
+								/>
+							</div>
+						</div>
+						<div className="col-5 d-flex justify-content-end p-0">
+							<img
+								src={QRcodeImage}
+								className="mr-0"
+								alt="QR-code"
+								style={{
+									maxHeight: '12rem',
+									maxWidth: '15rem',
+									objectFit: 'contain',
+								}}
+							/>
 						</div>
 					</div>
+					<div className="desktop-bank-deposit__transaction-fee">
+						<div className="d-flex flex-column justify-content-center">
+							<div className="d-flex flex-row justify-content-between">
+								<span className="desktop-bank-deposit__transaction-fee__label">You Will Get</span>
+								<span className="desktop-bank-deposit__transaction-fee__value">
+									{youWillGet} {_toUpper(currency_id)}
+								</span>
+							</div>
 
-					<div className="d-flex flex-row justify-content-between">
-						<div className="desktop-bank-deposit__transaction-fee__label">Min Deposit:</div>
-						<span className="desktop-bank-deposit__transaction-fee__value">
-							{currency?.min_deposit_amount} {_toUpper(currency_id)}
-						</span>
+							<div className="d-flex flex-row justify-content-between mb-4 mt-4">
+								<div className="desktop-bank-deposit__transaction-fee__label">Transaction Fee:</div>
+								<div className="desktop-bank-deposit__transaction-fee__value">
+									{Number(currency?.deposit_fee)}
+									{' %'}
+								</div>
+							</div>
+
+							<div className="d-flex flex-row justify-content-between">
+								<div className="desktop-bank-deposit__transaction-fee__label">Min Deposit:</div>
+								<span className="desktop-bank-deposit__transaction-fee__value">
+									{formatNumber(Number(currency?.min_deposit_amount!))} {_toUpper(currency_id)}
+								</span>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
-			<div className="desktop-bank-deposit__check-box">
-				<Checkbox onChange={onClickCheckBox}>
-					By proceeding, you consent to BlockProEx sharing your personal information on your BlockProEx account in
-					accordance to our Terms of Use and Privacy Policy
-				</Checkbox>
-			</div>
-			<div className="d-flex justify-content-end mt-4">
-				<Button
-					disabled={isFormNotValid()}
-					style={{
-						background: isFormNotValid() ? 'rgba(233, 170, 9, 0.5)' : 'var(--yellow)',
-						borderRadius: '50px',
-						color: '#000',
-						fontWeight: 400,
-						fontSize: 12,
-						width: 180,
-						height: 40,
-					}}
-					onClick={handleShowDepositConfirmationForm}
-				>
-					Continue
-				</Button>
-			</div>
+					<div className="desktop-bank-deposit__check-box">
+						<Checkbox onChange={onClickCheckBox}>
+							By proceeding, you consent to BlockProEx sharing your personal information on your BlockProEx account
+							in accordance to our Terms of Use and Privacy Policy
+						</Checkbox>
+					</div>
+					<div className="d-flex justify-content-end mt-4">
+						<Button
+							disabled={isFormNotValid()}
+							style={{
+								background: isFormNotValid() ? 'rgba(233, 170, 9, 0.5)' : 'var(--yellow)',
+								borderRadius: '50px',
+								color: '#000',
+								fontWeight: 400,
+								fontSize: 12,
+								width: 180,
+								height: 40,
+							}}
+							onClick={handleShowDepositConfirmationForm}
+						>
+							Continue
+						</Button>
+					</div>
+				</React.Fragment>
+			)}
 			<NewModal
 				show={showDepositConfirmationForm}
 				onHide={handleCloseDepositConfirmationForm}
 				titleModal="DEPOSIT CONFIRMATION"
-				bodyModal={renderBodyModalDepositConfirmationForm()}
+				bodyModal={<BodyModalDepositConfirmationForm />}
 			/>
 		</div>
 	);

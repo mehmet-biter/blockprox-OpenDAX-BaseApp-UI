@@ -11,7 +11,7 @@ import { BankDepositHistoryListState, CreateBankDepositState, BankDeposit } from
 
 export const initialBankDepositHistoryList: BankDepositHistoryListState = {
 	payload: [],
-	loading: false,
+	loading: true,
 };
 
 export const initialCreateBankDeposit: CreateBankDepositState = {
@@ -35,11 +35,10 @@ export const bankDepositHistoryListReducer = (state = initialBankDepositHistoryL
 			};
 		case UPDATE_BANK_DEPOSIT_CREATION:
 			const newBankDeposit: BankDeposit = action.payload;
-
 			return {
 				...state,
 				payload: [newBankDeposit, ...state.payload],
-				loading,
+				loading: false,
 				error: undefined,
 			};
 		default:
@@ -51,7 +50,6 @@ export const createBankDepositReducer = (state = initialCreateBankDeposit, actio
 	switch (action.type) {
 		case CREATE_BANK_DEPOSIT_DATA:
 			const { loading } = action.payload;
-
 			return { ...state, loading, error: undefined };
 		default:
 			return state;

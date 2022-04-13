@@ -41,7 +41,9 @@ export interface CreateBankDepositData {
 
 export interface UpdateBankDepositCreation {
 	type: typeof UPDATE_BANK_DEPOSIT_CREATION;
-	payload: BankDeposit;
+	payload: BankDeposit & {
+		isSuccess?: boolean;
+	};
 }
 
 export type BankDepositActions =

@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import { selectAllChildCurrencies, selectWallets } from '../../../modules';
 import { Decimal } from '../../components';
 import { DEFAULT_CURRENCY_PRECISION } from '../../../constants';
+import classNames from 'classnames';
 
 export const NewWalletsMobileScreen = () => {
 	const intl = useIntl();
@@ -26,6 +27,7 @@ export const NewWalletsMobileScreen = () => {
 	const wallets = useSelector(selectWallets);
 	const allChildCurrencies = useSelector(selectAllChildCurrencies);
 
+	const [modeDisplay, setModeDisplay] = React.useState<'fiat' | 'coin'>('coin');
 	const [searchString, setSearchString] = useState<string>('');
 	const [hideSmallBalance, setHideSmallBalance] = useState<boolean>(false);
 
@@ -46,6 +48,7 @@ export const NewWalletsMobileScreen = () => {
 	const renderWalletList = () => {
 		return data
 			.sort((prev, cur) => (cur.total && prev.total ? _toNumber(cur.total) - _toNumber(prev.total) : 0))
+			.filter(item => item.type === modeDisplay)
 			.map(_w => (
 				<Link to={`/wallets/${_w.currency}/detail`} className="td-mobile-wallets__list__item" key={_w.currency}>
 					<div className="td-mobile-wallets__list__item__top">
@@ -92,6 +95,11 @@ export const NewWalletsMobileScreen = () => {
 		);
 	};
 
+	const getModeClassNames = (type: 'fiat' | 'coin') => {
+		return classNames('td-mobile-wallets__mode-crypto w-50 text-center mode-item', {
+			'mode--active': modeDisplay === type,
+		});
+	};
 	return (
 		<div className="td-mobile-wallets">
 			<EstimatedValue />
@@ -130,6 +138,14 @@ export const NewWalletsMobileScreen = () => {
 							})}
 						/>
 					</label>
+				</div>
+			</div>
+			<div className="td-mobile-wallets__mode d-flex">
+				<div className={getModeClassNames('coin')} onClick={() => setModeDisplay('coin')}>
+					Crypto
+				</div>
+				<div className={getModeClassNames('fiat')} onClick={() => setModeDisplay('fiat')}>
+					Fiat
 				</div>
 			</div>
 			<div className="td-mobile-wallets__list">{data.length === 0 ? <Empty /> : renderWalletList()}</div>
