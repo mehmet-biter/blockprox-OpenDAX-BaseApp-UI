@@ -188,7 +188,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 
 	return (
 		<div className="td-mobile-wallet-fiat-bank-deposit h-100">
-			{!isDepositing ? (
+			{isDepositing ? (
 				<div
 					className="d-flex justify-content-center align-items-center"
 					style={{
