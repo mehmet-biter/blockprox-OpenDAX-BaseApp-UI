@@ -137,6 +137,9 @@ export const BankDeposit = (props: BankDepositProps) => {
 				}),
 			);
 			handleCloseDepositConfirmationForm();
+			setIsContinueButtonDisabled(true);
+			setAmountInputValueState('');
+			setTransactionIDState('');
 		};
 		return (
 			<div className="desktop-bank-deposit__modal-form d-flex flex-column align-items-center">

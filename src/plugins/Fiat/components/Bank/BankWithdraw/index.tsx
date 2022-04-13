@@ -86,7 +86,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 		if (amount >= 0 && amount <= Number(wallet?.balance)) {
 			setIsAmountLargerThanBalance(false);
 		} else {
-			setIsAmountLargerThanBalance(true);
+			setIsAmountLargerThanBalance(false);
 		}
 
 		if (amount < Number(currency?.min_withdraw_amount)) {
@@ -132,15 +132,6 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 		);
 	};
 
-	console.log('isFormValid: ', isFormValid());
-
-	const fee: string = formatNumber(
-		NP.divide(
-			NP.times(Number(removeCommaInNumber(withdrawInputValueState!)), Number(currency?.withdraw_fee)),
-			100,
-		).toString(),
-	);
-
 	const youWillGet: string = formatNumber(
 		NP.minus(
 			Number(removeCommaInNumber(withdrawInputValueState!)),
@@ -169,9 +160,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 					</div>
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Fee</span>
-						<span>
-							{fee} {_toUpper(currency_id)}
-						</span>
+						<span>{Number(formatNumber(currency?.withdraw_fee!))} %</span>
 					</div>
 					<div className="d-flex flex-row align-items-center justify-content-between">
 						<span>Withdrawal Amount</span>
@@ -303,19 +292,13 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 					<div className="d-flex flex-row justify-content-between">
 						<span className="desktop-bank-withdraw__label">You will get: </span>
 						<span className="desktop-bank-withdraw__value">
-							{formatNumber(
-								(
-									Number(removeCommaInNumber(withdrawInputValueState!)) -
-									Number(removeCommaInNumber(withdrawInputValueState!)) * 0.01
-								).toString(),
-							)}{' '}
-							{_toUpper(currency_id)}
+							{youWillGet} {_toUpper(currency_id)}
 						</span>
 					</div>
 
 					<div className="d-flex flex-row justify-content-between">
 						<span className="desktop-bank-withdraw__label">Fee: </span>
-						<span className="desktop-bank-withdraw__value">{formatNumber(currency?.withdraw_fee!)} %</span>
+						<span className="desktop-bank-withdraw__value">{Number(formatNumber(currency?.withdraw_fee!))} %</span>
 					</div>
 					{/* <div className="d-flex flex-row justify-content-between">
 				<span className="desktop-bank-withdraw__label">Max withdraw</span>
@@ -324,7 +307,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 					<div className="d-flex flex-row justify-content-between">
 						<span className="desktop-bank-withdraw__label">Min withdraw</span>
 						<span className="desktop-bank-withdraw__value">
-							{formatNumber(currency?.min_withdraw_amount!)} {_toUpper(currency_id)}
+							{Number(formatNumber(currency?.min_withdraw_amount!))} {_toUpper(currency_id)}
 						</span>
 					</div>
 
