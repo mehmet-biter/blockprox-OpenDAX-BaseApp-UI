@@ -17,9 +17,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { localeDate, preciseData, setDocumentTitle } from '../../helpers';
 // import { Pagination } from './../../components/PaginationOrdersHistory/index';
 import ReactPaginate from 'react-paginate';
-import { selectBankDepositHistoryList } from 'modules/plugins/fiat/bank/selectors';
+import {
+	selectBankDepositHistoryList,
+	selectBankDepositHistoryListLoading,
+	selectBankWithdrawHistoryList,
+	selectBankWithdrawHistoryListLoading,
+} from 'modules/plugins/fiat/bank/selectors';
 import { bankDepositHistoryListFetch } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
-import { BankDeposit } from 'modules/plugins/fiat/bank/types';
+import { BankDeposit, BankWithdraw } from 'modules/plugins/fiat/bank/types';
+import { bankWithdrawHistoryListFetch } from 'modules/plugins/fiat/bank/actions/bankWithdrawActions';
 
 const NUMBER_ITEM_DISPLAY = 15;
 
@@ -36,20 +42,28 @@ export const HistoryScreen = () => {
 	const wallets = useSelector(selectWallets);
 	const list = useSelector(selectHistory);
 	const fiatBankDepositHistoryList = useSelector(selectBankDepositHistoryList);
+	const fiatBankWithdrawHistoryList = useSelector(selectBankWithdrawHistoryList);
 
 	const fetching = useSelector(selectHistoryLoading);
+	const fiatBankDepositHistoryListFetching = useSelector(selectBankDepositHistoryListLoading);
+	const fiatBankWithdrawHistoryListFetching = useSelector(selectBankWithdrawHistoryListLoading);
 
 	const [listData, setListData] = useState(list);
 
 	useEffect(() => {
 		setDocumentTitle('History');
-		if (tab != 'fiatDeposit') {
+		if (tab != 'fiatDeposit' && tab != 'fiatWithdraw') {
 			dispatch(historyAllFetch({ page: 1, type: tab, limit: 25 }));
 		}
 		if (currencies.length === 0) {
 			dispatch(currenciesFetch());
 		}
-		dispatch(bankDepositHistoryListFetch());
+		if (tab === 'fiatDeposit') {
+			dispatch(bankDepositHistoryListFetch());
+		}
+		if (tab === 'fiatWithdraw') {
+			dispatch(bankWithdrawHistoryListFetch());
+		}
 	}, [dispatch, currencies.length, tab]);
 
 	useEffect(() => {
@@ -64,7 +78,7 @@ export const HistoryScreen = () => {
 		setListData(list);
 	}, [list]);
 
-	const tabMapping = ['deposits', 'withdraws', 'trades', 'fiatDeposit'];
+	const tabMapping = ['deposits', 'withdraws', 'trades', 'fiatDeposit', 'fiatWithdraw'];
 	const limitElem = 20;
 	const onCurrentTabChange = (index: number) => {
 		if (tabMapping[index] !== tab) {
@@ -106,6 +120,13 @@ export const HistoryScreen = () => {
 						? 'history-screen__tabs__label__item history-screen__tabs__label__item--active'
 						: 'history-screen__tabs__label__item',
 				label: 'Fiat Deposit',
+			},
+			{
+				className:
+					tab === 'fiatWithdraw'
+						? 'history-screen__tabs__label__item history-screen__tabs__label__item--active'
+						: 'history-screen__tabs__label__item',
+				label: 'Fiat Withdraw',
 			},
 		];
 
@@ -152,6 +173,8 @@ export const HistoryScreen = () => {
 						intl.formatMessage({ id: 'page.body.history.trade.header.total' }),
 					];
 				case 'fiatDeposit':
+					return ['Date', 'Txid Address', 'Status', 'Amount'];
+				case 'fiatWithdraw':
 					return ['Date', 'Txid Address', 'Status', 'Amount'];
 				default:
 					return [];
@@ -314,6 +337,43 @@ export const HistoryScreen = () => {
 					</tr>
 				);
 			}
+			case 'fiatWithdraw': {
+				const fiatWithdrawItem: BankWithdraw = item;
+				const formatTxState = (tx: string, confirmations?: number, minConfirmations?: number) => {
+					const process = require('../../assets/status/wait.svg');
+					const fail = require('../../assets/status/fail.svg');
+					const success = require('../../assets/status/success.svg');
+					const statusMapping = {
+						succeed: <img src={success} alt="" />,
+						failed: <img src={fail} alt="" />,
+						accepted: <img src={process} alt="" />,
+						collected: <img src={success} alt="" />,
+						canceled: <img src={fail} alt="" />,
+						rejected: <img src={fail} alt="" />,
+						pending: <img src={process} alt="" />,
+						prepared: <img src={process} alt="" />,
+						fee_processing: <img src={process} alt="" />,
+						skipped: <img src={success} alt="" />,
+						submitted:
+							confirmations !== undefined && minConfirmations !== undefined ? (
+								`${confirmations}/${minConfirmations}`
+							) : (
+								<img src={process} alt="" />
+							),
+					};
+
+					return statusMapping[tx];
+				};
+
+				return (
+					<tr key={index}>
+						<td>{localeDate(fiatWithdrawItem.created_at, 'fullDate')}</td>
+						<td>{fiatWithdrawItem.txid}</td>
+						<td>{formatTxState(fiatWithdrawItem.state)}</td>
+						<td>{fiatWithdrawItem.amount}</td>
+					</tr>
+				);
+			}
 			default: {
 				return [];
 			}
@@ -332,6 +392,16 @@ export const HistoryScreen = () => {
 						return renderTableRow(tab, item, index);
 					});
 			}
+
+			if (tab === 'fiatWithdraw') {
+				return fiatBankWithdrawHistoryList
+					.slice(paginationState * NUMBER_ITEM_DISPLAY, paginationState * NUMBER_ITEM_DISPLAY + NUMBER_ITEM_DISPLAY)
+					.slice(indexElemStart, indexElemStop)
+					.map((item, index) => {
+						return renderTableRow(tab, item, index);
+					});
+			}
+
 			return listData
 				.slice(paginationState * NUMBER_ITEM_DISPLAY, paginationState * NUMBER_ITEM_DISPLAY + NUMBER_ITEM_DISPLAY)
 				.slice(indexElemStart, indexElemStop)
@@ -351,6 +421,16 @@ export const HistoryScreen = () => {
 					)
 				);
 			}
+			if (tab === 'fiatWithdraw') {
+				return (
+					fiatBankDepositHistoryList.length === 0 ?? (
+						<div className="text-center history-screen__tabs__content__table pt-5 pb-5">
+							Empty data .
+							<br /> Please try on next page or prev page{' '}
+						</div>
+					)
+				);
+			}
 			return listData.length === 0 ? (
 				<div className="text-center history-screen__tabs__content__table pt-5 pb-5">
 					Empty data .
@@ -361,7 +441,7 @@ export const HistoryScreen = () => {
 			);
 		};
 
-		return fetching ? (
+		return fetching || fiatBankDepositHistoryListFetching || fiatBankWithdrawHistoryListFetching ? (
 			<div className="d-flex justify-content-center mt-5 mb-5">
 				<div className="spinner-border text-success spinner-loadding" role="status"></div>
 			</div>

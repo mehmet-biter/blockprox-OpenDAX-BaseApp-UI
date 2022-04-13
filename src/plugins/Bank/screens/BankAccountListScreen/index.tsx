@@ -88,8 +88,9 @@ export const BankAccountListScreen = () => {
 
 	const isValidForm = () => {
 		const { accountName, bankName, iFSCCode, bankAddress, bankAccountNumber, otpCode } = bankForm;
+		const isValid2FA = otpCode.match('^[0-9]{6}$');
 
-		return accountName && bankName && iFSCCode && bankAddress && bankAccountNumber && otpCode;
+		return accountName && bankName && iFSCCode && bankAddress && bankAccountNumber && isValid2FA;
 	};
 
 	const renderBodyModalAddBankForm = () => {

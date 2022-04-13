@@ -2,18 +2,17 @@ import { API, RequestOptions } from 'api';
 import { getCsrfToken } from 'helpers';
 import { alertPush } from 'modules/public/alert';
 import { call, put } from 'redux-saga/effects';
-import { CreateBankDeposit, createBankDepositData, updateBankDepositCreation } from '../actions/bankDepositActions';
-import { BankDeposit } from '../types';
+import { bankDepositHistoryListFetch, CreateBankDeposit, createBankDepositData } from '../actions/bankDepositActions';
 
 const createOptions = (csrfToken?: string): RequestOptions => {
 	return { apiVersion: 'bank', headers: { 'X-CSRF-Token': csrfToken } };
 };
 
-interface CreateBankDepositResponse {
-	status: string;
-	message: string;
-	data: BankDeposit;
-}
+// interface CreateBankDepositResponse {
+// 	status: string;
+// 	message: string;
+// 	data: BankDeposit;
+// }
 
 export function* createBankDepositSaga(action: CreateBankDeposit) {
 	try {
@@ -22,13 +21,9 @@ export function* createBankDepositSaga(action: CreateBankDeposit) {
 				loading: true,
 			}),
 		);
-		const result: CreateBankDepositResponse = yield call(
-			API.post(createOptions(getCsrfToken())),
-			`/private/bank/deposit`,
-			action.payload,
-		);
+		yield call(API.post(createOptions(getCsrfToken())), `/private/bank/deposit`, action.payload);
 
-		yield put(updateBankDepositCreation({ ...result.data }));
+		yield put(bankDepositHistoryListFetch());
 
 		yield put(alertPush({ message: ['Create Bank Deposit Successfully'], type: 'success' }));
 	} catch (error) {

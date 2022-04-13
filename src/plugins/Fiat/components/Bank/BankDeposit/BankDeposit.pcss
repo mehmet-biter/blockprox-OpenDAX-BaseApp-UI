@@ -71,14 +71,19 @@
 			letter-spacing: 0;
 			line-height: 14px;
 		}
+		&__error {
+			color: red;
+			font-size: 1rem;
+			margin-top: 0.6em;
+		}
 	}
 
 	&__transaction-fee {
-		margin-left: 2em;
-		text-align: right;
+		width: 100%;
+		margin-top: 2em;
 
 		&__label {
-			font-size: 12px;
+			font-size: 1.2rem;
 			font-weight: 400;
 			letter-spacing: 0;
 			line-height: 16px;
@@ -86,7 +91,7 @@
 		}
 
 		&__value {
-			font-size: 12px;
+			font-size: 1.2rem;
 			font-weight: 700;
 			letter-spacing: 0;
 			line-height: 16px;
@@ -104,6 +109,36 @@
 			border-radius: 3px;
 
 			.ant-checkbox-inner {
+			}
+		}
+	}
+
+	&__modal-form {
+		&__inform-container {
+			background-color: rgba(18, 31, 55, 1);
+			border-radius: 3px;
+			padding: 2em 2em 1em;
+			width: 100%;
+
+			span {
+				color: rgb(var(--rgb-text-white));
+				font-family: Open Sans;
+				font-size: 12px;
+				font-weight: 400;
+				letter-spacing: 0;
+				line-height: 16px;
+				margin-bottom: 1em;
+			}
+		}
+
+		&__warning {
+			color: #e9aa09;
+			margin-left: 0.5em;
+			margin-top: 1em;
+
+			&__icon {
+				margin-bottom: 3px;
+				margin-right: 5px;
 			}
 		}
 	}

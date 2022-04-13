@@ -11,6 +11,8 @@ import NoticeIcon from 'assets/icons/notice.svg';
 import { createBankDeposit } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
 import { NewModal } from 'components';
 import NP from 'number-precision';
+import { selectCreateBankDepositLoading } from 'modules/plugins/fiat/bank/selectors';
+import { LoadingGif } from 'components/LoadingGif';
 
 interface BankDepositScreenProps {
 	currency_id: string;
@@ -24,6 +26,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 
 	const [amountInputValueState, setAmountInputValueState] = React.useState<string>('');
 	const [showDepositConfirmationForm, setShowDepositConfirmationForm] = React.useState(false);
+	const [isSmallerThanMinDeposit, setIsSmallerThanMinDeposit] = React.useState(false);
 
 	const handleCloseDepositConfirmationForm = () => {
 		setShowDepositConfirmationForm(false);
@@ -35,6 +38,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 
 	// selectors
 	const currencies = useSelector(selectCurrencies);
+	const isDepositing = useSelector(selectCreateBankDepositLoading);
 
 	// dispatch
 	const dispatch = useDispatch();
@@ -63,6 +67,15 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 
 		if ((isNaN(Number(removeCommaInNumber(value))) && value.length > 0) || indexOfDot === 0) {
 			return;
+		}
+
+		const depositAmount = Number(removeCommaInNumber(value));
+		console.log(depositAmount, Number(currency?.min_deposit_amount), isSmallerThanMinDeposit);
+
+		if (depositAmount < Number(currency?.min_deposit_amount)) {
+			setIsSmallerThanMinDeposit(true);
+		} else {
+			setIsSmallerThanMinDeposit(false);
 		}
 
 		setAmountInputValueState(value);
@@ -102,7 +115,9 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 	};
 
 	const isFormNotValid = (): boolean => {
-		return isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState);
+		return (
+			isContinueButtonDisabled || isEmpty(transactionIDState) || isEmpty(amountInputValueState) || isSmallerThanMinDeposit
+		);
 	};
 
 	async function copyTextToClipboard(text: string) {
@@ -172,87 +187,122 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 	};
 
 	return (
-		<div className="td-mobile-wallet-fiat-bank-deposit">
-			<div className="td-mobile-wallet-fiat-bank-deposit__inform-container">
-				{renderBankAccountInform('Name', 'Blockproex Infotech Pvt Ltd')}
-				{renderBankAccountInform('Account Number', '072863400000569')}
-				{renderBankAccountInform('Bank Name', 'Yes Bank')}
-				{renderBankAccountInform('Bank Address', 'Wakad, Pune')}
-				{renderBankAccountInform('IFSC Code', 'YESB0000728')}
-			</div>
-			<div style={{ padding: '0.6em' }}>
-				<div className="d-flex flex-row justify-content-between">
-					<div>
+		<div className="td-mobile-wallet-fiat-bank-deposit h-100">
+			{!isDepositing ? (
+				<div
+					className="d-flex justify-content-center align-items-center"
+					style={{
+						minHeight: '30rem',
+					}}
+				>
+					<LoadingGif />
+				</div>
+			) : (
+				<React.Fragment>
+					<div className="td-mobile-wallet-fiat-bank-deposit__inform-container">
+						{renderBankAccountInform('Name', 'Blockproex Infotech Pvt Ltd')}
+						{renderBankAccountInform('Account Number', '072863400000569')}
+						{renderBankAccountInform('Bank Name', 'Yes Bank')}
+						{renderBankAccountInform('Bank Address', 'Wakad, Pune')}
+						{renderBankAccountInform('IFSC Code', 'YESB0000728')}
+					</div>
+					<div style={{ padding: '0.6em' }}>
 						<div className="td-mobile-wallet-fiat-bank-deposit__title">Enter Deposit Amount</div>
 
-						<div className="p-0 td-mobile-wallet-fiat-bank-deposit__input">
-							<label className="td-mobile-wallet-fiat-bank-deposit__input__label">Amount</label>
-							<Input
-								addonAfter={_toUpper(currency_id)}
-								type="text"
-								value={formatNumber(removeCommaInNumber(amountInputValueState!))}
-								onChange={onHandleChangeAmountInputValueState}
-							/>
-							<span className="td-mobile-wallet-fiat-bank-deposit__input__notice">
-								Amount should be between 0 and 100 {_toUpper(currency_id)}
-							</span>
-						</div>
+						<div className="d-flex flex-row justify-content-between align-items-end">
+							<div>
+								<div className="p-0 td-mobile-wallet-fiat-bank-deposit__input mb-3">
+									<label className="td-mobile-wallet-fiat-bank-deposit__input__label">Amount</label>
+									<Input
+										addonAfter={_toUpper(currency_id)}
+										type="text"
+										value={formatNumber(removeCommaInNumber(amountInputValueState!))}
+										onChange={onHandleChangeAmountInputValueState}
+									/>
+									{isSmallerThanMinDeposit && (
+										<span
+											className="td-mobile-wallet-fiat-bank-deposit__input__error"
+											style={{
+												color: 'red',
+											}}
+										>
+											Deposit amount must be at least {formatNumber(currency?.min_deposit_amount!)}{' '}
+											{_toUpper(currency_id)}
+										</span>
+									)}
+								</div>
 
-						<div className="p-0 td-mobile-wallet-fiat-bank-deposit__input">
-							<label className="td-mobile-wallet-fiat-bank-deposit__input__label">
-								Transaction ID{' '}
-								<img className="td-mobile-wallet-fiat-bank-deposit__input__label__notice-icon" src={NoticeIcon} />
-								<span className="tooltiptext">
-									Transaction ID must be accurate and exact like the ID of the exchange
-								</span>
-							</label>
-							<Input value={transactionIDState} onChange={value => setTransactionIDState(value.target.value)} />
-						</div>
-					</div>
-					<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee">
-						<div style={{ textAlign: 'right', marginTop: '1em' }}>
-							<img src={QRcodeImage} style={{ width: '8em', height: '8em', marginRight: 0, marginBottom: '4em' }} />
-						</div>
-						<div className="d-flex flex-row justify-content-between mb-2" style={{ width: '12em' }}>
-							<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">Transaction Fee:</div>
-							<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
-								{fee} {_toUpper(currency_id)}
+								<div className="p-0 td-mobile-wallet-fiat-bank-deposit__input">
+									<label className="td-mobile-wallet-fiat-bank-deposit__input__label">
+										Transaction ID{' '}
+										<img
+											className="td-mobile-wallet-fiat-bank-deposit__input__label__notice-icon"
+											src={NoticeIcon}
+										/>
+										<span className="tooltiptext">
+											Transaction ID must be accurate and exact like the ID of the exchange
+										</span>
+									</label>
+									<Input
+										value={transactionIDState}
+										onChange={value => setTransactionIDState(value.target.value)}
+									/>
+								</div>
+							</div>
+							<div style={{ textAlign: 'right' }}>
+								<img
+									src={QRcodeImage}
+									style={{ width: '8em', height: '8em', marginRight: 0, marginLeft: '3em' }}
+								/>
 							</div>
 						</div>
-						<div className="d-flex flex-row justify-content-between" style={{ width: '12em' }}>
-							<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">You Will Get</span>
-							<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
-								{youWillGet} {_toUpper(currency_id)}
-							</span>
+						<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee">
+							<div className="d-flex flex-row justify-content-between">
+								<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">You Will Get</span>
+								<span className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
+									{youWillGet} {_toUpper(currency_id)}
+								</span>
+							</div>
+
+							<div className="d-flex flex-row justify-content-between mb-2 mt-2">
+								<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">Transaction Fee:</div>
+								<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">{fee}</div>
+							</div>
+							<div className="d-flex flex-row justify-content-between">
+								<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__label">Min Deposit:</div>
+								<div className="td-mobile-wallet-fiat-bank-deposit__transaction-fee__value">
+									{formatNumber(Number(currency?.min_deposit_amount!))} {_toUpper(currency_id)}
+								</div>
+							</div>
+						</div>
+						<div className="td-mobile-wallet-fiat-bank-deposit__check-box">
+							<Checkbox onChange={onClickCheckBox}>
+								By proceeding, you consent to BlockProEx sharing your personal information on your BlockProEx
+								account in accordance to our Terms of Use and Privacy Policy
+							</Checkbox>
+						</div>
+						<div className="d-flex justify-content-center mt-4">
+							<Button
+								disabled={isFormNotValid()}
+								style={{
+									background: isFormNotValid() ? 'rgb(var(--rgb-background-btn))' : 'var(--yellow)',
+									borderRadius: '50px',
+									color: 'rgb(var(--rgb-primary-text-color))',
+									fontWeight: 400,
+									fontSize: 12,
+									width: '12rem',
+									height: '3.1rem',
+									borderColor: 'rgb(var(--rgb-paginate-next-prev-color))',
+									marginBottom: '1em',
+								}}
+								onClick={handleShowDepositConfirmationForm}
+							>
+								Continue
+							</Button>
 						</div>
 					</div>
-				</div>
-				<div className="td-mobile-wallet-fiat-bank-deposit__check-box">
-					<Checkbox onChange={onClickCheckBox}>
-						By proceeding, you consent to BlockProEx sharing your personal information on your BlockProEx account in
-						accordance to our Terms of Use and Privacy Policy
-					</Checkbox>
-				</div>
-				<div className="d-flex justify-content-center mt-4">
-					<Button
-						disabled={isFormNotValid()}
-						style={{
-							background: isFormNotValid() ? 'rgb(var(--rgb-background-btn))' : 'var(--yellow)',
-							borderRadius: '50px',
-							color: 'rgb(var(--rgb-primary-text-color))',
-							fontWeight: 400,
-							fontSize: 12,
-							width: '12rem',
-							height: '3.1rem',
-							borderColor: 'rgb(var(--rgb-paginate-next-prev-color))',
-							marginBottom: '1em',
-						}}
-						onClick={handleShowDepositConfirmationForm}
-					>
-						Continue
-					</Button>
-				</div>
-			</div>
+				</React.Fragment>
+			)}
 			<NewModal
 				className="td-mobile-wallet-fiat-bank-deposit__new-modal"
 				show={showDepositConfirmationForm}

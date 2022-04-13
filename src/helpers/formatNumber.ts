@@ -1,10 +1,12 @@
 import _toNumber from 'lodash/toNumber';
+import _toString from 'lodash/toString';
 
-export const formatNumber = (value: string) => {
-	let result = value;
-	if (value.indexOf('e') !== -1) {
-		const exponent = parseInt(value.split('-')[1], 10);
-		result = _toNumber(value).toFixed(exponent);
+export const formatNumber = (value: any) => {
+	let result = _toString(value);
+	let convertValue = _toString(value);
+	if (convertValue.indexOf('e') !== -1) {
+		const exponent = parseInt(convertValue.split('-')[1], 10);
+		result = _toNumber(convertValue).toFixed(exponent);
 	}
 	const stringFormat = `${result}`;
 	const x = stringFormat.split('.');

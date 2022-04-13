@@ -15,3 +15,11 @@ export const BANK_DEPOSIT_HISTORY_LIST_ERROR = 'bankDepositHistoryList/ERROR';
 export const CREATE_BANK_DEPOSIT = 'bankDeposit/CREATE';
 export const CREATE_BANK_DEPOSIT_DATA = 'bankDeposit/create/DATA';
 export const UPDATE_BANK_DEPOSIT_CREATION = 'bankDeposit/update/CREATE';
+
+// BANK WITHDRAW
+export const BANK_WITHDRAW_HISTORY_LIST_FETCH = 'bankWithdrawHistoryList/FETCH';
+export const BANK_WITHDRAW_HISTORY_LIST_DATA = 'bankWithdrawHistoryList/DATA';
+export const BANK_WITHDRAW_HISTORY_LIST_ERROR = 'bankWithdrawHistoryList/ERROR';
+export const CREATE_BANK_WITHDRAW = 'bankWithdraw/CREATE';
+export const CREATE_BANK_WITHDRAW_DATA = 'bankWithdraw/create/DATA';
+export const UPDATE_BANK_WITHDRAW_CREATION = 'bankWithdraw/update/CREATE';

@@ -7,6 +7,7 @@ export const LoadingGif = (props: React.DetailedHTMLProps<React.ImgHTMLAttribute
 			style={{
 				width: '7rem',
 				height: '10rem',
+				objectFit: 'contain',
 			}}
 			src={loadingGif}
 			alt="loading"
