@@ -1,6 +1,7 @@
 .desktop-bank-withdraw {
 	padding: 3rem 5%;
-
+	--fs-label: 1.1rem;
+	--border-input: 5px;
 	&__enable-2fa-message {
 		font-size: 1.3rem;
 	}
@@ -14,10 +15,10 @@
 	}
 
 	&__input {
-		margin-bottom: 2em;
-
+		margin-top: 0.45rem;
 		label {
-			font-size: 12px;
+			font-size: var(--fs-label);
+			margin-bottom: 0.5rem;
 			font-style: normal;
 			font-weight: 400;
 			letter-spacing: 0;
@@ -26,7 +27,7 @@
 		input {
 			background-color: rgb(var(--rgb-big-stone));
 			border: 1px solid rgb(var(--rgb-pickled-bluewood));
-			border-radius: 3px;
+			border-radius: var(--border-input);
 		}
 
 		.ant-input-disabled {
@@ -36,16 +37,21 @@
 
 		&__error {
 			color: red;
-			font-size: 1.1rem;
+			font-size: var(--fs-label);
 		}
 	}
 
 	&__select {
-		border-radius: 3px;
+		border-radius: var(--border-input);
 		width: 100%;
-
+		.ant-select-selector {
+			border: none !important;
+		}
+		.ant-select-selection-item {
+			font-size: 1rem;
+		}
 		&__label {
-			font-size: 12px;
+			font-size: var(--fs-label);
 			font-weight: 400;
 			letter-spacing: 0;
 			line-height: 16px;
@@ -54,7 +60,7 @@
 		&__settings-label {
 			color: rgba(186, 186, 186, 1);
 			cursor: pointer;
-			font-size: 12px;
+			font-size: var(--fs-label);
 			font-weight: 400;
 			letter-spacing: 0;
 			line-height: 16px;
@@ -63,7 +69,7 @@
 
 		&__input {
 			background-color: rgba(56, 70, 94, 1);
-			border-radius: 3px;
+			border-radius: var(--border-input);
 			width: 100%;
 
 			.ant-select-arrow {
@@ -72,7 +78,7 @@
 		}
 
 		&__balance-label {
-			font-size: 12px;
+			font-size: 1rem;
 			font-weight: 400;
 			letter-spacing: 0;
 			line-height: 16px;
@@ -100,20 +106,19 @@
 		font-size: 16px;
 		font-weight: 600;
 		letter-spacing: 0;
-		line-height: 33px;
 	}
 
 	&__modal-form {
 		&__inform-container {
 			background-color: rgba(18, 31, 55, 1);
-			border-radius: 3px;
+			border-radius: 5px;
 			padding: 2em 2em 1em;
 			width: 100%;
 
 			span {
 				color: rgb(var(--rgb-text-white));
 				font-family: Open Sans;
-				font-size: 12px;
+				font-size: 1rem;
 				font-weight: 400;
 				letter-spacing: 0;
 				line-height: 16px;
@@ -127,7 +132,7 @@
 			margin-top: 1em;
 
 			&__icon {
-				margin-bottom: 3px;
+				margin-bottom: 5px;
 				margin-right: 5px;
 			}
 		}
