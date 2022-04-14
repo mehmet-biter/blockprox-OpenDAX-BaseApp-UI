@@ -87,6 +87,7 @@ import {
 } from './plugins/fiat/bank/reducers/bankAccount';
 import { bankDepositHistoryListReducer, createBankDepositReducer } from './plugins/fiat/bank/reducers/bankDeposit';
 import { bankWithdrawHistoryListReducer, createBankWithdrawReducer } from './plugins/fiat/bank/reducers/bankWithdraw';
+import { bankListReducer } from './public/fiat/bank/reducers';
 
 const ethFeesReducer = combineReducers({
 	ethFee: ethFeeReducer,
@@ -139,6 +140,7 @@ export const publicReducer = combineReducers({
 	alerts: alertReducer,
 	rgl: gridLayoutReducer,
 	memberLevels: memberLevelsReducer,
+	bank: bankListReducer,
 });
 
 export const userReducer = combineReducers({

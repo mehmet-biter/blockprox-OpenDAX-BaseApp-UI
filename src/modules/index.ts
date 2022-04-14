@@ -117,6 +117,8 @@ import {
 	DeleteBankAccountState,
 } from './plugins/fiat/bank/types';
 import { rootBankSaga } from './plugins/fiat/bank/sagas';
+import { BankListState } from './public/fiat/bank/types';
+import { rootPublicBankListSaga } from './public/fiat/bank/sagas';
 
 export * from './plugins/ethWithdraw/fee';
 export * from './plugins/info/events';
@@ -173,6 +175,7 @@ export interface RootState {
 		recentTrades: RecentTradesState;
 		depth: DepthState;
 		incrementDepth: DepthIncrementState;
+		bank: BankListState;
 	};
 	user: {
 		apiKeys: ApiKeysState;
@@ -352,6 +355,7 @@ export function* rootSaga() {
 		call(rootAnnouncementSaga),
 		call(rootPaypalSaga),
 		call(rootBankSaga),
+		call(rootPublicBankListSaga),
 		call(rootNewWithdrawLimitSaga),
 	]);
 }
