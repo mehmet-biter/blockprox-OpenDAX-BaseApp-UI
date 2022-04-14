@@ -33,7 +33,14 @@ const HistoryTable = (props: any) => {
 
 	useWalletsFetch();
 	useCurrenciesFetch();
-	useHistoryFetch({ type: props.type, currency: props.currency, limit: props.limit || DEFAULT_LIMIT, page: pageIndex - 1 });
+
+	useHistoryFetch({
+		type: props.type,
+		currency: props.currency,
+		limit: props.limit || DEFAULT_LIMIT,
+		page: pageIndex - 1,
+		enable: props.type !== 'fiatDeposit' && props.type !== 'fiatWithdraw',
+	});
 
 	React.useEffect(() => {
 		if (props.type === 'fiatDeposit') {
