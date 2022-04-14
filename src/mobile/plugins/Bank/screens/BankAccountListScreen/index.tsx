@@ -9,10 +9,16 @@ import { useHistory } from 'react-router-dom';
 import { BankAccountItem } from '../../components';
 import NoticeWhiteIcon from 'assets/icons/notice_white.svg';
 import { NewModal } from 'components/NewModal';
-import { selectBankAccountList, selectBankAccountListLoading } from 'modules/plugins/fiat/bank/selectors';
+import {
+	selectBankAccountList,
+	selectBankAccountListLoading,
+	selectCreateBankAccountLoading,
+	selectDeleteBankAccountLoading,
+} from 'modules/plugins/fiat/bank/selectors';
 import { bankAccountListFetch, createBankAccount } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
 import { LoadingGif } from 'components/LoadingGif';
 import { useIntl } from 'react-intl';
+import classNames from 'classnames';
 
 interface BankFormField {
 	accountName: string;
@@ -31,6 +37,8 @@ export const BankAccountListMobileScreen = () => {
 	const bankAccountList = useSelector(selectBankAccountList);
 	const isBankAccountListLoading = useSelector(selectBankAccountListLoading);
 	const user = useSelector(selectUserInfo);
+	const isCreatingBankAccount = useSelector(selectCreateBankAccountLoading);
+	const isDeletingBankAccount = useSelector(selectDeleteBankAccountLoading);
 
 	// dispatch
 	const dispatch = useDispatch();
@@ -245,6 +253,9 @@ export const BankAccountListMobileScreen = () => {
 			</form>
 		);
 	};
+
+	const overLayClassName = 'pg-mobile-profile-bank-accounts-screen__overlay';
+
 	return (
 		<React.Fragment>
 			<Subheader
@@ -253,6 +264,22 @@ export const BankAccountListMobileScreen = () => {
 				onGoBack={() => history.push('/profile')}
 			/>
 			<div className="pg-mobile-profile-bank-accounts-screen">
+				<div
+					className={classNames(
+						overLayClassName,
+						{
+							[`${overLayClassName}--display`]: isCreatingBankAccount || isDeletingBankAccount,
+						},
+						{
+							[`${overLayClassName}--not-display`]: !isCreatingBankAccount && !isDeletingBankAccount,
+						},
+					)}
+				>
+					<div className={`${overLayClassName}__loading`}>
+						<LoadingGif />
+					</div>
+				</div>
+
 				{user.otp ? (
 					<div
 						className="pg-mobile-profile-bank-accounts-screen__create" /* onClick={() => handleSetApiKeyProcess('create')} */

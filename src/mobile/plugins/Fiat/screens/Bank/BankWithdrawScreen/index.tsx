@@ -119,7 +119,7 @@ export const BankWithdrawScreen = (props: BankDepositScreenProps) => {
 		handleCloseWithdrawConfirmationForm();
 		setWithdrawInputValueState('');
 		setOtpInputValueState('');
-		setBankAccountSelectionValue('');
+		setBankAccountSelectionValue('-1');
 	};
 	React.useEffect(() => {
 		dispatch(bankAccountListFetch());

@@ -5,9 +5,16 @@ import { NewCustomInput, NewModal } from 'components';
 import NoticeWhiteIcon from 'assets/icons/notice_white.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { bankAccountListFetch, createBankAccount } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
-import { selectBankAccountList, selectBankAccountListLoading } from 'modules/plugins/fiat/bank/selectors';
+import {
+	selectBankAccountList,
+	selectBankAccountListLoading,
+	selectCreateBankAccountLoading,
+	selectDeleteBankAccountLoading,
+} from 'modules/plugins/fiat/bank/selectors';
 import { selectUserInfo } from 'modules';
 import { useHistory } from 'react-router';
+import { LoadingGif } from 'components/LoadingGif';
+import classNames from 'classnames';
 
 interface BankFormField {
 	accountName: string;
@@ -25,6 +32,8 @@ export const BankAccountListScreen = () => {
 	const bankAccountList = useSelector(selectBankAccountList);
 	const isBankAccountListLoading = useSelector(selectBankAccountListLoading);
 	const user = useSelector(selectUserInfo);
+	const isCreatingBankAccount = useSelector(selectCreateBankAccountLoading);
+	const isDeletingBankAccount = useSelector(selectDeleteBankAccountLoading);
 
 	// dispatch
 	const dispatch = useDispatch();
@@ -272,8 +281,25 @@ export const BankAccountListScreen = () => {
 			</div>
 		);
 	};
+	const overLayClassName = 'desktop-bank-account-list-screen__overlay';
+
 	return (
 		<div className="desktop-bank-account-list-screen">
+			<div
+				className={classNames(
+					overLayClassName,
+					{
+						[`${overLayClassName}--display`]: isCreatingBankAccount || isDeletingBankAccount,
+					},
+					{
+						[`${overLayClassName}--not-display`]: !isCreatingBankAccount && !isDeletingBankAccount,
+					},
+				)}
+			>
+				<div className={`${overLayClassName}__loading`}>
+					<LoadingGif />
+				</div>
+			</div>
 			{!user.otp ? (
 				render2FARequire()
 			) : (

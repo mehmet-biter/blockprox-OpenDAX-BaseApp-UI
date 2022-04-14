@@ -113,7 +113,11 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 			}),
 		);
 		handleCloseWithdrawConfirmationForm();
+		setWithdrawInputValueState('');
+		setOtpInputValueState('');
+		setBankAccountSelectionValue('-1');
 	};
+
 	React.useEffect(() => {
 		dispatch(bankAccountListFetch());
 	}, []);

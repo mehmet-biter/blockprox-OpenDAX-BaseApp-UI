@@ -23,6 +23,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 
 	// selectors
 	const currencies = useSelector(selectCurrencies);
+	const isDepositing = useSelector(selectCreateBankDepositLoading);
 
 	// dispatch
 	const dispatch = useDispatch();
@@ -125,7 +126,6 @@ export const BankDeposit = (props: BankDepositProps) => {
 			NP.divide(NP.times(Number(removeCommaInNumber(amountInputValueState!)), Number(currency?.deposit_fee)), 100),
 		).toString(),
 	);
-	const isDepositing = useSelector(selectCreateBankDepositLoading);
 
 	const BodyModalDepositConfirmationForm = () => {
 		const handleCreateBankDeposit = () => {
