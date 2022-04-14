@@ -11,11 +11,12 @@ import { formatNumber } from 'helpers';
 import NoticeIcon from 'assets/icons/notice.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrencies, selectUserInfo, selectWallets } from 'modules';
-import { selectBankAccountList } from 'modules/plugins/fiat/bank/selectors';
+import { selectBankAccountList, selectCreateBankWithdrawLoading } from 'modules/plugins/fiat/bank/selectors';
 import { bankAccountListFetch } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
 import { createBankWithdraw } from 'modules/plugins/fiat/bank/actions/bankWithdrawActions';
 import NP from 'number-precision';
 import { useIntl } from 'react-intl';
+import { LoadingGif } from 'components/LoadingGif';
 
 interface BankWithdrawProps {
 	currency_id: string;
@@ -32,6 +33,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 	const wallets = useSelector(selectWallets);
 	const bankAccountList = useSelector(selectBankAccountList);
 	const user = useSelector(selectUserInfo);
+	const isWithdrawing = useSelector(selectCreateBankWithdrawLoading);
 
 	// dispatch
 	const dispatch = useDispatch();
@@ -218,124 +220,137 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 		);
 	};
 	return (
-		<div className="desktop-bank-withdraw">
-			<div className="desktop-bank-withdraw__title">{_toUpper('Withdraw')}</div>
-			{!user.otp ? (
-				render2FARequire()
-			) : (
-				<>
-					<div className="desktop-bank-withdraw__select">
-						<div className="d-flex flex-row justify-content-between">
-							<label className="desktop-bank-withdraw__select__label">Select Bank</label>
-							<label
-								className="desktop-bank-withdraw__select__settings-label"
-								onClick={() => history.push('/profile/bank')}
+		<div className="desktop-bank-withdraw h-100">
+			{isWithdrawing && (
+				<div className="d-flex justify-content-center align-items-center h-100">
+					{' '}
+					<LoadingGif />
+				</div>
+			)}
+			{!isWithdrawing && <div className="desktop-bank-withdraw__title">{_toUpper('Withdraw')}</div>}
+			{!isWithdrawing &&
+				(!user.otp ? (
+					render2FARequire()
+				) : (
+					<>
+						<div className="desktop-bank-withdraw__select">
+							<div className="d-flex flex-row justify-content-between">
+								<label className="desktop-bank-withdraw__select__label">Select Bank</label>
+								<label
+									className="desktop-bank-withdraw__select__settings-label"
+									onClick={() => history.push('/profile/bank')}
+								>
+									Bank accounts settings
+								</label>
+							</div>
+							<Select
+								size="large"
+								defaultValue="-1"
+								className="desktop-bank-withdraw__select__input"
+								onChange={onHandleSelectBankAccount}
 							>
-								Bank accounts settings
-							</label>
+								<Option value="-1">Select your Bank</Option>
+								{bankAccountList.map(bankAccount => (
+									<Option
+										value={`${bankAccount.id}`}
+										key={bankAccount.id}
+									>{`${bankAccount.bank_name} - Account: ${bankAccount.account_number}`}</Option>
+								))}
+							</Select>
 						</div>
-						<Select
-							size="large"
-							defaultValue="-1"
-							className="desktop-bank-withdraw__select__input"
-							onChange={onHandleSelectBankAccount}
-						>
-							<Option value="-1">Select your Bank</Option>
-							{bankAccountList.map(bankAccount => (
-								<Option
-									value={`${bankAccount.id}`}
-									key={bankAccount.id}
-								>{`${bankAccount.bank_name} - Account: ${bankAccount.account_number}`}</Option>
-							))}
-						</Select>
-					</div>
-					<div className="desktop-bank-withdraw__input mt-4">
-						<div className="d-flex flex-row justify-content-between">
-							<label className="desktop-bank-withdraw__select__label">Amount</label>
-							<div>
-								<span className="desktop-bank-withdraw__select__balance-label">Balance: </span>
-								<span className="desktop-bank-withdraw__select__balance-value">
-									{wallet?.balance ? wallet?.balance : 0} {_toUpper(currency_id)}
+						<div className="desktop-bank-withdraw__input mt-4">
+							<div className="d-flex flex-row justify-content-between">
+								<label className="desktop-bank-withdraw__select__label">Amount</label>
+								<div>
+									<span className="desktop-bank-withdraw__select__balance-label">Balance: </span>
+									<span className="desktop-bank-withdraw__select__balance-value">
+										{wallet?.balance ? wallet?.balance : 0} {_toUpper(currency_id)}
+									</span>
+								</div>
+							</div>
+							<Input
+								size="large"
+								placeholder={`Min amount: ${formatNumber(currency?.min_withdraw_amount!)} ${_toUpper(
+									currency_id,
+								)}`}
+								type="text"
+								value={formatNumber(removeCommaInNumber(withdrawInputValueState!))}
+								onChange={onHandleChangeWithdrawInputValueState}
+								disabled={!(currency && currency.withdrawal_enabled)}
+								style={{ marginBottom: '0.5em' }}
+							/>
+							{isSmallerThanMinWithdraw ? (
+								<div className="desktop-bank-withdraw__input__error">
+									Withdraw amount must be at least {formatNumber(currency?.min_withdraw_amount!)}{' '}
+									{_toUpper(currency_id)}
+								</div>
+							) : null}
+							{isAmountLargerThanBalance ? (
+								<span className="desktop-bank-withdraw__input__error">
+									Your balance is not enough to withdraw
 								</span>
-							</div>
+							) : null}
 						</div>
-						<Input
-							size="large"
-							placeholder={`Min amount: ${formatNumber(currency?.min_withdraw_amount!)} ${_toUpper(currency_id)}`}
-							type="text"
-							value={formatNumber(removeCommaInNumber(withdrawInputValueState!))}
-							onChange={onHandleChangeWithdrawInputValueState}
-							disabled={!(currency && currency.withdrawal_enabled)}
-							style={{ marginBottom: '0.5em' }}
-						/>
-						{isSmallerThanMinWithdraw ? (
-							<div className="desktop-bank-withdraw__input__error">
-								Withdraw amount must be at least {formatNumber(currency?.min_withdraw_amount!)}{' '}
-								{_toUpper(currency_id)}
-							</div>
-						) : null}
-						{isAmountLargerThanBalance ? (
-							<span className="desktop-bank-withdraw__input__error">Your balance is not enough to withdraw</span>
-						) : null}
-					</div>
-					<div className="desktop-bank-withdraw__input">
-						<label>OTP</label>
-						<Input
-							size="large"
-							type="text"
-							maxLength={6}
-							onChange={onHandleChangeNumeric}
-							value={otpInputValueState}
-						/>
-					</div>
+						<div className="desktop-bank-withdraw__input">
+							<label>OTP</label>
+							<Input
+								size="large"
+								type="text"
+								maxLength={6}
+								onChange={onHandleChangeNumeric}
+								value={otpInputValueState}
+							/>
+						</div>
 
-					<div className="d-flex flex-row justify-content-between">
-						<span className="desktop-bank-withdraw__label">You will get: </span>
-						<span className="desktop-bank-withdraw__value">
-							{youWillGet} {_toUpper(currency_id)}
-						</span>
-					</div>
+						<div className="d-flex flex-row justify-content-between">
+							<span className="desktop-bank-withdraw__label">You will get: </span>
+							<span className="desktop-bank-withdraw__value">
+								{youWillGet} {_toUpper(currency_id)}
+							</span>
+						</div>
 
-					<div className="d-flex flex-row justify-content-between">
-						<span className="desktop-bank-withdraw__label">Fee: </span>
-						<span className="desktop-bank-withdraw__value">{Number(formatNumber(currency?.withdraw_fee!))} %</span>
-					</div>
-					{/* <div className="d-flex flex-row justify-content-between">
+						<div className="d-flex flex-row justify-content-between">
+							<span className="desktop-bank-withdraw__label">Fee: </span>
+							<span className="desktop-bank-withdraw__value">
+								{Number(formatNumber(currency?.withdraw_fee!))} %
+							</span>
+						</div>
+						{/* <div className="d-flex flex-row justify-content-between">
 				<span className="desktop-bank-withdraw__label">Max withdraw</span>
 				<span className="desktop-bank-withdraw__value">3,000,000 {_toUpper(currency_id)}</span>
 			</div> */}
-					<div className="d-flex flex-row justify-content-between">
-						<span className="desktop-bank-withdraw__label">Min withdraw</span>
-						<span className="desktop-bank-withdraw__value">
-							{Number(formatNumber(currency?.min_withdraw_amount!))} {_toUpper(currency_id)}
-						</span>
-					</div>
+						<div className="d-flex flex-row justify-content-between">
+							<span className="desktop-bank-withdraw__label">Min withdraw</span>
+							<span className="desktop-bank-withdraw__value">
+								{Number(formatNumber(currency?.min_withdraw_amount!))} {_toUpper(currency_id)}
+							</span>
+						</div>
 
-					<div className="d-flex justify-content-center mt-5">
-						<Button
-							disabled={!isFormValid()!}
-							style={{
-								background: isFormValid()! ? 'var(--yellow)' : 'rgba(233, 170, 9, 0.5)',
-								borderRadius: '50px',
-								color: '#000',
-								fontWeight: 400,
-								fontSize: 12,
-								width: 180,
-								height: 40,
-							}}
-							onClick={handleShowWithdrawConfirmationForm}
-						>
-							Withdraw
-						</Button>
-					</div>
-					<NewModal
-						show={showWithdrawConfirmationForm}
-						onHide={handleCloseWithdrawConfirmationForm}
-						titleModal="WITHDRAW CONFIRMATION"
-						bodyModal={renderBodyModalWithdrawConfirmationForm()}
-					/>
-				</>
-			)}
+						<div className="d-flex justify-content-center mt-5">
+							<Button
+								disabled={!isFormValid()!}
+								style={{
+									background: isFormValid()! ? 'var(--yellow)' : 'rgba(233, 170, 9, 0.5)',
+									borderRadius: '50px',
+									color: '#000',
+									fontWeight: 400,
+									fontSize: 12,
+									width: 180,
+									height: 40,
+								}}
+								onClick={handleShowWithdrawConfirmationForm}
+							>
+								Withdraw
+							</Button>
+						</div>
+						<NewModal
+							show={showWithdrawConfirmationForm}
+							onHide={handleCloseWithdrawConfirmationForm}
+							titleModal="WITHDRAW CONFIRMATION"
+							bodyModal={renderBodyModalWithdrawConfirmationForm()}
+						/>
+					</>
+				))}
 		</div>
 	);
 };

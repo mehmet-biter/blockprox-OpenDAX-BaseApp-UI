@@ -4,7 +4,7 @@ import { localeDate } from 'helpers';
 import { useCurrenciesFetch, useHistoryFetch, useWalletsFetch } from 'hooks';
 import { selectCurrencies, selectHistory, selectNextPageExists, selectWallets } from 'modules';
 import { bankDepositHistoryListFetch } from 'modules/plugins/fiat/bank/actions/bankDepositActions';
-import { selectBankDepositHistoryList } from 'modules/plugins/fiat/bank/selectors';
+import { selectBankDepositHistoryList, selectBankWithdrawHistoryList } from 'modules/plugins/fiat/bank/selectors';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_CCY_PRECISION } from '../../../constants';
@@ -13,6 +13,7 @@ import { RowItem } from './Rowitem';
 import _toLower from 'lodash/toLower';
 import _toUpper from 'lodash/toUpper';
 import _find from 'lodash/find';
+import { bankWithdrawHistoryListFetch } from 'modules/plugins/fiat/bank/actions/bankWithdrawActions';
 
 type CellData = string | number | React.ReactNode | undefined;
 
@@ -24,6 +25,7 @@ const HistoryTable = (props: any) => {
 	const [pageIndex, setPageIndex] = React.useState(1);
 	const list = useSelector(selectHistory);
 	const fiatBankDepositHistoryList = useSelector(selectBankDepositHistoryList);
+	const fiatBankWithdrawHistoryList = useSelector(selectBankWithdrawHistoryList);
 
 	const wallets = useSelector(selectWallets);
 	const currencies = useSelector(selectCurrencies);
@@ -36,6 +38,9 @@ const HistoryTable = (props: any) => {
 	React.useEffect(() => {
 		if (props.type === 'fiatDeposit') {
 			dispatch(bankDepositHistoryListFetch());
+		}
+		if (props.type === 'fiatWithdraw') {
+			dispatch(bankWithdrawHistoryListFetch());
 		}
 	}, [props.type]);
 
@@ -83,6 +88,29 @@ const HistoryTable = (props: any) => {
 						amount={bankAccount.amount}
 						fixed={Number(currency?.precision)}
 						currency={_toUpper(bankAccount.currency_id)}
+						createdAt={bankAccount.created_at}
+					/>,
+					state,
+				];
+			});
+
+			return histories.length ? histories : [[<Empty />]];
+		}
+
+		if (type === 'fiatWithdraw') {
+			if (fiatBankWithdrawHistoryList.length === 0) {
+				return [[<Empty />]];
+			}
+
+			const histories = fiatBankWithdrawHistoryList.map(bankAccount => {
+				const state = 'state' in bankAccount ? formatTxState(bankAccount.state) : '';
+				// const currency = _find(currencies, { id: _toLower("INR") });
+
+				return [
+					<RowItem
+						amount={bankAccount.amount}
+						fixed={6}
+						currency={_toUpper('INR')}
 						createdAt={bankAccount.created_at}
 					/>,
 					state,

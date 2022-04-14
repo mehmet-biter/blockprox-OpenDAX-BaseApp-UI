@@ -73,7 +73,6 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 		}
 
 		const depositAmount = Number(removeCommaInNumber(value));
-		console.log(depositAmount, Number(currency?.min_deposit_amount), isSmallerThanMinDeposit);
 
 		if (depositAmount < Number(currency?.min_deposit_amount)) {
 			setIsSmallerThanMinDeposit(true);
