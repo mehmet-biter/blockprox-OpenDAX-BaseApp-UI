@@ -35,7 +35,13 @@ export interface BankWithdraw {
 	id: number;
 	txid: string;
 	bank_id: number;
+	uid: string;
 	deposit_code: string;
+	currency_id: string;
+	account_number: string;
+	ifsc_code: string;
+	bank_address: string;
+	account_name: string;
 	amount: string;
 	fee: string;
 	amount_received: string;

@@ -104,13 +104,13 @@ const HistoryTable = (props: any) => {
 
 			const histories = fiatBankWithdrawHistoryList.map(bankAccount => {
 				const state = 'state' in bankAccount ? formatTxState(bankAccount.state) : '';
-				// const currency = _find(currencies, { id: _toLower("INR") });
+				const currency = _find(currencies, { id: _toLower(bankAccount.currency_id) });
 
 				return [
 					<RowItem
 						amount={bankAccount.amount}
-						fixed={6}
-						currency={_toUpper('INR')}
+						fixed={Number(currency?.precision)}
+						currency={_toUpper(bankAccount.currency_id)}
 						createdAt={bankAccount.created_at}
 					/>,
 					state,
