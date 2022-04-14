@@ -23,6 +23,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 
 	// selectors
 	const currencies = useSelector(selectCurrencies);
+	const isDepositing = useSelector(selectCreateBankDepositLoading);
 
 	// dispatch
 	const dispatch = useDispatch();
@@ -84,8 +85,8 @@ export const BankDeposit = (props: BankDepositProps) => {
 		);
 	};
 
-	async function copyTextToClipboard(text: string) {
-		dispatch(alertPush({ message: ['Copied!'], type: 'success' }));
+	async function copyTextToClipboard(label: string, text: string) {
+		dispatch(alertPush({ message: [`${label} Copied!`], type: 'success' }));
 		return await navigator.clipboard.writeText(text);
 	}
 
@@ -101,7 +102,7 @@ export const BankDeposit = (props: BankDepositProps) => {
 						viewBox="0 0 17 18"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
-						onClick={() => copyTextToClipboard(content)}
+						onClick={() => copyTextToClipboard(label, content)}
 					>
 						<path
 							fill-rule="evenodd"
@@ -125,7 +126,6 @@ export const BankDeposit = (props: BankDepositProps) => {
 			NP.divide(NP.times(Number(removeCommaInNumber(amountInputValueState!)), Number(currency?.deposit_fee)), 100),
 		).toString(),
 	);
-	const isDepositing = useSelector(selectCreateBankDepositLoading);
 
 	const BodyModalDepositConfirmationForm = () => {
 		const handleCreateBankDeposit = () => {
@@ -137,6 +137,9 @@ export const BankDeposit = (props: BankDepositProps) => {
 				}),
 			);
 			handleCloseDepositConfirmationForm();
+			setIsContinueButtonDisabled(true);
+			setAmountInputValueState('');
+			setTransactionIDState('');
 		};
 		return (
 			<div className="desktop-bank-deposit__modal-form d-flex flex-column align-items-center">

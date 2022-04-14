@@ -30,6 +30,7 @@ export interface VerifyAccountState extends CommonState {
 export interface KycStatus {
 	status?: 'unsent' | 'verify' | 'process' | 'failed' | 'unavailable' | 'blocked';
 	reason?: string;
+	fullname?: string;
 }
 
 export interface KycStatusState extends CommonState {

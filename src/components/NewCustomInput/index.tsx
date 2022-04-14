@@ -18,6 +18,7 @@ interface NewCustomInputProps {
 	handleClick?: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
 	isDisabled?: boolean;
 	labelVisible?: boolean;
+	maxLength?: number;
 }
 
 interface OnChangeEvent {
@@ -43,6 +44,7 @@ const NewCustomInput: React.FC<Props> = props => {
 		handleClick,
 		isDisabled,
 		onKeyPress,
+		maxLength,
 	} = props;
 
 	const handleChangeValue = (e: OnChangeEvent) => {
@@ -70,6 +72,7 @@ const NewCustomInput: React.FC<Props> = props => {
 						onClick={handleClick}
 						disabled={isDisabled}
 						onKeyPress={onKeyPress}
+						maxLength={maxLength}
 					/>
 				</InputGroup>
 			</div>

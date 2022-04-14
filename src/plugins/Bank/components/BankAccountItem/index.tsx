@@ -47,6 +47,7 @@ export const BankAccountItem = (props: BankAccountItemProps) => {
 				otp: twoFACode,
 			}),
 		);
+		setTwoFACode('');
 	};
 
 	const renderBodyModalForm = () => {
@@ -138,7 +139,6 @@ export const BankAccountItem = (props: BankAccountItemProps) => {
 						onClick={() => {
 							handleClose2FAVerificationForm();
 							handleShowDeleteConfirmationForm();
-							setTwoFACode('');
 						}}
 					>
 						Send

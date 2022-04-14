@@ -5,18 +5,63 @@ import { NewCustomInput, NewModal } from 'components';
 import NoticeWhiteIcon from 'assets/icons/notice_white.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { bankAccountListFetch, createBankAccount } from 'modules/plugins/fiat/bank/actions/bankAccountActions';
-import { selectBankAccountList, selectBankAccountListLoading } from 'modules/plugins/fiat/bank/selectors';
-import { selectUserInfo } from 'modules';
+import {
+	selectBankAccountList,
+	selectBankAccountListLoading,
+	selectCreateBankAccountLoading,
+	selectDeleteBankAccountLoading,
+} from 'modules/plugins/fiat/bank/selectors';
+import { getKycStatus, selectKycStatus, selectUserInfo } from 'modules';
 import { useHistory } from 'react-router';
+import { LoadingGif } from 'components/LoadingGif';
+import classNames from 'classnames';
+import Select from 'react-select';
+import { selectPublicBankList } from 'modules/public/fiat/bank/selectors';
+import { bankListFetch } from 'modules/public/fiat/bank/actions';
 
 interface BankFormField {
-	accountName: string;
 	bankName: string;
 	bankAddress: string;
 	bankAccountNumber: string;
 	iFSCCode: string;
 	otpCode: string;
 }
+
+const SelectStyles = {
+	option: (provided, state) => ({
+		...provided,
+		backgroundColor: state.isFocused ? 'var(--yellow)' : 'var(--main-background-color)',
+		color: state.isFocused ? '#000' : '#ffff',
+		cursor: 'pointer',
+	}),
+	control: (provided, state) => ({
+		...provided,
+		border: '1px solid #4A505',
+		color: '#000',
+		backgroundColor: '#172B4C',
+	}),
+	placeholder: (provided, state) => ({
+		...provided,
+		color: '#fff',
+	}),
+	singleValue: (provided, state) => ({
+		...provided,
+		color: '#fff',
+	}),
+	menu: (provided, state) => ({
+		...provided,
+		border: '1px solid #4A505',
+		color: '#fff',
+		backgroundColor: 'var(--main-background-color)',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
+		whiteSpace: 'nowrap',
+	}),
+	input: (provided, state) => ({
+		...provided,
+		color: '#fff',
+	}),
+};
 
 export const BankAccountListScreen = () => {
 	const history = useHistory();
@@ -25,15 +70,23 @@ export const BankAccountListScreen = () => {
 	const bankAccountList = useSelector(selectBankAccountList);
 	const isBankAccountListLoading = useSelector(selectBankAccountListLoading);
 	const user = useSelector(selectUserInfo);
+	const isCreatingBankAccount = useSelector(selectCreateBankAccountLoading);
+	const isDeletingBankAccount = useSelector(selectDeleteBankAccountLoading);
+	const publicBankAccountList = useSelector(selectPublicBankList);
+	const kycStatus = useSelector(selectKycStatus);
 
 	// dispatch
 	const dispatch = useDispatch();
 	const dispatchFetchBankAccountList = () => dispatch(bankAccountListFetch());
+	const dispatchFetchPublicBankList = () => dispatch(bankListFetch());
 
 	const redirectToEnable2fa = () => history.push('/security/2fa', { enable2fa: true });
+	const redirectToVerifyKYC = () => history.push('/profile/kyc');
 
 	React.useEffect(() => {
 		dispatchFetchBankAccountList();
+		dispatchFetchPublicBankList();
+		dispatch(getKycStatus());
 	}, []);
 
 	const [showAddBankAccountForm, setShowAddBankAccountForm] = useState(false);
@@ -46,7 +99,6 @@ export const BankAccountListScreen = () => {
 	};
 
 	const [bankForm, setBankForm] = React.useState<BankFormField>({
-		accountName: '',
 		bankName: '',
 		bankAddress: '',
 		bankAccountNumber: '',
@@ -56,7 +108,6 @@ export const BankAccountListScreen = () => {
 
 	const resetForm = () => {
 		setBankForm({
-			accountName: '',
 			bankName: '',
 			bankAddress: '',
 			bankAccountNumber: '',
@@ -74,7 +125,7 @@ export const BankAccountListScreen = () => {
 	const handleCreateBankAccount = () => {
 		dispatch(
 			createBankAccount({
-				account_name: bankForm.accountName,
+				account_name: kycStatus.fullname!,
 				account_number: bankForm.bankAccountNumber,
 				bank_address: bankForm.bankAddress,
 				bank_name: bankForm.bankName,
@@ -87,15 +138,46 @@ export const BankAccountListScreen = () => {
 	};
 
 	const isValidForm = () => {
-		const { accountName, bankName, iFSCCode, bankAddress, bankAccountNumber, otpCode } = bankForm;
+		const { bankName, iFSCCode, bankAddress, bankAccountNumber, otpCode } = bankForm;
 		const isValid2FA = otpCode.match('^[0-9]{6}$');
 
-		return accountName && bankName && iFSCCode && bankAddress && bankAccountNumber && isValid2FA;
+		return kycStatus.fullname! && bankName && iFSCCode && bankAddress && bankAccountNumber && isValid2FA;
+	};
+
+	const options = publicBankAccountList.map((bank, index) => {
+		const newBank = {
+			value: bank.bank_name,
+			label: <span>{bank.bank_name}</span>,
+		};
+
+		return newBank;
+	});
+
+	const handleChange = (selectedOption: any) => {
+		const selectedBank = String(selectedOption.value);
+
+		handleFieldBankForm('bankName', selectedBank);
 	};
 
 	const renderBodyModalAddBankForm = () => {
 		return (
 			<form className="desktop-bank-account-list-screen__bank-form">
+				<div className="desktop-bank-account-list-screen__bank-form__input">
+					<label>Bank Name</label>
+					<Select
+						autoFocus
+						backspaceRemovesValue={false}
+						controlShouldRenderValue={true}
+						hideSelectedOptions={false}
+						isClearable={false}
+						onChange={handleChange}
+						options={options}
+						placeholder="Select bank's name"
+						styles={SelectStyles}
+						tabSelectsValue={true}
+					/>
+				</div>
+
 				<div className="desktop-bank-account-list-screen__bank-form__input">
 					<label>Name of Account</label>
 					<div style={{ marginBottom: 3 }}>
@@ -105,10 +187,9 @@ export const BankAccountListScreen = () => {
 							placeholder="Enter your account"
 							defaultLabel="Name of Account"
 							handleFocusInput={() => {}}
-							handleChangeInput={value => {
-								handleFieldBankForm('accountName', value);
-							}}
-							inputValue={bankForm.accountName}
+							isDisabled={true}
+							readOnly={true}
+							inputValue={kycStatus.fullname!}
 							classNameLabel="d-none"
 							classNameInput="td-email-form__input"
 							autoFocus={true}
@@ -133,24 +214,6 @@ export const BankAccountListScreen = () => {
 				</div>
 
 				<div className="desktop-bank-account-list-screen__bank-form__input">
-					<label>Bank Name</label>
-					<div>
-						<NewCustomInput
-							type="text"
-							label="Bank Name"
-							placeholder="Enter your bank's name"
-							defaultLabel="Bank Name"
-							handleFocusInput={() => {}}
-							handleChangeInput={value => {
-								handleFieldBankForm('bankName', value);
-							}}
-							inputValue={bankForm.bankName}
-							classNameLabel="d-none"
-							classNameInput="td-email-form__input"
-						/>
-					</div>
-				</div>
-				<div className="desktop-bank-account-list-screen__bank-form__input">
 					<label>Bank Address</label>
 					<div>
 						<NewCustomInput
@@ -165,6 +228,7 @@ export const BankAccountListScreen = () => {
 							inputValue={bankForm.bankAddress}
 							classNameLabel="d-none"
 							classNameInput="td-email-form__input"
+							maxLength={50}
 						/>
 					</div>
 				</div>
@@ -178,11 +242,16 @@ export const BankAccountListScreen = () => {
 							defaultLabel="Bank Account Number"
 							handleFocusInput={() => {}}
 							handleChangeInput={value => {
+								if (isNaN(Number(value)) && value.length > 0) {
+									return;
+								}
+
 								handleFieldBankForm('bankAccountNumber', value);
 							}}
 							inputValue={bankForm.bankAccountNumber}
 							classNameLabel="d-none"
 							classNameInput="td-email-form__input"
+							maxLength={20}
 						/>
 					</div>
 				</div>
@@ -201,6 +270,7 @@ export const BankAccountListScreen = () => {
 							inputValue={bankForm.iFSCCode}
 							classNameLabel="d-none"
 							classNameInput="td-email-form__input"
+							maxLength={11}
 						/>
 					</div>
 				</div>
@@ -272,9 +342,50 @@ export const BankAccountListScreen = () => {
 			</div>
 		);
 	};
+
+	const renderKYCRequire = () => {
+		return (
+			<div className="d-flex flex-column justify-content-center align-items-center mt-5">
+				<h3 className="mb-3">To use bank feature, you have to verify your personal information</h3>
+				<Button
+					style={{
+						background: 'var(--system-yellow)',
+						border: '1px solid #848E9C',
+						borderRadius: '23.5px',
+					}}
+					block={true}
+					onClick={redirectToVerifyKYC}
+					size="lg"
+					className="w-50"
+					variant="primary"
+				>
+					Verify Account
+				</Button>
+			</div>
+		);
+	};
+	const overLayClassName = 'desktop-bank-account-list-screen__overlay';
+
 	return (
 		<div className="desktop-bank-account-list-screen">
-			{!user.otp ? (
+			<div
+				className={classNames(
+					overLayClassName,
+					{
+						[`${overLayClassName}--display`]: isCreatingBankAccount || isDeletingBankAccount,
+					},
+					{
+						[`${overLayClassName}--not-display`]: !isCreatingBankAccount && !isDeletingBankAccount,
+					},
+				)}
+			>
+				<div className={`${overLayClassName}__loading`}>
+					<LoadingGif />
+				</div>
+			</div>
+			{kycStatus.status !== 'verify' ? (
+				renderKYCRequire()
+			) : !user.otp ? (
 				render2FARequire()
 			) : (
 				<React.Fragment>

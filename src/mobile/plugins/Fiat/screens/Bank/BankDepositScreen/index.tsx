@@ -52,6 +52,9 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 			}),
 		);
 		handleCloseDepositConfirmationForm();
+		setIsContinueButtonDisabled(true);
+		setAmountInputValueState('');
+		setTransactionIDState('');
 	};
 
 	const currency = _find(currencies, { id: _toLower(currency_id) });
@@ -70,7 +73,6 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 		}
 
 		const depositAmount = Number(removeCommaInNumber(value));
-		console.log(depositAmount, Number(currency?.min_deposit_amount), isSmallerThanMinDeposit);
 
 		if (depositAmount < Number(currency?.min_deposit_amount)) {
 			setIsSmallerThanMinDeposit(true);
@@ -97,7 +99,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 						viewBox="0 0 17 18"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
-						onClick={() => copyTextToClipboard(content)}
+						onClick={() => copyTextToClipboard(label, content)}
 					>
 						<path
 							fill-rule="evenodd"
@@ -120,8 +122,8 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 		);
 	};
 
-	async function copyTextToClipboard(text: string) {
-		dispatch(alertPush({ message: ['Copied!'], type: 'success' }));
+	async function copyTextToClipboard(label: string, text: string) {
+		dispatch(alertPush({ message: [`${label} Copied!`], type: 'success' }));
 		return await navigator.clipboard.writeText(text);
 	}
 
@@ -188,7 +190,7 @@ export const BankDepositScreen = (props: BankDepositScreenProps) => {
 
 	return (
 		<div className="td-mobile-wallet-fiat-bank-deposit h-100">
-			{!isDepositing ? (
+			{isDepositing ? (
 				<div
 					className="d-flex justify-content-center align-items-center"
 					style={{

@@ -28,7 +28,7 @@ export const BankAccountList = (props: BankAccountListProps) => {
 				<tbody>
 					{!isLoading &&
 						bankAccounts.map((bankAccount, index) => (
-							<BankAccountItem index={index + 1} bankAccountItem={bankAccount} />
+							<BankAccountItem index={index + 1} bankAccountItem={bankAccount} key={bankAccount.id} />
 						))}
 				</tbody>
 			</table>
