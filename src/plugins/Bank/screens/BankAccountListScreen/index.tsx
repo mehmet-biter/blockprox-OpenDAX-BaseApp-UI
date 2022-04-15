@@ -367,7 +367,7 @@ export const BankAccountListScreen = () => {
 	const overLayClassName = 'desktop-bank-account-list-screen__overlay';
 
 	return (
-		<div className="desktop-bank-account-list-screen">
+		<div style={{ position: 'relative', width: '100%', height: '100%' }}>
 			<div
 				className={classNames(
 					overLayClassName,
@@ -383,32 +383,35 @@ export const BankAccountListScreen = () => {
 					<LoadingGif />
 				</div>
 			</div>
-			{kycStatus.status !== 'verify' ? (
-				renderKYCRequire()
-			) : !user.otp ? (
-				render2FARequire()
-			) : (
-				<React.Fragment>
-					<div className="desktop-bank-account-list-screen__header">
-						<h1 className="desktop-bank-account-list-screen__header__title">Bank Account</h1>
-						<Button
-							className="desktop-bank-account-list-screen__header__add-bank-btn"
-							onClick={handleShowAddBankAccountForm}
-						>
-							Add Bank Account
-						</Button>
-					</div>
-					<BankAccountList bankAccounts={bankAccountList} isLoading={isBankAccountListLoading} />
 
-					<NewModal
-						className="desktop-bank-account-list-screen__new-modal"
-						show={showAddBankAccountForm}
-						onHide={handleCloseAddBankAccountForm}
-						titleModal="BANK INFORMATION"
-						bodyModal={renderBodyModalAddBankForm()}
-					/>
-				</React.Fragment>
-			)}
+			<div className="desktop-bank-account-list-screen">
+				{kycStatus.status !== 'verify' ? (
+					renderKYCRequire()
+				) : !user.otp ? (
+					render2FARequire()
+				) : (
+					<React.Fragment>
+						<div className="desktop-bank-account-list-screen__header">
+							<h1 className="desktop-bank-account-list-screen__header__title">Bank Account</h1>
+							<Button
+								className="desktop-bank-account-list-screen__header__add-bank-btn"
+								onClick={handleShowAddBankAccountForm}
+							>
+								Add Bank Account
+							</Button>
+						</div>
+						<BankAccountList bankAccounts={bankAccountList} isLoading={isBankAccountListLoading} />
+
+						<NewModal
+							className="desktop-bank-account-list-screen__new-modal"
+							show={showAddBankAccountForm}
+							onHide={handleCloseAddBankAccountForm}
+							titleModal="BANK INFORMATION"
+							bodyModal={renderBodyModalAddBankForm()}
+						/>
+					</React.Fragment>
+				)}
+			</div>
 		</div>
 	);
 };

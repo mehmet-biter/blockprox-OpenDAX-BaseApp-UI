@@ -302,6 +302,7 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 								type="text"
 								maxLength={6}
 								onChange={onHandleChangeNumeric}
+								placeholder="Max length is 6"
 								value={otpInputValueState}
 							/>
 						</div>

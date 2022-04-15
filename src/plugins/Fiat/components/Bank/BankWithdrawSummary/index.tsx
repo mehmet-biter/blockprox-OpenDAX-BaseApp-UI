@@ -17,7 +17,7 @@ export const BankWithdrawSummary = (props: BankWithdrawSummaryProps) => {
 			<div className="desktop-bank-withdraw-summary">
 				<div className="d-flex align-items-center mb-4">
 					<img src={LightIcon} style={{ width: 20, color: '#fff', marginBottom: 1 }} />
-					<span className="ml-2 mt-1">Deposit Notice: </span>
+					<span className="ml-2 mt-1">Withdraw Notice: </span>
 				</div>
 				<div className="ml-2 mt-2 desktop-bank-deposit-info-tip__list">
 					<p>
