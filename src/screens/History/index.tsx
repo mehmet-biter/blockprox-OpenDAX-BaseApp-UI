@@ -52,7 +52,7 @@ export const HistoryScreen = () => {
 
 	useEffect(() => {
 		setDocumentTitle('History');
-		if (tab != 'fiatDeposit' && tab != 'fiatWithdraw') {
+		if (tab !== 'fiatDeposit' && tab !== 'fiatWithdraw') {
 			dispatch(historyAllFetch({ page: 1, type: tab, limit: 25 }));
 		}
 		if (currencies.length === 0) {
@@ -83,7 +83,7 @@ export const HistoryScreen = () => {
 	const onCurrentTabChange = (index: number) => {
 		if (tabMapping[index] !== tab) {
 			dispatch(resetHistory());
-			if (tab != 'fiatDeposit') {
+			if (tab !== 'fiatDeposit' && tab !== 'fiatWithdraw') {
 				dispatch(historyAllFetch({ page: 1, type: tabMapping[index], limit: 25 }));
 			}
 			setPageIndex(1);
@@ -441,7 +441,41 @@ export const HistoryScreen = () => {
 			);
 		};
 
-		return fetching || fiatBankDepositHistoryListFetching || fiatBankWithdrawHistoryListFetching ? (
+		if (tab === 'fiatDeposit') {
+			return fiatBankDepositHistoryListFetching ? (
+				<div className="d-flex justify-content-center mt-5 mb-5">
+					<div className="spinner-border text-success spinner-loadding" role="status"></div>
+				</div>
+			) : (
+				<div>
+					<table className="history-screen__tabs__content__table">
+						<thead className=" history-screen__tabs__content__table__header">
+							<tr>{renderHeadersTable(tab)}</tr>
+						</thead>
+						<tbody className="history-screen__tabs__content__table__body">{bodyTable()}</tbody>
+					</table>
+					{emptyData()}
+				</div>
+			);
+		}
+		if (tab === 'fiatWithdraw') {
+			return fiatBankWithdrawHistoryListFetching ? (
+				<div className="d-flex justify-content-center mt-5 mb-5">
+					<div className="spinner-border text-success spinner-loadding" role="status"></div>
+				</div>
+			) : (
+				<div>
+					<table className="history-screen__tabs__content__table">
+						<thead className=" history-screen__tabs__content__table__header">
+							<tr>{renderHeadersTable(tab)}</tr>
+						</thead>
+						<tbody className="history-screen__tabs__content__table__body">{bodyTable()}</tbody>
+					</table>
+					{emptyData()}
+				</div>
+			);
+		}
+		return fetching ? (
 			<div className="d-flex justify-content-center mt-5 mb-5">
 				<div className="spinner-border text-success spinner-loadding" role="status"></div>
 			</div>
