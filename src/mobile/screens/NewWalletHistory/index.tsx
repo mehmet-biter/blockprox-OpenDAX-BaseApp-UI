@@ -39,7 +39,7 @@ export const NewWalletHistoryMobileScreen: React.FC<WalletHistoryProps> = ({}) =
 			content: currentTabIndex === 2 ? <HistoryTable type="fiatDeposit" /> : null,
 			label: (i: number) => {
 				const classActive = classnames('wallet-history-mobile-title', {
-					'wallet-history-mobile-title__withdraw-active': i === 2,
+					'wallet-history-mobile-title__deposit-active': i === 2,
 				});
 				return <div className={classActive}>Fiat Deposit</div>;
 			},

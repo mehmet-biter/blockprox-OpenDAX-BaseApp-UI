@@ -280,7 +280,7 @@ export const BankAccountListScreen = () => {
 						<NewCustomInput
 							type="text"
 							label="OTP Code"
-							placeholder=""
+							placeholder="Max length is 6"
 							defaultLabel="OTP Code"
 							handleFocusInput={() => {}}
 							handleChangeInput={value => {
@@ -302,7 +302,7 @@ export const BankAccountListScreen = () => {
 						disabled={!isValidForm()}
 						block={true}
 						style={{
-							background: '#FFB800',
+							background: 'var(--yellow)',
 							border: '1px solid #848E9C',
 							borderRadius: '50px',
 							color: '#000',
@@ -367,7 +367,7 @@ export const BankAccountListScreen = () => {
 	const overLayClassName = 'desktop-bank-account-list-screen__overlay';
 
 	return (
-		<div className="desktop-bank-account-list-screen">
+		<div style={{ position: 'relative', width: '100%', height: '100%' }}>
 			<div
 				className={classNames(
 					overLayClassName,
@@ -383,32 +383,35 @@ export const BankAccountListScreen = () => {
 					<LoadingGif />
 				</div>
 			</div>
-			{kycStatus.status !== 'verify' ? (
-				renderKYCRequire()
-			) : !user.otp ? (
-				render2FARequire()
-			) : (
-				<React.Fragment>
-					<div className="desktop-bank-account-list-screen__header">
-						<h1 className="desktop-bank-account-list-screen__header__title">Bank Account</h1>
-						<Button
-							className="desktop-bank-account-list-screen__header__add-bank-btn"
-							onClick={handleShowAddBankAccountForm}
-						>
-							Add Bank Account
-						</Button>
-					</div>
-					<BankAccountList bankAccounts={bankAccountList} isLoading={isBankAccountListLoading} />
 
-					<NewModal
-						className="desktop-bank-account-list-screen__new-modal"
-						show={showAddBankAccountForm}
-						onHide={handleCloseAddBankAccountForm}
-						titleModal="BANK INFORMATION"
-						bodyModal={renderBodyModalAddBankForm()}
-					/>
-				</React.Fragment>
-			)}
+			<div className="desktop-bank-account-list-screen">
+				{kycStatus.status !== 'verify' ? (
+					renderKYCRequire()
+				) : !user.otp ? (
+					render2FARequire()
+				) : (
+					<React.Fragment>
+						<div className="desktop-bank-account-list-screen__header">
+							<h1 className="desktop-bank-account-list-screen__header__title">Bank Account</h1>
+							<Button
+								className="desktop-bank-account-list-screen__header__add-bank-btn"
+								onClick={handleShowAddBankAccountForm}
+							>
+								Add Bank Account
+							</Button>
+						</div>
+						<BankAccountList bankAccounts={bankAccountList} isLoading={isBankAccountListLoading} />
+
+						<NewModal
+							className="desktop-bank-account-list-screen__new-modal"
+							show={showAddBankAccountForm}
+							onHide={handleCloseAddBankAccountForm}
+							titleModal="BANK INFORMATION"
+							bodyModal={renderBodyModalAddBankForm()}
+						/>
+					</React.Fragment>
+				)}
+			</div>
 		</div>
 	);
 };

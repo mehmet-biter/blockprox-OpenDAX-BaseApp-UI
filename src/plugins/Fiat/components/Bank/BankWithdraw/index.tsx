@@ -302,11 +302,12 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 								type="text"
 								maxLength={6}
 								onChange={onHandleChangeNumeric}
+								placeholder="Max length is 6"
 								value={otpInputValueState}
 							/>
 						</div>
 
-						<div className="d-flex flex-row justify-content-between">
+						<div className="d-flex flex-row justify-content-between mt-4">
 							<span className="desktop-bank-withdraw__label">You will get: </span>
 							<span className="desktop-bank-withdraw__value">
 								{youWillGet} {_toUpper(currency_id)}
@@ -337,8 +338,8 @@ export const BankWithdraw = (props: BankWithdrawProps) => {
 									background: isFormValid()! ? 'var(--yellow)' : 'rgba(233, 170, 9, 0.5)',
 									borderRadius: '50px',
 									color: '#000',
-									fontWeight: 400,
-									fontSize: 12,
+									fontWeight: 500,
+									fontSize: '1.25rem',
 									width: 180,
 									height: 40,
 								}}

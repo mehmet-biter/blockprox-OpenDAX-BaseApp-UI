@@ -310,7 +310,7 @@ export const ProfileSecurity: React.FC<ProfileSecurityProps> = () => {
 								className="td-pg-profile__security__row-item__action"
 								onClick={() => history.push('/profile/bank')}
 							>
-								Change
+								Add
 							</div>
 						</div>
 					</div>

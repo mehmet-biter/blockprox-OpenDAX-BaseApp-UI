@@ -229,7 +229,12 @@ export const BankWithdrawScreen = (props: BankDepositScreenProps) => {
 			) : (
 				<React.Fragment>
 					<div className="td-mobile-wallet-fiat-bank-withdraw__select">
-						<div className="d-flex flex-row justify-content-between">
+						<div
+							className="d-flex flex-row justify-content-between"
+							style={{
+								paddingBottom: '0.12rem',
+							}}
+						>
 							<label className="td-mobile-wallet-fiat-bank-withdraw__select__label">Select Bank</label>
 							<label
 								className="td-mobile-wallet-fiat-bank-withdraw__select__settings-label"
@@ -288,6 +293,7 @@ export const BankWithdrawScreen = (props: BankDepositScreenProps) => {
 						<label>OTP</label>
 						<Input
 							size="large"
+							placeholder="Max length is 6"
 							type="text"
 							maxLength={6}
 							onChange={onHandleChangeNumeric}
@@ -327,7 +333,7 @@ export const BankWithdrawScreen = (props: BankDepositScreenProps) => {
 								borderRadius: '50px',
 								color: '#000',
 								fontWeight: 400,
-								fontSize: 12,
+								fontSize: '1.05rem',
 								width: '12rem',
 								height: '3.1rem',
 							}}
