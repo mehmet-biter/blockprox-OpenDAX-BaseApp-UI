@@ -280,7 +280,7 @@ export const BankAccountListScreen = () => {
 						<NewCustomInput
 							type="text"
 							label="OTP Code"
-							placeholder=""
+							placeholder="Max length is 6"
 							defaultLabel="OTP Code"
 							handleFocusInput={() => {}}
 							handleChangeInput={value => {
@@ -302,7 +302,7 @@ export const BankAccountListScreen = () => {
 						disabled={!isValidForm()}
 						block={true}
 						style={{
-							background: '#FFB800',
+							background: 'var(--yellow)',
 							border: '1px solid #848E9C',
 							borderRadius: '50px',
 							color: '#000',
