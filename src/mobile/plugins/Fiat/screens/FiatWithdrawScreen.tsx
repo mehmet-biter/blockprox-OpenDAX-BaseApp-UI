@@ -1,12 +1,14 @@
+import { useAllChildCurrenciesFetch, useWalletsFetch } from 'hooks';
+import _toLower from 'lodash/toLower';
 import { GoBackIcon } from 'mobile/assets/icons/GoBackIcon';
 import React from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import _toLower from 'lodash/toLower';
 import { BankWithdrawScreen } from './Bank';
 
 export const FiatWithdrawMobileScreen = () => {
 	const history = useHistory();
-
+	useWalletsFetch();
+	useAllChildCurrenciesFetch();
 	const { currency_id } = useParams<{ currency_id: string }>();
 
 	const renderBody = () => {
