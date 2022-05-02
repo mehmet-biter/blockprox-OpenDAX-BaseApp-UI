@@ -1,7 +1,7 @@
+import { Link } from 'components/Link';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { selectUserLoggedIn } from '../../../modules';
 import { Avatar } from '../../assets/icons';
 

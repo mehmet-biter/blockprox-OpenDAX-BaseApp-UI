@@ -1,9 +1,10 @@
 import classnames from 'classnames';
+import { Link } from 'components/Link';
 import { HomeIcon, MarketIcon, SwapIcon, TradeIcon, WalletIcon } from 'mobile/assets/icons';
 import { selectCurrentMarket } from 'modules';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const DEFAULT_CLASSNAME = 'bottom-nav__item';
 

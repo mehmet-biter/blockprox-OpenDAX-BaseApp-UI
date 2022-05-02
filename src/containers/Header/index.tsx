@@ -1,9 +1,10 @@
 import classNames from 'classnames';
+import { Link } from 'components/Link';
 import * as React from 'react';
 import { FaAward, FaGift, FaHistory, FaSignOutAlt, FaStar, FaUserCircle, FaUserPlus } from 'react-icons/fa';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { logoutFetch, selectUserLoggedIn } from '../../modules';
 
 const Logo = require('../../assets/images/UdonLogo.svg');

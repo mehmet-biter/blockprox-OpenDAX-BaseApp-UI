@@ -1,7 +1,7 @@
 import { setDocumentTitle } from 'helpers';
 import React from 'react';
 import isEqual from 'react-fast-compare';
-import { Link } from 'react-router-dom';
+import { Link } from 'components/Link';
 import { useIntl } from 'react-intl';
 
 // tslint:disable-next-line: no-empty-interface

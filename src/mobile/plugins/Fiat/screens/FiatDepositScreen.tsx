@@ -1,8 +1,9 @@
 import { GoBackIcon } from 'mobile/assets/icons/GoBackIcon';
 import React from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import _toLower from 'lodash/toLower';
 import { BankDepositScreen } from './Bank';
+import { Link } from 'components/Link';
 
 export const FiatDepositMobileScreen = () => {
 	const history = useHistory();

@@ -5,7 +5,7 @@ import { selectUserActivity, selectUserInfo } from 'modules';
 import * as React from 'react';
 import Container from 'react-bootstrap/Container';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'components/Link';
 import { useIntl } from 'react-intl';
 import { ProfileAnnouncements } from 'containers/ProfileAnnouncements';
 

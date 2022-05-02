@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'components/Link';
 import { selectAllChildCurrencies, selectWallets } from '../../../modules';
 import { Decimal } from '../../components';
 import { DEFAULT_CURRENCY_PRECISION } from '../../../constants';

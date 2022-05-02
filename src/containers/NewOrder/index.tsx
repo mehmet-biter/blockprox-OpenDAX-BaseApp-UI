@@ -28,7 +28,7 @@ import { Spinner } from 'react-bootstrap';
 import isEqual from 'react-fast-compare';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'components/Link';
 import { OrderStyle } from './styles';
 
 // tslint:disable-next-line: no-empty-interface

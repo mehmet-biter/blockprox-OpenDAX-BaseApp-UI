@@ -1,7 +1,8 @@
+import { Link } from 'components/Link';
 import * as React from 'react';
 import { useState } from 'react';
 import { FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 const Logo = require('../../assets/images/UdonLogo.svg');
 
 export const Footer: React.FC = Props => {

@@ -1,10 +1,11 @@
 import classnames from 'classnames';
+import { Link } from 'components/Link';
 import { History } from 'history';
 import * as React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
-import { Link, RouteProps, withRouter } from 'react-router-dom';
+import { RouteProps, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { languages } from '../../api/config';
 import { LogoutIcon } from '../../assets/images/sidebar/LogoutIcon';

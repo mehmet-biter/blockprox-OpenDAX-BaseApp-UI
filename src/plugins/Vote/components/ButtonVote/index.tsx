@@ -14,7 +14,7 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import { ImPlus } from 'react-icons/im';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'components/Link';
 
 interface ButtonVoteProps {
 	quantity: number;
