@@ -2,7 +2,14 @@ import { Empty } from 'antd';
 import classnames from 'classnames';
 import { ConvertUsd } from 'components';
 import { calcWalletsData } from 'helpers';
-import { useAllChildCurrenciesFetch, useDocumentTitle, useWalletsFetch } from 'hooks';
+import {
+	useAllChildCurrenciesFetch,
+	useDocumentTitle,
+	useMarketsFetch,
+	useMarketsTickersFetch,
+	useRangerConnectFetch,
+	useWalletsFetch,
+} from 'hooks';
 import _toNumber from 'lodash/toNumber';
 import millify from 'millify';
 import { SearchIcon } from 'mobile/assets/icons';
@@ -23,7 +30,9 @@ export const NewWalletsMobileScreen = () => {
 	useDocumentTitle(intl.formatMessage({ id: 'page.mobile.wallets.title' }));
 	useWalletsFetch();
 	useAllChildCurrenciesFetch();
-
+	useMarketsFetch();
+	useMarketsTickersFetch();
+	useRangerConnectFetch();
 	const wallets = useSelector(selectWallets);
 	const allChildCurrencies = useSelector(selectAllChildCurrencies);
 
@@ -95,7 +104,7 @@ export const NewWalletsMobileScreen = () => {
 		);
 	};
 
-	const getModeClassNames = (type: 'fiat' | 'coin') => {
+	const getModeClassNames = (type: typeof modeDisplay) => {
 		return classNames('td-mobile-wallets__mode-crypto w-50 text-center mode-item', {
 			'mode--active': modeDisplay === type,
 		});

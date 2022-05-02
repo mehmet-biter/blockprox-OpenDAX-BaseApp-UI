@@ -4,12 +4,14 @@ import { useHistory, useParams } from 'react-router-dom';
 import _toLower from 'lodash/toLower';
 import { BankDepositScreen } from './Bank';
 import { Link } from 'components/Link';
+import { useAllChildCurrenciesFetch, useWalletsFetch } from 'hooks';
 
 export const FiatDepositMobileScreen = () => {
 	const history = useHistory();
 
 	const { currency_id } = useParams<{ currency_id: string }>();
-
+	useWalletsFetch();
+	useAllChildCurrenciesFetch();
 	const renderBody = () => {
 		switch (_toLower(currency_id)) {
 			case 'inr':
