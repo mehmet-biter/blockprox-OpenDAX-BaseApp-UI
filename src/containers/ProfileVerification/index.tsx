@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'components/Link';
 import { kycSteps } from '../../api';
 import { changeElementPosition } from '../../helpers/changeElementPosition';
 import { Label, labelFetch, selectLabelData, selectUserInfo, User } from '../../modules';

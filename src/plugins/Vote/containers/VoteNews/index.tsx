@@ -1,5 +1,6 @@
 import { Empty } from 'antd';
 import { NewPagination } from 'components';
+import { Link } from 'components/Link';
 import { LoadingGif } from 'components/LoadingGif';
 import { useVoteDonateFreeFetch, useVoteListFetch, useWalletsFetch } from 'hooks';
 import get from 'lodash/get';
@@ -11,7 +12,6 @@ import * as React from 'react';
 import isEqual from 'react-fast-compare';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 // tslint:disable-next-line: no-empty-interface
 interface VoteNewsProps {}
 

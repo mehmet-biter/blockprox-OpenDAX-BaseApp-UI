@@ -1,9 +1,9 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link } from 'components/Link';
 import Slider, { Settings } from 'react-slick';
 import { useDepthFetch, useEventsFetch, useMarketsFetch, useMarketsTickersFetch, useRangerConnectFetch } from '../../../hooks';
-import { BottelIcon, CompetitionIcon, GiftIcon, PromotionICon, /* TransactionIcon, VoteIcon */ } from './../../assets/icons';
+import { BottelIcon, CompetitionIcon, GiftIcon, PromotionICon /* TransactionIcon, VoteIcon */ } from './../../assets/icons';
 import { NewAllMarketList } from './../../components';
 import { Announcment } from './Announcment';
 import { BoxImg } from './BoxImg';

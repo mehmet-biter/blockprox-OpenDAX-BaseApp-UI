@@ -1,4 +1,5 @@
 import { Blur, DepositFiat, QRCode } from 'components';
+import { Link } from 'components/Link';
 import { LoadingGif } from 'components/LoadingGif';
 import { copy, formatCCYAddress, getTabName } from 'helpers';
 import _toLower from 'lodash/toLower';
@@ -20,7 +21,6 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import { Link } from 'react-router-dom';
 
 const BackSVG = (
 	<svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">

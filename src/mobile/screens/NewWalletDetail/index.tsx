@@ -46,10 +46,6 @@ export const NewWalletDetail: FC = () => {
 
 	const wallet = calcWalletsData(wallets, allChildCurrencies).find(_wallet => _wallet.currency === currency);
 
-	if (!wallet) {
-		history.goBack();
-	}
-
 	const handleRoute = (value: string) => {
 		return wallet?.type === 'fiat'
 			? `/wallets/${value}/fiat/${wallet?.currency.toUpperCase()}`

@@ -9,7 +9,9 @@ import isEqual from 'react-fast-compare';
 import ReCAPTCHA, { ReCAPTCHAProps } from 'react-google-recaptcha';
 import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { Link } from 'components/Link';
+
 import { compose } from 'redux';
 import { GeetestCaptcha } from './../../../containers/GeetestCaptcha/index';
 import {

@@ -1,4 +1,5 @@
 import { Button, Form, Input } from 'antd';
+import { Link } from 'components/Link';
 import { ERROR_EMPTY_PASSWORD, ERROR_INVALID_EMAIL, isEmail, setDocumentTitle } from 'helpers';
 import { GoBackIcon } from 'mobile/assets/icons';
 import { TwoFactorModal } from 'mobile/components';
@@ -14,7 +15,7 @@ import {
 import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export const NewSignInMobileScreen: FC = () => {
 	const intl = useIntl();

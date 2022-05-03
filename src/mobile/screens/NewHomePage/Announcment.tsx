@@ -5,7 +5,8 @@ import { fetchAnnouncementList } from 'modules/plugins/Announcements';
 import Slider from 'react-slick';
 
 import { ListIcon, SpeakIcon } from 'mobile/assets/icons';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { Link } from 'components/Link';
 
 // tslint:disable-next-line: no-empty-interface
 interface AnnouncmentProps {}

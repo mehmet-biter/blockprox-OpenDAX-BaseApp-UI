@@ -1,9 +1,10 @@
 import classnames from 'classnames';
+import { Link } from 'components/Link';
 import { History } from 'history';
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { injectIntl } from 'react-intl';
-import { Link, RouteProps, withRouter } from 'react-router-dom';
+import { RouteProps, withRouter } from 'react-router-dom';
 import { IntlProps } from '../../index';
 import { Modal } from '../../mobile/components/Modal';
 

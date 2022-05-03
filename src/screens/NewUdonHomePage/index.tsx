@@ -2,7 +2,9 @@ import { transactionsListFetch } from 'modules/plugins/transactions';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { Link } from 'components/Link';
+
 import Slider from 'react-slick';
 import { UdonMarket } from '../../containers';
 import { setDocumentTitle } from '../../helpers';
