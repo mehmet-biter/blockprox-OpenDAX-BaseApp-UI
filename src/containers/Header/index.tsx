@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { logoutFetch, selectUserLoggedIn } from '../../modules';
+import './style.css';
 
 const Logo = require('../../assets/images/UdonLogo.svg');
 
@@ -283,6 +284,11 @@ export const Header: React.FC = () => {
 								>
 									Smart Stake
 								</Link>
+							</div>
+						</div>
+						<div className="header__left-menu__dropdown flex-shrink-0 d-none d-lg-block d-xl-block ">
+							<div>
+								<a href="http://bitproex.online/">Buy USDT</a>
 							</div>
 						</div>
 						{/* <div className="header__left-menu__dropdown flex-shrink-0  ">
