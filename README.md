@@ -1,4 +1,4 @@
-# OpenDAX BaseApp UI
+# OpenDAX BaseApp UI.
 
 ## User Interface for Trading and Wallets Management
 
